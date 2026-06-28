@@ -105,6 +105,18 @@ const I18N = {
     event_no_bonus: "传说概率未加成",
     event_open: "开启",
     event_close: "关闭",
+    location_idle_title: "附近猫点未定位",
+    location_idle_copy: "点击定位，刷新附近出没区域",
+    location_searching_title: "正在搜索猫点",
+    location_searching_copy: "读取当前位置，只保存在本机",
+    location_ready_copy: "{habitat} · 附近稀有反应",
+    location_denied_title: "使用演示猫点",
+    location_denied_copy: "浏览器没有给定位权限，已切到涩谷演示区域",
+    location_button_m: "{distance}m",
+    cutin_lock: "LOCK ON",
+    cutin_rare: "稀有反应上升",
+    cutin_miss: "猫影消失",
+    cutin_success: "捕捉完成",
     limited_caught: "本周限定 · 已捕获",
     rank_limited: "传说数优先，Rare+ 数作为同分排序。",
     sim_result: "每粮 Rare+ {rare} · 每粮传说 {legendary} · 跑 {escape}%",
@@ -219,6 +231,18 @@ const I18N = {
     event_no_bonus: "No legendary bonus",
     event_open: "Open",
     event_close: "Close",
+    location_idle_title: "Nearby spot not located",
+    location_idle_copy: "Tap to locate nearby cat activity",
+    location_searching_title: "Searching nearby spot",
+    location_searching_copy: "Reading location locally on this device",
+    location_ready_copy: "{habitat} · rare signal nearby",
+    location_denied_title: "Demo spot active",
+    location_denied_copy: "Location was blocked, using Shibuya demo area",
+    location_button_m: "{distance}m",
+    cutin_lock: "LOCK ON",
+    cutin_rare: "Rare signal rising",
+    cutin_miss: "Signal lost",
+    cutin_success: "Capture complete",
     limited_caught: "Weekly limited · caught",
     rank_limited: "Legendary count first, Rare+ count breaks ties.",
     sim_result: "Rare+ per treat {rare} · Legendary per treat {legendary} · Escape {escape}%",
@@ -318,6 +342,44 @@ const scenes = [
   { name: "公园长椅的白猫", place: "台北大安", art: "rare", bg1: "#21443a", bg2: "#101915" },
   { name: "自动贩卖机旁的绿瞳猫", place: "大阪巷口", art: "uncommon", bg1: "#30313e", bg2: "#11131a" },
 ];
+const locationSpots = [
+  {
+    title: "电车口猫点",
+    habitat: "通勤街角",
+    name: "站台灯箱旁的银白猫",
+    place: "附近车站",
+    art: "rare",
+    bg1: "#24375b",
+    bg2: "#0d1222",
+  },
+  {
+    title: "便利店猫点",
+    habitat: "夜间补给点",
+    name: "霓虹招牌下的橘猫",
+    place: "附近便利店",
+    art: "common",
+    bg1: "#3a2d42",
+    bg2: "#121019",
+  },
+  {
+    title: "公园猫点",
+    habitat: "绿地长椅",
+    name: "树影里观察你的白猫",
+    place: "附近公园",
+    art: "uncommon",
+    bg1: "#1d4b3d",
+    bg2: "#0d1713",
+  },
+  {
+    title: "屋顶猫点",
+    habitat: "高处风口",
+    name: "天台边缘的黑猫",
+    place: "附近屋顶",
+    art: "epic",
+    bg1: "#372b58",
+    bg2: "#0d0d18",
+  },
+];
 const weeklyLimitedCat = {
   name: "本周限定·金瞳夜巡",
   rarity: "legendary",
@@ -367,6 +429,9 @@ const state = {
   revengeActive: false,
   cameraEnabled: false,
   authUser: null,
+  locationStatus: "idle",
+  locationSpot: null,
+  locationDistance: null,
 };
 
 const $ = (selector) => document.querySelector(selector);
@@ -395,12 +460,19 @@ const els = {
   fieldEvent: $("#fieldEvent"),
   fieldEventTitle: $("#fieldEventTitle"),
   fieldEventCopy: $("#fieldEventCopy"),
+  locationButton: $("#locationButton"),
+  locationTitle: $("#locationTitle"),
+  locationCopy: $("#locationCopy"),
+  locationDistance: $("#locationDistance"),
   rollOverlay: $("#rollOverlay"),
   rollTitle: $("#rollTitle"),
   rollCopy: $("#rollCopy"),
   rarityReel: $("#rarityReel"),
   captureFlash: $("#captureFlash"),
   particleField: $("#particleField"),
+  animeCutIn: $("#animeCutIn"),
+  cutInTitle: $("#cutInTitle"),
+  cutInCopy: $("#cutInCopy"),
   revengeBanner: $("#revengeBanner"),
   revengeTitle: $("#revengeTitle"),
   revengeCopy: $("#revengeCopy"),
@@ -615,6 +687,61 @@ function activateRevengeCat() {
   render();
 }
 
+function sceneFromSpot(spot) {
+  return {
+    name: spot.name,
+    place: spot.place,
+    art: spot.art,
+    bg1: spot.bg1,
+    bg2: spot.bg2,
+  };
+}
+
+function pickLocationSpot(lat = 35.659, lng = 139.7) {
+  const seed = Math.abs(Math.round(lat * 1000) + Math.round(lng * 1000));
+  const spot = locationSpots[seed % locationSpots.length];
+  return {
+    ...spot,
+    distance: 80 + (seed % 420),
+    lat,
+    lng,
+  };
+}
+
+function applyLocationSpot(spot, status = "ready") {
+  state.locationStatus = status;
+  state.locationSpot = spot;
+  state.locationDistance = spot.distance;
+  state.scene = sceneFromSpot(spot);
+  drawCamera();
+  render();
+}
+
+async function requestLocationSpot() {
+  if (state.phase !== "ready") return;
+  state.locationStatus = "searching";
+  render();
+  if (!navigator.geolocation?.getCurrentPosition) {
+    applyLocationSpot(pickLocationSpot(), "fallback");
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const { latitude, longitude } = position.coords;
+      applyLocationSpot(pickLocationSpot(latitude, longitude), "ready");
+    },
+    () => {
+      applyLocationSpot(pickLocationSpot(), "fallback");
+    },
+    { enableHighAccuracy: false, timeout: 4200, maximumAge: 15 * 60 * 1000 },
+  );
+}
+
+function locationScenePool() {
+  if (!state.locationSpot) return scenes;
+  return [sceneFromSpot(state.locationSpot), ...scenes];
+}
+
 function drawCamera() {
   const w = els.canvas.width;
   const h = els.canvas.height;
@@ -774,7 +901,8 @@ function updateCatchCopy(mode, isRolling, isRevengeActive) {
 function scanNextCat() {
   if (state.phase !== "ready") return;
   if (state.revengeActive && activeRevengeCat()) return;
-  state.scene = scenes[Math.floor(Math.random() * scenes.length)];
+  const pool = locationScenePool();
+  state.scene = pool[Math.floor(Math.random() * pool.length)];
   state.detected = true;
   drawCamera();
   render();
@@ -825,6 +953,7 @@ function settleCatch(result) {
     if (baseRarity === "legendary") {
       createRevengeCat(state.lastOutcome);
     }
+    showCutIn(t("cutin_miss"), t("story_fail_name", { rarity: rarities[baseRarity].label }), "miss");
     emitFieldParticles(baseRarity, "fail");
     state.phase = "nearMiss";
     render();
@@ -870,6 +999,7 @@ function settleCatch(result) {
       state.revengeActive = false;
     }
     state.lastOutcome = { type: "card", card };
+    showCutIn(t("cutin_success"), `${rarities[finalRarity].label} CARD`, "success");
     emitFieldParticles(finalRarity, "success");
     showCardResult(card);
   }
@@ -895,6 +1025,7 @@ function rewardForCapture(rarity) {
 function startCaptureAnimation(mode, rarity) {
   setRarityVars(els.rollOverlay, rarity);
   renderRarityReel(rarity);
+  showCutIn(t("cutin_lock"), rarity === "legendary" ? t("roll_legendary") : t("cutin_rare"), "lock");
   els.rollTitle.textContent = t("roll_title", { mode: mode.label });
   els.rollCopy.textContent =
     rarity === "legendary" ? t("roll_legendary") : t("roll_normal");
@@ -1116,6 +1247,16 @@ function emitFieldParticles(rarity, tone = "success") {
   emitFieldParticles.timer = window.setTimeout(() => {
     els.particleField.innerHTML = "";
   }, 1500);
+}
+
+function showCutIn(title, copy, tone = "lock") {
+  els.cutInTitle.textContent = title;
+  els.cutInCopy.textContent = copy;
+  els.animeCutIn.className = `anime-cut-in show ${tone}`;
+  window.clearTimeout(showCutIn.timer);
+  showCutIn.timer = window.setTimeout(() => {
+    els.animeCutIn.className = "anime-cut-in";
+  }, 980);
 }
 
 function resultBurstMarkup(rarity, tone = "success") {
@@ -1497,6 +1638,25 @@ function render() {
   els.fieldEventTitle.textContent = state.legendaryHour ? t("event_on") : t("event_field_normal");
   els.fieldEventCopy.textContent = legendaryCountdownText();
   els.toggleEventButton.textContent = state.legendaryHour ? t("event_close") : t("event_open");
+  els.locationButton.classList.toggle("active", Boolean(state.locationSpot));
+  els.locationButton.classList.toggle("searching", state.locationStatus === "searching");
+  if (state.locationStatus === "searching") {
+    els.locationTitle.textContent = t("location_searching_title");
+    els.locationCopy.textContent = t("location_searching_copy");
+    els.locationDistance.textContent = "...";
+  } else if (state.locationSpot) {
+    els.locationTitle.textContent =
+      state.locationStatus === "fallback" ? t("location_denied_title") : state.locationSpot.title;
+    els.locationCopy.textContent =
+      state.locationStatus === "fallback"
+        ? t("location_denied_copy")
+        : t("location_ready_copy", { habitat: state.locationSpot.habitat });
+    els.locationDistance.textContent = t("location_button_m", { distance: state.locationDistance });
+  } else {
+    els.locationTitle.textContent = t("location_idle_title");
+    els.locationCopy.textContent = t("location_idle_copy");
+    els.locationDistance.textContent = "--m";
+  }
 
   els.phone.classList.toggle("catch-mode", state.tab === "catch");
   els.phone.classList.toggle("camera-on", state.cameraEnabled);
@@ -1584,6 +1744,7 @@ $$("[data-tab]").forEach((button) => {
 els.scanButton.addEventListener("click", scanNextCat);
 els.catchButton.addEventListener("click", catchCat);
 els.cameraToggleButton.addEventListener("click", startCamera);
+els.locationButton.addEventListener("click", requestLocationSpot);
 els.authButton.addEventListener("click", openAuthPanel);
 els.fieldAuthButton.addEventListener("click", openAuthPanel);
 els.revengeBanner.addEventListener("click", activateRevengeCat);

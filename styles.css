@@ -2992,3 +2992,304 @@ body {
   background: repeating-linear-gradient(110deg, transparent 0 11px, rgba(255, 255, 255, 0.2) 12px 13px);
   mix-blend-mode: screen;
 }
+
+/* v10 anime location style */
+body {
+  background:
+    radial-gradient(circle at 16% 12%, rgba(255, 45, 85, 0.13), transparent 28%),
+    radial-gradient(circle at 86% 16%, rgba(90, 200, 250, 0.14), transparent 30%),
+    linear-gradient(135deg, #080b13 0%, #101324 48%, #080a10 100%);
+}
+
+.phone {
+  background:
+    radial-gradient(90% 52% at 50% 0%, rgba(90, 200, 250, 0.08), transparent 64%),
+    #080a11;
+}
+
+.field-camera {
+  background:
+    radial-gradient(circle at 50% 35%, rgba(90, 200, 250, 0.12), transparent 28%),
+    linear-gradient(180deg, #111a2f, #070910);
+}
+
+.anime-aura {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.anime-aura::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  opacity: 0.24;
+  background:
+    repeating-conic-gradient(from 12deg at 50% 55%, rgba(255, 255, 255, 0.16) 0deg 4deg, transparent 4deg 13deg);
+  animation: auraSpin 18s linear infinite;
+}
+
+.anime-aura i {
+  position: absolute;
+  width: 90px;
+  height: 16px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+  transform: rotate(-18deg);
+  animation: animeSpeedLine 2.6s linear infinite;
+}
+
+.anime-aura i:nth-child(1) {
+  top: 34%;
+  left: -30%;
+}
+
+.anime-aura i:nth-child(2) {
+  top: 48%;
+  left: -42%;
+  animation-delay: 0.7s;
+}
+
+.anime-aura i:nth-child(3) {
+  top: 62%;
+  left: -36%;
+  animation-delay: 1.4s;
+}
+
+@keyframes auraSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes animeSpeedLine {
+  from {
+    transform: translateX(0) rotate(-18deg);
+    opacity: 0;
+  }
+
+  15%,
+  70% {
+    opacity: 1;
+  }
+
+  to {
+    transform: translateX(620px) rotate(-18deg);
+    opacity: 0;
+  }
+}
+
+.location-panel {
+  position: absolute;
+  z-index: 4;
+  top: 137px;
+  left: 18px;
+  right: 18px;
+  min-height: 55px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 11px;
+  border: 1px solid rgba(90, 200, 250, 0.28);
+  border-top-color: rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  background:
+    linear-gradient(135deg, rgba(90, 200, 250, 0.14), rgba(175, 82, 222, 0.12)),
+    rgba(8, 10, 17, 0.66);
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  pointer-events: auto;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
+}
+
+.location-panel strong,
+.location-panel small {
+  display: block;
+}
+
+.location-panel strong {
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.location-panel small {
+  margin-top: 3px;
+  color: rgba(255, 255, 255, 0.64);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.location-panel em {
+  min-width: 48px;
+  padding: 7px 8px;
+  border-radius: 999px;
+  background: rgba(90, 200, 250, 0.18);
+  color: #9be8ff;
+  text-align: center;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 950;
+}
+
+.location-panel.active {
+  border-color: rgba(90, 200, 250, 0.62);
+  box-shadow:
+    0 0 0 1px rgba(90, 200, 250, 0.16),
+    0 16px 36px rgba(90, 200, 250, 0.13);
+}
+
+.location-panel.searching em {
+  animation: locationPulse 0.7s ease-in-out infinite alternate;
+}
+
+@keyframes locationPulse {
+  from {
+    opacity: 0.55;
+  }
+
+  to {
+    opacity: 1;
+    box-shadow: 0 0 18px rgba(90, 200, 250, 0.38);
+  }
+}
+
+.revenge-banner:not([hidden]) {
+  top: 199px;
+}
+
+.revenge-banner:not([hidden]) ~ .scan-chip {
+  top: 258px;
+}
+
+.scan-chip {
+  top: 206px;
+}
+
+.cat-readout {
+  border-left: 3px solid rgba(90, 200, 250, 0.74);
+}
+
+.cat-readout strong,
+.capture-copy strong,
+.reveal-card h2 {
+  text-shadow:
+    2px 2px 0 rgba(0, 0, 0, 0.38),
+    0 0 18px rgba(90, 200, 250, 0.18);
+}
+
+.anime-cut-in {
+  position: absolute;
+  z-index: 8;
+  left: -8px;
+  right: -8px;
+  top: 42%;
+  min-height: 84px;
+  display: grid;
+  place-items: center;
+  padding: 12px 24px;
+  background:
+    linear-gradient(100deg, transparent 0 8%, rgba(5, 7, 12, 0.96) 8% 92%, transparent 92%),
+    repeating-linear-gradient(100deg, transparent 0 14px, rgba(255, 255, 255, 0.08) 15px 16px);
+  color: #fff;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-110%) skewX(-10deg);
+}
+
+.anime-cut-in strong,
+.anime-cut-in span {
+  display: block;
+  width: 100%;
+  text-align: center;
+  transform: skewX(10deg);
+}
+
+.anime-cut-in strong {
+  color: #fff;
+  font-size: 30px;
+  line-height: 0.95;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-shadow:
+    3px 3px 0 #0a84ff,
+    -2px -2px 0 #ff2d55,
+    0 0 20px rgba(255, 255, 255, 0.34);
+}
+
+.anime-cut-in span {
+  margin-top: 6px;
+  color: #9be8ff;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+}
+
+.anime-cut-in.show {
+  animation: animeCutIn 0.92s cubic-bezier(0.16, 0.88, 0.22, 1) both;
+}
+
+.anime-cut-in.miss strong {
+  text-shadow:
+    3px 3px 0 #ff2d55,
+    -2px -2px 0 #111,
+    0 0 22px rgba(255, 45, 85, 0.46);
+}
+
+.anime-cut-in.success strong {
+  text-shadow:
+    3px 3px 0 #ffd60a,
+    -2px -2px 0 #0a84ff,
+    0 0 24px rgba(255, 214, 10, 0.5);
+}
+
+@keyframes animeCutIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-110%) skewX(-10deg);
+  }
+
+  16%,
+  76% {
+    opacity: 1;
+    transform: translateX(0) skewX(-10deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(112%) skewX(-10deg);
+  }
+}
+
+.mode.active {
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+    0 10px 28px rgba(255, 149, 0, 0.22);
+}
+
+.mode.danger.active {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.22),
+    0 10px 32px rgba(255, 45, 85, 0.28);
+}
+
+.reveal-card {
+  border-radius: 28px 8px 28px 8px;
+}
+
+.result-rarity-label {
+  transform: skewX(-8deg);
+}
+
+.cat-card {
+  border-radius: 22px 8px 22px 8px;
+}
+
+.cat-card-inner {
+  border-radius: 21px 7px 21px 7px;
+}

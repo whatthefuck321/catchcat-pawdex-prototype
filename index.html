@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PAWDEX v9 - Game Feel Prototype</title>
+    <title>PAWDEX v10 - Anime Location Prototype</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -42,6 +42,7 @@
             <canvas id="catCanvas" width="760" height="980"></canvas>
             <img class="field-cat-art" id="fieldCatArt" src="./assets/cat-common.png" alt="" />
             <div class="camera-ui">
+              <div class="anime-aura" aria-hidden="true"><i></i><i></i><i></i></div>
               <div class="field-top">
                 <div>
                   <p class="app-label">PAWDEX FIELD</p>
@@ -64,6 +65,14 @@
                 <span id="fieldEventCopy">传说概率未加成</span>
               </div>
 
+              <button class="location-panel" id="locationButton" type="button">
+                <span>
+                  <strong id="locationTitle">附近猫点未定位</strong>
+                  <small id="locationCopy">点击定位，刷新附近出没区域</small>
+                </span>
+                <em id="locationDistance">--m</em>
+              </button>
+
               <button class="revenge-banner" id="revengeBanner" type="button" hidden>
                 <strong id="revengeTitle">它回来了</strong>
                 <span id="revengeCopy">24 小时内可追猎</span>
@@ -74,6 +83,10 @@
               <div class="target-box"></div>
               <div class="particle-field" id="particleField" aria-hidden="true"></div>
               <div class="capture-flash" id="captureFlash"></div>
+              <div class="anime-cut-in" id="animeCutIn" aria-hidden="true">
+                <strong id="cutInTitle">LOCK ON</strong>
+                <span id="cutInCopy">稀有反应上升</span>
+              </div>
 
               <div class="roll-overlay" id="rollOverlay" aria-hidden="true">
                 <div class="roll-core">
