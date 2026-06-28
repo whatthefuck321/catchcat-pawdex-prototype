@@ -56,6 +56,7 @@ const I18N = {
     breed_confidence_low: "低可信",
     breed_result: "趣味识别：{breed} · {confidence}",
     breed_source_mock: "本地原型识别",
+    breed_source_api: "Gemini 识别",
     reward_none: "没有返粮奖励。",
     reward_food: "奖励 +{total} 猫粮{bonus}。",
     first_legendary_bonus: "，含每日首只传说 +5",
@@ -196,6 +197,7 @@ const I18N = {
     breed_confidence_low: "low confidence",
     breed_result: "Fun ID: {breed} · {confidence}",
     breed_source_mock: "Local prototype ID",
+    breed_source_api: "Gemini ID",
     reward_none: "No treat refund.",
     reward_food: "Reward +{total} treats{bonus}.",
     first_legendary_bonus: ", including first legendary of the day +5",
@@ -550,6 +552,13 @@ const SPOT_REWARD_COOLDOWN_MS = 5 * 60 * 1000;
 const SHARE_URL =
   window.PAWDEX_SHARE_URL || "https://whatthefuck321.github.io/catchcat-pawdex-prototype/";
 const SUPABASE_CONFIG = window.PAWDEX_SUPABASE || { url: "", anonKey: "" };
+const BREED_API_CONFIG = {
+  url: window.PAWDEX_BREED_API?.url || "",
+  token: window.PAWDEX_BREED_API?.token || window.PAWDEX_SUPABASE?.anonKey || "",
+  timeoutMs: Number.isFinite(window.PAWDEX_BREED_API?.timeoutMs)
+    ? window.PAWDEX_BREED_API.timeoutMs
+    : 3600,
+};
 const pageMeta = {
   catch: { label: "PAWDEX FIELD", title: "今晚抓猫" },
   dex: { label: "CAT DEX", title: "猫卡图鉴" },
@@ -1067,6 +1076,76 @@ function makeBreedProfile(rarity, scene, no) {
   };
 }
 
+function breedApiEnabled() {
+  return Boolean(BREED_API_CONFIG.url);
+}
+
+function photoPayloadFromDataUrl(photo) {
+  if (!photo || typeof photo !== "string") return null;
+  const match = photo.match(/^data:([^;,]+);base64,(.+)$/);
+  if (!match) return null;
+  return {
+    mimeType: match[1],
+    data: match[2],
+  };
+}
+
+function normalizeBreedProfile(raw, fallback) {
+  const source = raw?.breed && typeof raw.breed === "object" ? raw.breed : raw;
+  if (!source || typeof source !== "object") return fallback;
+  const nameEn = source.nameEn || source.breedEn || source.breed || fallback.nameEn;
+  const nameZh = source.nameZh || source.breedZh || source.breedCn || fallback.nameZh;
+  const confidence = ["high", "medium", "low"].includes(source.confidence)
+    ? source.confidence
+    : fallback.confidence;
+  return {
+    nameZh,
+    nameEn,
+    confidence,
+    descriptionZh: source.descriptionZh || source.descriptionCn || source.description || fallback.descriptionZh,
+    descriptionEn: source.descriptionEn || source.description || fallback.descriptionEn,
+    source: source.source || raw?.source || "gemini-edge",
+  };
+}
+
+async function identifyBreedProfile({ rarity, scene, no, photo }) {
+  const fallback = makeBreedProfile(rarity, scene, no);
+  const payload = photoPayloadFromDataUrl(photo);
+  if (!breedApiEnabled() || !payload) return fallback;
+
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), BREED_API_CONFIG.timeoutMs);
+  const headers = { "Content-Type": "application/json" };
+  if (BREED_API_CONFIG.token) {
+    headers.Authorization = `Bearer ${BREED_API_CONFIG.token}`;
+    headers.apikey = BREED_API_CONFIG.token;
+  }
+
+  try {
+    const response = await fetch(BREED_API_CONFIG.url, {
+      method: "POST",
+      headers,
+      signal: controller.signal,
+      body: JSON.stringify({
+        image: payload.data,
+        mimeType: payload.mimeType,
+        rarity,
+        scene: {
+          name: scene?.name || "",
+          place: scene?.place || "",
+        },
+        locale: LANG,
+      }),
+    });
+    if (!response.ok) throw new Error(`breed api ${response.status}`);
+    return normalizeBreedProfile(await response.json(), fallback);
+  } catch {
+    return fallback;
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
+}
+
 function breedDisplayName(profile) {
   if (!profile) return "";
   return LANG === "en" ? profile.nameEn : profile.nameZh;
@@ -1080,6 +1159,11 @@ function breedDescription(profile) {
 function breedConfidenceLabel(profile) {
   if (!profile) return "";
   return t(`breed_confidence_${profile.confidence || "medium"}`);
+}
+
+function breedSourceLabel(profile) {
+  if (!profile || profile.source === "local-prototype") return t("breed_source_mock");
+  return t("breed_source_api");
 }
 
 function switchTab(tab) {
@@ -1144,11 +1228,16 @@ function catchCat() {
 
   window.clearTimeout(settleTimer);
   settleTimer = window.setTimeout(() => {
-    settleCatch({ escaped, baseRarity, rate, mode, modeKey, scene, revengeAttempt, photo });
+    settleCatch({ escaped, baseRarity, rate, mode, modeKey, scene, revengeAttempt, photo }).catch(() => {
+      state.phase = "ready";
+      persistState();
+      render();
+      showEscapeLikeResult(t("save_failed_title"), t("save_failed_copy"));
+    });
   }, 950);
 }
 
-function settleCatch(result) {
+async function settleCatch(result) {
   const { escaped, baseRarity, rate, mode, modeKey, scene, revengeAttempt, photo } = result;
   if (escaped) {
     state.lastOutcome = {
@@ -1179,14 +1268,16 @@ function settleCatch(result) {
   } else {
     const finalRarity = modes[modeKey].floor ? upgradeRarity(baseRarity) : baseRarity;
     const reward = rewardForCapture(finalRarity);
+    const no = state.nextNo;
+    const breed = await identifyBreedProfile({ rarity: finalRarity, scene, no, photo });
     const card = {
       id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
-      no: state.nextNo,
+      no,
       name: makeName(finalRarity),
       rarity: finalRarity,
       baseRarity,
       upgraded: finalRarity !== baseRarity,
-      breed: makeBreedProfile(finalRarity, scene, state.nextNo),
+      breed,
       scene,
       photo,
       mode: modeKey,
@@ -1289,7 +1380,7 @@ function showCardResult(card) {
         ? `<div class="breed-panel">
             <strong>${breedCopy}</strong>
             <span>${breedDescription(card.breed)}</span>
-            <small>${t("breed_source_mock")}</small>
+            <small>${breedSourceLabel(card.breed)}</small>
           </div>`
         : ""
     }

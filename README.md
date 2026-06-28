@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v12 wow reveal prototype`
+Current published version: `v13 breed API adapter prototype`
 
 ## What is included
 
@@ -16,10 +16,32 @@ Current published version: `v12 wow reveal prototype`
 - v10 anime/location: browser geolocation cat-spot prototype, nearby habitat UI, anime speed lines and cut-in motion language.
 - v11 cat spot POI: location text now has gameplay meaning. Convenience stores, stations, parks, and rooftops act as supply/spawn/habitat spots; active spots can grant a small cat-food supply with cooldown.
 - v12 wow reveal: staged card-back reveal, stronger rarity ceremony, and a local prototype breed-ID result on each captured card.
+- v13 breed API adapter: optional frontend adapter plus Supabase Edge Function sample for Gemini-based breed ID. If no API URL is configured, the app falls back to the local prototype breed result.
 
 ## Breed ID note
 
-The static GitHub Pages build does not call Gemini or any other cloud breed API directly because browser-side API keys would be exposed. The current breed result is a local prototype field shaped like a future API response. A production build should call Gemini or another vision model through a backend/Supabase Edge Function, then store the result with the catch record.
+The static GitHub Pages build must not call Gemini directly because browser-side API keys would be exposed. This repo includes a Supabase Edge Function sample at `supabase/functions/identify-breed/index.ts`; deploy that function, keep `GEMINI_API_KEY` as a Supabase secret, then point the frontend at the function URL.
+
+Frontend config example:
+
+```html
+<script>
+  window.PAWDEX_BREED_API = {
+    url: "https://YOUR_PROJECT.supabase.co/functions/v1/identify-breed",
+    token: "YOUR_SUPABASE_ANON_KEY",
+    timeoutMs: 3600
+  };
+</script>
+```
+
+Supabase deploy sketch:
+
+```bash
+supabase secrets set GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+supabase functions deploy identify-breed
+```
+
+Without `window.PAWDEX_BREED_API.url`, the app uses the local prototype breed result.
 
 ## Supabase Auth
 
