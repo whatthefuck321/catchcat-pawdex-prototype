@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>猫卡梭哈 v6 - 收藏卡视觉版</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="stage">
+      <section class="phone" aria-label="手机 App 原型">
+        <header class="status-bar">
+          <span>13:28</span>
+          <span>5G  87%</span>
+        </header>
+
+        <section class="app-top">
+          <div>
+            <p class="app-label">PAWDEX FIELD</p>
+            <h2>今晚抓猫</h2>
+          </div>
+          <div class="food-pill">
+            <span>猫粮</span>
+            <strong id="foodText">10/10</strong>
+          </div>
+        </section>
+
+        <section class="event-strip" id="eventStrip">
+          <div>
+            <strong id="eventTitle">传说时段未开启</strong>
+            <span id="eventCopy">普通捕捉概率，适合先存图鉴。</span>
+          </div>
+          <button id="toggleEventButton" type="button">开启</button>
+        </section>
+
+        <nav class="tabs" aria-label="页面">
+          <button class="tab active" type="button" data-tab="catch">捕捉</button>
+          <button class="tab" type="button" data-tab="dex">图鉴</button>
+          <button class="tab" type="button" data-tab="share">分享</button>
+        </nav>
+
+        <section class="screen active" id="catchScreen" data-screen="catch">
+          <div class="camera-card field-camera">
+            <canvas id="catCanvas" width="760" height="980"></canvas>
+            <img class="field-cat-art" id="fieldCatArt" src="./assets/cat-common.png" alt="" />
+            <div class="camera-ui">
+              <div class="field-top">
+                <div>
+                  <p class="app-label">PAWDEX FIELD</p>
+                  <h2>今晚抓猫</h2>
+                </div>
+                <div class="food-pill floating">
+                  <span>猫粮</span>
+                  <strong id="fieldFoodText">10/10</strong>
+                </div>
+              </div>
+
+              <div class="field-event" id="fieldEvent">
+                <strong id="fieldEventTitle">普通时段</strong>
+                <span id="fieldEventCopy">传说概率未加成</span>
+              </div>
+
+              <button class="revenge-banner" id="revengeBanner" type="button" hidden>
+                <strong id="revengeTitle">它回来了</strong>
+                <span id="revengeCopy">24 小时内可追猎</span>
+              </button>
+
+              <div class="scan-chip" id="scanChip">猫已识别 94%</div>
+              <div class="scan-sweep"></div>
+              <div class="target-box"></div>
+              <div class="capture-flash" id="captureFlash"></div>
+
+              <div class="roll-overlay" id="rollOverlay" aria-hidden="true">
+                <div class="roll-core">
+                  <span></span>
+                  <strong id="rollTitle">捕捉中</strong>
+                  <small id="rollCopy">正在结算这次下注</small>
+                </div>
+              </div>
+
+              <div class="cat-readout">
+                <span id="catIntelPlace">涩谷后巷</span>
+                <strong id="catIntelName">便利店门口的橘猫</strong>
+              </div>
+
+              <section class="capture-dock">
+                <div class="dock-head">
+                  <span id="riskHint">稳抓最安全</span>
+                  <button class="reroll-scene" id="scanButton" data-testid="scan" type="button">换一只</button>
+                </div>
+
+                <div class="mode-list" id="modeList">
+                  <button class="mode active" type="button" data-mode="standard">
+                    <span class="mode-name">稳抓</span>
+                    <span class="mode-meta">1 猫粮</span>
+                  </button>
+                  <button class="mode" type="button" data-mode="risky">
+                    <span class="mode-name">冒险</span>
+                    <span class="mode-meta">2 粮 · 传说率 ×2.5</span>
+                  </button>
+                  <button class="mode danger" type="button" data-mode="allin">
+                    <span class="mode-name">梭哈</span>
+                    <span class="mode-meta">3 粮 · 传说率 ×6</span>
+                  </button>
+                </div>
+
+                <button class="catch-cta" id="catchButton" data-testid="catch" type="button">消耗 1 猫粮捕捉</button>
+              </section>
+            </div>
+          </div>
+        </section>
+
+        <section class="screen" id="dexScreen" data-screen="dex" hidden>
+          <div class="section-head dex-head">
+            <div>
+              <p class="app-label">CAT DEX</p>
+              <h3 id="dexTitle">已收集 0 张</h3>
+            </div>
+            <button class="small-button" id="clearDexButton" type="button">清空</button>
+          </div>
+          <div class="dex-grid" id="dexGrid"></div>
+        </section>
+
+        <section class="screen" id="shareScreen" data-screen="share" hidden>
+          <div class="story-preview" id="storyPreview">
+            <div class="story-top">PAWDEX</div>
+            <div class="story-copy" id="storyCopy">抓到猫或抓失败后，这里会生成分享图。</div>
+            <div class="story-footer">真实猫抽卡 · 梭哈捕捉</div>
+          </div>
+          <button class="catch-cta secondary" id="copyShareButton" type="button">模拟分享 +2 猫粮</button>
+        </section>
+
+        <footer class="bottom-nav">
+          <button class="nav active" type="button" data-tab="catch">📷<span>抓猫</span></button>
+          <button class="nav" type="button" data-tab="dex">◇<span>图鉴</span></button>
+          <button class="nav" type="button" data-tab="share">↗<span>分享</span></button>
+        </footer>
+      </section>
+
+      <aside class="side">
+        <section class="metric-card">
+          <p class="kicker">玩法反馈</p>
+          <h2 id="lastOutcomeTitle">还没下注</h2>
+          <p id="lastOutcomeCopy">先点一次捕捉，看成功晒卡和失败亏损哪一个更有传播感。</p>
+        </section>
+
+        <section class="metric-card leaderboard-card">
+          <div class="section-head side-head">
+            <div>
+              <p class="kicker">周排行榜</p>
+              <h2>本周传说榜</h2>
+            </div>
+            <span class="rank-pill" id="leaderboardRank">#5</span>
+          </div>
+          <div class="leaderboard-list" id="leaderboardList"></div>
+        </section>
+
+        <section class="metric-card">
+          <div class="section-head side-head">
+            <div>
+              <p class="kicker">经济模拟</p>
+              <h2>10 万次结果</h2>
+            </div>
+            <button class="small-button" id="simulateButton" type="button">重跑</button>
+          </div>
+          <div class="sim-list" id="simList"></div>
+        </section>
+      </aside>
+    </main>
+
+    <template id="cardTemplate">
+      <article class="cat-card">
+        <div class="card-art">
+          <img class="cat-art-img" src="./assets/cat-common.png" alt="" />
+        </div>
+        <div class="card-info">
+          <strong class="card-name">麻薯</strong>
+          <span class="card-meta">普通 · #001</span>
+        </div>
+      </article>
+    </template>
+
+    <div class="modal" id="resultModal" aria-hidden="true">
+      <div class="modal-card" id="modalCard"></div>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
