@@ -1,0 +1,35 @@
+name: quality
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Check browser JavaScript syntax
+        run: node --check app.js
+
+      - name: Check Supabase Edge Function
+        run: deno check supabase/functions/identify-breed/index.ts
+
+      - name: Scan public text for blocked risk words
+        run: |
+          if grep -RInE '梭哈|赌|赌博|下注|all-in|博彩|Gamble|gamble|便利店门口的橘猫' index.html app.js styles.css README.md supabase/functions/identify-breed/index.ts; then
+            echo "Blocked public wording found."
+            exit 1
+          fi
