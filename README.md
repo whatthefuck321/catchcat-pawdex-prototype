@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v8 P0`
+Current published version: `v9 game-feel prototype`
 
 ## What is included
 
@@ -12,6 +12,7 @@ Current published version: `v8 P0`
 - FOMO loop: legendary hour, weekly limited slot, 24h revenge chase, weekly leaderboard.
 - v7 layout: phone-app-only shell, in-app leaderboard page, shutter capture button, hidden developer panel.
 - v8 P0: neutral mode wording via i18n, browser camera capture, photo card art, share image export, X/Facebook/Threads/native share actions.
+- v9 game feel: treat meter and floating economy deltas, rarity reel during capture, field particles, premium result reveals, stronger card material.
 
 ## Supabase Auth
 

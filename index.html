@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PAWDEX v8 - P0 App Shell</title>
+    <title>PAWDEX v9 - Game Feel Prototype</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -24,6 +24,7 @@
           <div class="food-pill">
             <span id="foodLabel">猫粮</span>
             <strong id="foodText">10/10</strong>
+            <div class="food-meter" aria-hidden="true"><i id="foodMeter"></i></div>
           </div>
         </section>
 
@@ -51,6 +52,7 @@
                   <div class="food-pill floating">
                     <span id="fieldFoodLabel">猫粮</span>
                     <strong id="fieldFoodText">10/10</strong>
+                    <div class="food-meter" aria-hidden="true"><i id="fieldFoodMeter"></i></div>
                   </div>
                 </div>
               </div>
@@ -70,12 +72,14 @@
               <div class="scan-chip" id="scanChip">猫已识别 94%</div>
               <div class="scan-sweep"></div>
               <div class="target-box"></div>
+              <div class="particle-field" id="particleField" aria-hidden="true"></div>
               <div class="capture-flash" id="captureFlash"></div>
 
               <div class="roll-overlay" id="rollOverlay" aria-hidden="true">
                 <div class="roll-core">
                   <span></span>
                   <strong id="rollTitle">捕捉中</strong>
+                  <div class="rarity-reel" id="rarityReel" aria-hidden="true"></div>
                   <small id="rollCopy">正在结算这次捕捉</small>
                 </div>
               </div>
@@ -216,6 +220,7 @@
           <button class="nav" type="button" data-tab="rank">≡<span>榜单</span></button>
           <button class="nav" type="button" data-tab="share">↗<span>分享</span></button>
         </footer>
+        <div class="economy-toast" id="economyToast" aria-live="polite"></div>
       </section>
     </main>
 

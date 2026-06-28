@@ -386,6 +386,9 @@ const els = {
   fieldFoodLabel: $("#fieldFoodLabel"),
   foodText: $("#foodText"),
   fieldFoodText: $("#fieldFoodText"),
+  foodMeter: $("#foodMeter"),
+  fieldFoodMeter: $("#fieldFoodMeter"),
+  economyToast: $("#economyToast"),
   eventStrip: $("#eventStrip"),
   eventTitle: $("#eventTitle"),
   eventCopy: $("#eventCopy"),
@@ -395,7 +398,9 @@ const els = {
   rollOverlay: $("#rollOverlay"),
   rollTitle: $("#rollTitle"),
   rollCopy: $("#rollCopy"),
+  rarityReel: $("#rarityReel"),
   captureFlash: $("#captureFlash"),
+  particleField: $("#particleField"),
   revengeBanner: $("#revengeBanner"),
   revengeTitle: $("#revengeTitle"),
   revengeCopy: $("#revengeCopy"),
@@ -787,6 +792,7 @@ function catchCat() {
   }
 
   state.food -= mode.cost;
+  showEconomyToast(`-${mode.cost} ${t("treat")}`, "spend");
   const photo = capturePhotoFrame();
   const baseRarity = revengeAttempt ? "legendary" : rollRarity(modeKey);
   const rate = escapeRate(baseRarity, modeKey);
@@ -819,6 +825,7 @@ function settleCatch(result) {
     if (baseRarity === "legendary") {
       createRevengeCat(state.lastOutcome);
     }
+    emitFieldParticles(baseRarity, "fail");
     state.phase = "nearMiss";
     render();
     window.setTimeout(() => {
@@ -849,6 +856,9 @@ function settleCatch(result) {
     state.nextNo += 1;
     state.cards.unshift(card);
     state.food = Math.min(state.food + reward.total, state.maxFood + 10);
+    if (reward.total > 0) {
+      showEconomyToast(`+${reward.total} ${t("treat")}`, "gain");
+    }
     if (finalRarity === "legendary" && reward.firstLegendaryBonus > 0) {
       state.firstLegendaryDate = currentDateKey();
     }
@@ -860,6 +870,7 @@ function settleCatch(result) {
       state.revengeActive = false;
     }
     state.lastOutcome = { type: "card", card };
+    emitFieldParticles(finalRarity, "success");
     showCardResult(card);
   }
 
@@ -882,6 +893,8 @@ function rewardForCapture(rarity) {
 }
 
 function startCaptureAnimation(mode, rarity) {
+  setRarityVars(els.rollOverlay, rarity);
+  renderRarityReel(rarity);
   els.rollTitle.textContent = t("roll_title", { mode: mode.label });
   els.rollCopy.textContent =
     rarity === "legendary" ? t("roll_legendary") : t("roll_normal");
@@ -903,8 +916,11 @@ function showCardResult(card) {
     ? t("heart_upgrade", { from: rarities[card.baseRarity].label, to: cfg.label })
     : "";
   const revengeCopy = card.revengeAttempt ? t("revenge_success") : "";
-  els.modalCard.className = "modal-card reveal-card success";
+  els.modalCard.className = `modal-card reveal-card success rarity-${card.rarity}`;
+  setRarityVars(els.modalCard, card.rarity);
   els.modalCard.innerHTML = `
+    ${resultBurstMarkup(card.rarity, "success")}
+    <div class="result-rarity-label">${cfg.label} CARD</div>
     ${renderCatCard(card)}
     <h2>${headline}</h2>
     <p>${t("card_result", {
@@ -929,9 +945,16 @@ function showEscapeResult(outcome) {
     outcome.rarity === "legendary"
       ? t("fail_revenge")
       : "";
-  els.modalCard.className = "modal-card reveal-card failed";
+  els.modalCard.className = `modal-card reveal-card failed rarity-${outcome.rarity}`;
+  setRarityVars(els.modalCard, outcome.rarity);
+  const escapedCard = escapeShareCard(outcome);
   els.modalCard.innerHTML = `
-    <div class="escape-visual">跑</div>
+    ${resultBurstMarkup(outcome.rarity, "fail")}
+    <div class="result-rarity-label miss">${cfg.label} CLOSE CALL</div>
+    <div class="escape-visual ${outcome.photo ? "has-photo" : ""}">
+      <img src="${cardArtSource(escapedCard)}" alt="" />
+      <span>MISS</span>
+    </div>
     <h2>${t("fail_title")}</h2>
     <p>${t("fail_copy", {
       mode: modes[outcome.mode].label,
@@ -1032,6 +1055,76 @@ function cardArtSource(card) {
 function rarityStyle(rarity) {
   const cfg = rarities[rarity];
   return `--rarity-a:${cfg.a};--rarity-b:${cfg.b};--rarity-glow:${cfg.glow}`;
+}
+
+function setRarityVars(element, rarity) {
+  const cfg = rarities[rarity] || rarities.common;
+  element.style.setProperty("--rarity-a", cfg.a);
+  element.style.setProperty("--rarity-b", cfg.b);
+  element.style.setProperty("--rarity-glow", cfg.glow);
+}
+
+function foodRatio() {
+  return `${Math.max(0, Math.min(state.food / state.maxFood, 1)) * 100}%`;
+}
+
+function showEconomyToast(message, tone = "gain") {
+  if (!els.economyToast) return;
+  els.economyToast.textContent = message;
+  els.economyToast.className = `economy-toast show ${tone}`;
+  window.clearTimeout(showEconomyToast.timer);
+  showEconomyToast.timer = window.setTimeout(() => {
+    els.economyToast.className = "economy-toast";
+  }, 1280);
+}
+
+function renderRarityReel(finalRarity) {
+  const sequence = [
+    "common",
+    "uncommon",
+    "rare",
+    "epic",
+    "legendary",
+    "uncommon",
+    "rare",
+    finalRarity,
+  ];
+  els.rarityReel.innerHTML = sequence
+    .map((rarity) => {
+      const cfg = rarities[rarity];
+      return `<b style="--a:${cfg.a};--b:${cfg.b};--glow:${cfg.glow}">${cfg.label}</b>`;
+    })
+    .join("");
+}
+
+function emitFieldParticles(rarity, tone = "success") {
+  const cfg = rarities[rarity] || rarities.common;
+  const count = tone === "fail" ? 12 : rarity === "legendary" ? 34 : 20;
+  els.particleField.innerHTML = "";
+  els.particleField.style.setProperty("--particle-a", cfg.a);
+  els.particleField.style.setProperty("--particle-b", cfg.b);
+  for (let i = 0; i < count; i += 1) {
+    const dot = document.createElement("i");
+    dot.style.setProperty("--x", `${Math.round((Math.random() - 0.5) * 280)}px`);
+    dot.style.setProperty("--y", `${Math.round(-80 - Math.random() * 240)}px`);
+    dot.style.setProperty("--d", `${Math.random() * 0.28}s`);
+    dot.style.setProperty("--s", `${0.72 + Math.random() * 1.1}`);
+    dot.className = tone;
+    els.particleField.appendChild(dot);
+  }
+  window.clearTimeout(emitFieldParticles.timer);
+  emitFieldParticles.timer = window.setTimeout(() => {
+    els.particleField.innerHTML = "";
+  }, 1500);
+}
+
+function resultBurstMarkup(rarity, tone = "success") {
+  const count = tone === "fail" ? 10 : rarity === "legendary" ? 28 : 16;
+  return `
+    <div class="result-burst ${tone}" aria-hidden="true">
+      ${Array.from({ length: count }, (_, index) => `<i style="--i:${index}"></i>`).join("")}
+    </div>
+  `;
 }
 
 function dateLabel(isoDate) {
@@ -1276,6 +1369,7 @@ function grantShareRefund() {
   state.food = Math.min(state.food + 2, state.maxFood + 10);
   state.shareRewardCount += 1;
   persistState();
+  showEconomyToast(`+2 ${t("treat")}`, "gain");
   return true;
 }
 
@@ -1374,6 +1468,9 @@ function render() {
   els.fieldFoodLabel.textContent = t("treat");
   els.foodText.textContent = `${state.food}/${state.maxFood}`;
   els.fieldFoodText.textContent = `${state.food}/${state.maxFood}`;
+  els.foodMeter.style.width = foodRatio();
+  els.fieldFoodMeter.style.width = foodRatio();
+  els.phone.classList.toggle("low-food", state.food <= 3);
   els.catIntelName.textContent = state.scene.name;
   els.catIntelPlace.textContent = state.scene.place;
   els.riskHint.textContent = isRevengeActive ? "回归传说锁定：全心全意追猎" : mode.hint;
