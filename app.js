@@ -175,6 +175,9 @@ const els = {
   simList: $("#simList"),
   resultModal: $("#resultModal"),
   modalCard: $("#modalCard"),
+  enterCatchButton: $("#enterCatchButton"),
+  enterShareButton: $("#enterShareButton"),
+  appPanel: $("#app"),
 };
 
 const ctx = els.canvas.getContext("2d");
@@ -411,6 +414,11 @@ function makeName(rarity) {
 function switchTab(tab) {
   state.tab = tab;
   render();
+}
+
+function jumpToApp(tab = "catch") {
+  switchTab(tab);
+  els.appPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function updateCatchCopy(mode, isRolling, isRevengeActive) {
@@ -1032,6 +1040,8 @@ els.copyShareButton.addEventListener("click", async () => {
   render();
 });
 els.simulateButton.addEventListener("click", simulate);
+els.enterCatchButton?.addEventListener("click", () => jumpToApp("catch"));
+els.enterShareButton?.addEventListener("click", () => jumpToApp("share"));
 els.resultModal.addEventListener("click", (event) => {
   if (event.target === els.resultModal) closeModal();
   const action = event.target?.dataset?.action;

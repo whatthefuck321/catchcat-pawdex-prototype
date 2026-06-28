@@ -9,6 +9,90 @@
   </head>
   <body>
     <main class="stage">
+      <section class="home-panel" aria-label="Pawdex homepage">
+        <div class="home-copy">
+          <p class="home-kicker">PAWDEX / STREET LUCK PROTOTYPE</p>
+          <h1 class="home-title">Tonight, catch a cat worth bragging about.</h1>
+          <p class="home-lede">
+            Pawdex turns chance street encounters into a glossy risk-reward capture loop:
+            scan a cat, spend food, roll for rarity, then turn the result into a shareable card.
+          </p>
+          <div class="home-actions">
+            <button class="home-cta primary" id="enterCatchButton" type="button">Open Capture</button>
+            <button class="home-cta secondary" id="enterShareButton" type="button">Preview Share Card</button>
+          </div>
+          <div class="home-stats" aria-label="prototype stats">
+            <article class="home-stat">
+              <span class="home-stat-label">Current build</span>
+              <strong>v7 app shell</strong>
+            </article>
+            <article class="home-stat">
+              <span class="home-stat-label">Core loops</span>
+              <strong>risk, collection, flex</strong>
+            </article>
+            <article class="home-stat">
+              <span class="home-stat-label">Best moment</span>
+              <strong>legendary pull + story export</strong>
+            </article>
+          </div>
+        </div>
+        <div class="home-showcase">
+          <section class="home-feature-grid" aria-label="feature highlights">
+            <article class="home-feature">
+              <span class="home-feature-tag">01</span>
+              <strong>Street scan fantasy</strong>
+              <p>Camera-first capture flow with target lock, tension, and reveal feedback.</p>
+            </article>
+            <article class="home-feature">
+              <span class="home-feature-tag">02</span>
+              <strong>Juicy economy</strong>
+              <p>Food spend, rarity upgrades, revenge chase, and daily legendary incentives.</p>
+            </article>
+            <article class="home-feature">
+              <span class="home-feature-tag">03</span>
+              <strong>Built to be shared</strong>
+              <p>Every outcome can become a polished vertical card instead of a dry result screen.</p>
+            </article>
+          </section>
+          <section class="home-rarity-board" aria-label="rarity ladder">
+            <div class="rarity-head">
+              <p class="home-kicker">RARITY LADDER</p>
+              <strong>Five cats, five moods</strong>
+            </div>
+            <div class="rarity-strip">
+              <article class="rarity-card common">
+                <img src="./assets/cat-common.png" alt="Common cat preview" />
+                <span>Common</span>
+              </article>
+              <article class="rarity-card uncommon">
+                <img src="./assets/cat-uncommon.png" alt="Uncommon cat preview" />
+                <span>Uncommon</span>
+              </article>
+              <article class="rarity-card rare">
+                <img src="./assets/cat-rare.png" alt="Rare cat preview" />
+                <span>Rare</span>
+              </article>
+              <article class="rarity-card epic">
+                <img src="./assets/cat-epic.png" alt="Epic cat preview" />
+                <span>Epic</span>
+              </article>
+              <article class="rarity-card legendary">
+                <img src="./assets/cat-legendary.png" alt="Legendary cat preview" />
+                <span>Legendary</span>
+              </article>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="app-panel" id="app" aria-label="Pawdex app preview">
+        <div class="app-panel-head">
+          <div>
+            <p class="home-kicker">LIVE PROTOTYPE</p>
+            <h2 class="app-panel-title">Playable phone preview</h2>
+          </div>
+          <p class="app-panel-copy">Switch tabs, roll rarity, and test the full capture loop.</p>
+        </div>
       <section class="phone" aria-label="手机 App 原型">
         <header class="status-bar">
           <span>13:28</span>
@@ -203,6 +287,7 @@
           <button class="nav" type="button" data-tab="rank">≡<span>榜单</span></button>
           <button class="nav" type="button" data-tab="share">↗<span>分享</span></button>
         </footer>
+      </section>
       </section>
     </main>
 
