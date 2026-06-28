@@ -2311,6 +2311,162 @@ body {
   box-shadow: none;
 }
 
+.auth-pill {
+  min-width: 76px;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-top-color: var(--line-hi);
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0)),
+    rgba(28, 33, 48, 0.86);
+  color: #d7dde8;
+  font-size: 12px;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.field-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.field-auth {
+  background: rgba(10, 12, 18, 0.58);
+  backdrop-filter: blur(14px);
+}
+
+.camera-video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scaleX(-1);
+  background: #050609;
+}
+
+.phone.camera-on .camera-video {
+  opacity: 1;
+}
+
+.phone.camera-on #catCanvas {
+  opacity: 0;
+}
+
+.phone.camera-on .field-cat-art {
+  opacity: 0;
+}
+
+.camera-toggle {
+  position: absolute;
+  z-index: 5;
+  top: 140px;
+  right: 18px;
+  min-height: 35px;
+  padding: 7px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-top-color: rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(10, 12, 18, 0.62);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 950;
+  cursor: pointer;
+  pointer-events: auto;
+  backdrop-filter: blur(14px);
+}
+
+.phone.camera-on .camera-toggle {
+  background: rgba(52, 199, 89, 0.86);
+  color: #061107;
+}
+
+.cat-card.has-photo .card-art {
+  overflow: hidden;
+  background: #07090d;
+}
+
+.cat-card.has-photo .cat-art-img {
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  filter: saturate(1.04) contrast(1.03);
+}
+
+.story-card-art.is-photo {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: cover;
+  margin-top: 0;
+  filter: saturate(1.04) contrast(1.04);
+}
+
+.story-preview.is-fail .story-card-art.is-photo {
+  width: 115%;
+  height: 100%;
+}
+
+.share-actions {
+  width: min(300px, 100%);
+  margin: 10px auto 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.share-actions button {
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-top-color: var(--line-hi);
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0)),
+    rgba(28, 33, 48, 0.9);
+  color: #d7dde8;
+  font-size: 12px;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.auth-card {
+  display: grid;
+  gap: 14px;
+}
+
+.auth-field {
+  display: grid;
+  gap: 7px;
+}
+
+.auth-field span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.auth-field input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-top-color: var(--line-hi);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--ink);
+  font: inherit;
+}
+
+.auth-field input:disabled {
+  opacity: 0.55;
+}
+
 @media (max-height: 900px) {
   .story-preview {
     width: min(260px, 100%);
@@ -2336,6 +2492,10 @@ body {
   }
 
   .copy-share-btn {
+    width: min(260px, 100%);
+  }
+
+  .share-actions {
     width: min(260px, 100%);
   }
 }

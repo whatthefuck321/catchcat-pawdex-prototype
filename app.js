@@ -1,24 +1,267 @@
+const LANG = window.PAWDEX_LANG || "zh";
+const I18N = {
+  zh: {
+    mode_gentle: "轻轻靠近",
+    mode_gentle_sub: "1 猫粮",
+    mode_gentle_hint: "轻轻靠近最稳妥",
+    mode_bold: "大胆一点",
+    mode_bold_sub: "2 猫粮 · 稀有率 ×2.5",
+    mode_bold_hint: "稀有率 ×2.5，稀有+ 会回粮",
+    mode_heart: "全心全意",
+    mode_heart_sub: "3 猫粮 · 稀有率 ×6",
+    mode_heart_hint: "稀有率 ×6，成功升一档",
+    treat: "猫粮",
+    local_guest: "本地游客",
+    supabase_not_configured: "Supabase 未配置",
+    auth_title: "登录 PAWDEX",
+    auth_intro: "提审版入口已预留。填入 Supabase URL 和 anon key 后，可用邮箱 Magic Link、Apple、Google 登录。",
+    auth_email_placeholder: "邮箱",
+    auth_magic: "发送 Magic Link",
+    auth_apple: "Apple 登录",
+    auth_google: "Google 登录",
+    auth_local: "继续本地游客模式",
+    auth_missing: "当前缺少 Supabase 配置，先用本地游客模式测试玩法。",
+    auth_email_sent: "Magic Link 已发送，去邮箱完成登录。",
+    auth_email_needed: "先输入邮箱。",
+    auth_failed: "登录请求失败，请检查 Supabase 配置。",
+    camera_open: "打开相机",
+    camera_on: "相机已开",
+    camera_blocked_title: "相机没打开",
+    camera_blocked_copy: "浏览器拒绝了相机权限，当前会用猫插画作为卡面。线上 HTTPS 页面可正常请求相机。",
+    camera_ready: "真实相机已启用",
+    camera_fallback: "未开相机，使用插画卡面",
+    catching: "结算中",
+    catching_meta: "正在锁定这次捕捉",
+    startled: "被惊扰",
+    startled_meta: "猫正在离开镜头",
+    no_treats: "猫粮不足",
+    need_treats: "需要 {cost} 猫粮",
+    capture: "拍摄捕捉",
+    chase_capture: "追猎拍摄",
+    spend_treats: "消耗 {cost} 猫粮",
+    spend_chase: "消耗 {cost} 猫粮追猎传说",
+    no_treats_copy: "需要 {cost} 猫粮，先分享一张卡回粮。",
+    roll_title: "{mode}捕捉中",
+    roll_legendary: "这次可能是传说，别眨眼",
+    roll_normal: "正在结算稀有度和逃跑",
+    caught_title: "抓到了",
+    chase_success: "追猎成功",
+    reward_none: "没有返粮奖励。",
+    reward_food: "奖励 +{total} 猫粮{bonus}。",
+    first_legendary_bonus: "，含每日首只传说 +5",
+    heart_upgrade: "全心全意升档：{from} → {to}。",
+    revenge_success: "回归传说被你追到了。",
+    card_result: "{mode}成功，{scene}变成了{rarity}猫卡。{revenge}{upgrade}{reward}",
+    share_card: "生成分享图",
+    keep_catching: "继续抓猫",
+    fail_title: "它被吓到跑掉了，下次温柔点",
+    fail_copy: "{mode}失败，消耗 {cost} 猫粮。本来遇到{rarity}，离开概率 {rate}%。{revenge}",
+    fail_revenge: "这只传说已经进入 24 小时回归池，捕捉页会出现追猎提示。",
+    share_fail: "分享这次差一点",
+    try_again: "再试一次",
+    modal_ok: "知道了",
+    story_empty_headline: "抓到猫后生成分享图",
+    story_empty_sub: "真实猫拍摄 · 套稀有卡框",
+    story_empty_name: "今晚抓猫",
+    story_fail_badge: "猫跑了 ESCAPED",
+    story_fail_name: "差一点的{rarity}",
+    story_fail_headline: "{mode}失败，猫跑了",
+    story_fail_sub: "本来遇到{rarity}，离开概率 {rate}%。我不甘心。",
+    story_reward_none: "没有回粮奖励。",
+    story_reward_food: "回了 {total} 猫粮。",
+    story_legendary_headline: "我在{place}抓到传说猫",
+    story_rarity_headline: "我在{place}抓到{rarity}猫",
+    story_legendary_sub: "{reward}你能抓到传说吗？",
+    story_rarity_sub: "{reward}来 PAWDEX 一起抓猫。",
+    dex_empty: "还没有猫卡。先去捕捉页拍一只。",
+    outcome_empty_title: "还没捕捉",
+    outcome_empty_copy: "先点一次拍摄，看成功晒卡和失败差一点哪一个更有传播感。",
+    outcome_fail_title: "失败也能传播",
+    outcome_fail_copy: "用户{mode}失败，消耗 {cost} 猫粮。这种差一点截图更像 meme。",
+    outcome_success_title: "成功晒卡",
+    outcome_success_copy: "{name} 是{rarity}，本次回了 {total} 猫粮，适合生成竖版 story 图。",
+    save_no_story_title: "还没有分享图",
+    save_no_story_copy: "先抓一只猫，再来保存竖版晒卡图。",
+    save_missing_title: "保存组件未加载",
+    save_missing_copy: "分享图组件还没加载完成，稍等几秒再点一次。",
+    save_working: "正在生成分享图...",
+    save_failed_title: "保存失败",
+    save_failed_copy: "浏览器没有成功生成图片，可以刷新后再试一次。",
+    save_first: "先抓一只再保存",
+    save_with_refund: "保存分享图 +2 猫粮（今日剩 {left} 次）",
+    save_no_refund: "保存分享图（今日回粮已用完）",
+    share_opened_title: "分享已打开",
+    share_opened_copy: "已打开分享窗口，今日分享回粮会按上限结算。",
+    share_native_unavailable: "系统分享不可用，已改为下载图片。",
+    revenge_ready: "它回来了",
+    revenge_armed: "追猎已锁定",
+    revenge_armed_copy: "下一次全心全意必遇到传说，失败会重新记仇。",
+    revenge_ready_copy: "{place} · {time} 内可追猎",
+    event_on: "传说时段开启",
+    event_off: "传说时段未开启",
+    event_normal: "普通捕捉概率，适合先存图鉴。",
+    event_field_normal: "普通时段",
+    event_bonus: "传说率 ×20，还剩 {time}",
+    event_no_bonus: "传说概率未加成",
+    event_open: "开启",
+    event_close: "关闭",
+    limited_caught: "本周限定 · 已捕获",
+    rank_limited: "传说数优先，Rare+ 数作为同分排序。",
+    sim_result: "每粮 Rare+ {rare} · 每粮传说 {legendary} · 跑 {escape}%",
+    nav_catch: "抓猫",
+    nav_dex: "图鉴",
+    nav_rank: "榜单",
+    nav_share: "分享",
+    share_text: "我在 PAWDEX 抓到一只稀有猫！你也来试试",
+  },
+  en: {
+    mode_gentle: "Gentle",
+    mode_gentle_sub: "1 treat",
+    mode_gentle_hint: "Gentle is the safest approach",
+    mode_bold: "Bold",
+    mode_bold_sub: "2 treats · ×2.5 rare",
+    mode_bold_hint: "×2.5 rare rate, rare+ refunds treats",
+    mode_heart: "All Heart",
+    mode_heart_sub: "3 treats · ×6 rare",
+    mode_heart_hint: "×6 rare rate, success bumps one tier",
+    treat: "treats",
+    local_guest: "Guest",
+    supabase_not_configured: "Supabase is not configured",
+    auth_title: "Log in to PAWDEX",
+    auth_intro: "P0 auth is wired. Add the Supabase URL and anon key to enable Magic Link, Apple, and Google login.",
+    auth_email_placeholder: "Email",
+    auth_magic: "Send Magic Link",
+    auth_apple: "Sign in with Apple",
+    auth_google: "Sign in with Google",
+    auth_local: "Continue as guest",
+    auth_missing: "Supabase config is missing, so this build stays in local guest mode.",
+    auth_email_sent: "Magic Link sent. Check your inbox to finish login.",
+    auth_email_needed: "Enter an email first.",
+    auth_failed: "Login request failed. Check your Supabase config.",
+    camera_open: "Open camera",
+    camera_on: "Camera on",
+    camera_blocked_title: "Camera is not available",
+    camera_blocked_copy: "The browser blocked camera access. This session will use illustration art for cards.",
+    camera_ready: "Real camera enabled",
+    camera_fallback: "Camera off, using illustration art",
+    catching: "Resolving",
+    catching_meta: "Locking this capture",
+    startled: "Startled",
+    startled_meta: "The cat is leaving the frame",
+    no_treats: "Not enough treats",
+    need_treats: "Needs {cost} treats",
+    capture: "Capture",
+    chase_capture: "Chase capture",
+    spend_treats: "Spend {cost} treats",
+    spend_chase: "Spend {cost} treats to chase a legendary",
+    no_treats_copy: "Needs {cost} treats. Share a card first to recover treats.",
+    roll_title: "{mode} capture",
+    roll_legendary: "This could be legendary. Do not blink.",
+    roll_normal: "Resolving rarity and escape chance",
+    caught_title: "Caught",
+    chase_success: "Chase complete",
+    reward_none: "No treat refund.",
+    reward_food: "Reward +{total} treats{bonus}.",
+    first_legendary_bonus: ", including first legendary of the day +5",
+    heart_upgrade: "All Heart upgrade: {from} -> {to}.",
+    revenge_success: "You caught the returning legendary.",
+    card_result: "{mode} succeeded. {scene} became a {rarity} cat card. {revenge}{upgrade}{reward}",
+    share_card: "Create share card",
+    keep_catching: "Keep catching",
+    fail_title: "It got spooked and ran off",
+    fail_copy: "{mode} failed, spending {cost} treats. You met a {rarity}, escape chance {rate}%. {revenge}",
+    fail_revenge: "This legendary entered the 24h return pool. A chase prompt will appear on the capture page.",
+    share_fail: "Share this close call",
+    try_again: "Try again",
+    modal_ok: "Got it",
+    story_empty_headline: "Catch a cat to create a share card",
+    story_empty_sub: "Real cat photo · rarity card frame",
+    story_empty_name: "Tonight's catch",
+    story_fail_badge: "ESCAPED",
+    story_fail_name: "Almost {rarity}",
+    story_fail_headline: "{mode} failed, the cat ran off",
+    story_fail_sub: "You met a {rarity}, escape chance {rate}%. I am not giving up.",
+    story_reward_none: "No treat refund.",
+    story_reward_food: "Refunded {total} treats.",
+    story_legendary_headline: "I caught a legendary cat in {place}",
+    story_rarity_headline: "I caught a {rarity} cat in {place}",
+    story_legendary_sub: "{reward}Can you catch a legendary?",
+    story_rarity_sub: "{reward}Come catch cats on PAWDEX.",
+    dex_empty: "No cat cards yet. Capture one first.",
+    outcome_empty_title: "No capture yet",
+    outcome_empty_copy: "Try one capture and compare the success card with the close-call share.",
+    outcome_fail_title: "Close calls can spread too",
+    outcome_fail_copy: "{mode} failed, spending {cost} treats. This close-call screenshot can work as a meme.",
+    outcome_success_title: "Shareable card",
+    outcome_success_copy: "{name} is {rarity}. This capture refunded {total} treats and is ready for a vertical story card.",
+    save_no_story_title: "No share card yet",
+    save_no_story_copy: "Catch a cat first, then save the vertical share card.",
+    save_missing_title: "Exporter is still loading",
+    save_missing_copy: "The share-card exporter has not loaded yet. Wait a few seconds and tap again.",
+    save_working: "Generating share card...",
+    save_failed_title: "Export failed",
+    save_failed_copy: "The browser could not generate the image. Refresh and try again.",
+    save_first: "Catch one first",
+    save_with_refund: "Save share card +2 treats ({left} left today)",
+    save_no_refund: "Save share card (today's refund cap reached)",
+    share_opened_title: "Share opened",
+    share_opened_copy: "The share window is open. Treat refunds follow the daily cap.",
+    share_native_unavailable: "Native share is unavailable, so the image was downloaded instead.",
+    revenge_ready: "It came back",
+    revenge_armed: "Chase locked",
+    revenge_armed_copy: "The next All Heart attempt will meet a legendary. A miss will mark it again.",
+    revenge_ready_copy: "{place} · chase available for {time}",
+    event_on: "Legendary hour is live",
+    event_off: "Legendary hour is off",
+    event_normal: "Normal capture odds. Good time to build the dex.",
+    event_field_normal: "Normal hour",
+    event_bonus: "Legendary rate ×20, {time} left",
+    event_no_bonus: "No legendary bonus",
+    event_open: "Open",
+    event_close: "Close",
+    limited_caught: "Weekly limited · caught",
+    rank_limited: "Legendary count first, Rare+ count breaks ties.",
+    sim_result: "Rare+ per treat {rare} · Legendary per treat {legendary} · Escape {escape}%",
+    nav_catch: "Catch",
+    nav_dex: "Dex",
+    nav_rank: "Rank",
+    nav_share: "Share",
+    share_text: "I just caught a rare cat on PAWDEX! Come try",
+  },
+};
+
+function t(key, params = {}) {
+  const source = I18N[LANG]?.[key] || I18N.zh[key] || key;
+  return source.replace(/\{(\w+)\}/g, (_, name) => params[name] ?? "");
+}
+
 const modes = {
   standard: {
-    label: "稳抓",
+    label: t("mode_gentle"),
+    sub: t("mode_gentle_sub"),
     cost: 1,
     multiplier: 1,
     escapeBase: 0,
-    hint: "稳抓最安全",
+    floor: false,
+    hint: t("mode_gentle_hint"),
   },
   risky: {
-    label: "冒险",
+    label: t("mode_bold"),
+    sub: t("mode_bold_sub"),
     cost: 2,
     multiplier: 2.5,
     escapeBase: 0.12,
-    hint: "传说率 ×2.5，rare+ 回粮",
+    floor: false,
+    hint: t("mode_bold_hint"),
   },
   allin: {
-    label: "梭哈",
+    label: t("mode_heart"),
+    sub: t("mode_heart_sub"),
     cost: 3,
     multiplier: 6,
     escapeBase: 0.24,
-    hint: "传说率 ×6，成功升一档",
+    floor: true,
+    hint: t("mode_heart_hint"),
   },
 };
 
@@ -82,15 +325,18 @@ const weeklyLimitedCat = {
 };
 const leaderboardRivals = [
   { name: "首尔夜猫", legendary: 7, rarePlus: 29 },
-  { name: "涩谷赌王", legendary: 5, rarePlus: 24 },
+  { name: "涩谷金手", legendary: 5, rarePlus: 24 },
   { name: "大安金瞳", legendary: 3, rarePlus: 18 },
   { name: "大阪巷口", legendary: 2, rarePlus: 15 },
 ];
 
 const names = ["麻薯", "豆腐", "奶盖", "团子", "玄米", "乌冬", "小虎", "年糕"];
-const titles = ["便利店守护者", "屋顶赌王", "夜行冠军", "金瞳猎手", "传说候选猫", "巷口幻影"];
+const titles = ["便利店守护者", "屋顶明星", "夜行冠军", "金瞳猎手", "传说候选猫", "巷口幻影"];
 const STORAGE_KEY = "pawdex-html-v7";
 const shareRewardLimit = 3;
+const SHARE_URL =
+  window.PAWDEX_SHARE_URL || "https://whatthefuck321.github.io/catchcat-pawdex-prototype/";
+const SUPABASE_CONFIG = window.PAWDEX_SUPABASE || { url: "", anonKey: "" };
 const pageMeta = {
   catch: { label: "PAWDEX FIELD", title: "今晚抓猫" },
   dex: { label: "CAT DEX", title: "猫卡图鉴" },
@@ -119,6 +365,8 @@ const state = {
   limitedCatCaught: false,
   revengeCat: null,
   revengeActive: false,
+  cameraEnabled: false,
+  authUser: null,
 };
 
 const $ = (selector) => document.querySelector(selector);
@@ -128,8 +376,14 @@ const els = {
   phone: $(".phone"),
   appPageLabel: $("#appPageLabel"),
   appPageTitle: $("#appPageTitle"),
+  authButton: $("#authButton"),
+  fieldAuthButton: $("#fieldAuthButton"),
   canvas: $("#catCanvas"),
+  cameraVideo: $("#cameraVideo"),
+  cameraToggleButton: $("#cameraToggleButton"),
   fieldCatArt: $("#fieldCatArt"),
+  foodLabel: $("#foodLabel"),
+  fieldFoodLabel: $("#fieldFoodLabel"),
   foodText: $("#foodText"),
   fieldFoodText: $("#fieldFoodText"),
   eventStrip: $("#eventStrip"),
@@ -179,6 +433,25 @@ const els = {
 
 const ctx = els.canvas.getContext("2d");
 let settleTimer = null;
+let cameraStream = null;
+let supabaseClient = null;
+
+function supabaseConfigured() {
+  return Boolean(SUPABASE_CONFIG.url && SUPABASE_CONFIG.anonKey);
+}
+
+function initSupabaseClient() {
+  if (!supabaseConfigured() || !window.supabase?.createClient) return;
+  supabaseClient = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+  supabaseClient.auth.getUser().then(({ data }) => {
+    state.authUser = data?.user ? { email: data.user.email || data.user.id } : null;
+    render();
+  });
+  supabaseClient.auth.onAuthStateChange((_event, session) => {
+    state.authUser = session?.user ? { email: session.user.email || session.user.id } : null;
+    render();
+  });
+}
 
 function currentDateKey(date = new Date()) {
   const year = date.getFullYear();
@@ -215,7 +488,7 @@ function applyDailyReset() {
   const today = currentDateKey();
   let changed = false;
   if (state.lastResetDate !== today) {
-    state.food = state.maxFood;
+    state.food = Math.max(state.food, state.maxFood);
     state.lastResetDate = today;
     state.shareRewardDate = today;
     state.shareRewardCount = 0;
@@ -276,14 +549,14 @@ function stopLegendaryHour() {
 }
 
 function legendaryCountdownText() {
-  if (!state.legendaryHour || !state.legendaryHourEndsAt) return "传说概率未加成";
+  if (!state.legendaryHour || !state.legendaryHourEndsAt) return t("event_no_bonus");
   const remaining = Math.max(0, new Date(state.legendaryHourEndsAt).getTime() - Date.now());
   const minutes = Math.floor(remaining / 60000);
   const seconds = Math.floor((remaining % 60000) / 1000);
   const hours = Math.floor(minutes / 60);
   const mm = String(minutes % 60).padStart(2, "0");
   const ss = String(seconds).padStart(2, "0");
-  return `传说率 ×20，还剩 ${hours}:${mm}:${ss}`;
+  return t("event_bonus", { time: `${hours}:${mm}:${ss}` });
 }
 
 function activeRevengeCat() {
@@ -369,6 +642,64 @@ function drawCamera() {
   ctx.fill();
 }
 
+async function startCamera() {
+  if (cameraStream) return true;
+  if (!navigator.mediaDevices?.getUserMedia) {
+    showEscapeLikeResult(t("camera_blocked_title"), t("camera_blocked_copy"));
+    return false;
+  }
+  try {
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: { ideal: "environment" },
+        width: { ideal: 1280 },
+        height: { ideal: 1706 },
+      },
+      audio: false,
+    });
+    els.cameraVideo.srcObject = cameraStream;
+    await els.cameraVideo.play();
+    state.cameraEnabled = true;
+    render();
+    return true;
+  } catch {
+    cameraStream = null;
+    state.cameraEnabled = false;
+    render();
+    showEscapeLikeResult(t("camera_blocked_title"), t("camera_blocked_copy"));
+    return false;
+  }
+}
+
+function capturePhotoFrame() {
+  const video = els.cameraVideo;
+  if (!state.cameraEnabled || !video.videoWidth || !video.videoHeight) return null;
+
+  const targetWidth = 900;
+  const targetHeight = 1200;
+  const targetRatio = targetWidth / targetHeight;
+  const sourceRatio = video.videoWidth / video.videoHeight;
+  let sx = 0;
+  let sy = 0;
+  let sw = video.videoWidth;
+  let sh = video.videoHeight;
+
+  if (sourceRatio > targetRatio) {
+    sw = video.videoHeight * targetRatio;
+    sx = (video.videoWidth - sw) / 2;
+  } else {
+    sh = video.videoWidth / targetRatio;
+    sy = (video.videoHeight - sh) / 2;
+  }
+
+  const photoCanvas = document.createElement("canvas");
+  photoCanvas.width = targetWidth;
+  photoCanvas.height = targetHeight;
+  const photoCtx = photoCanvas.getContext("2d");
+  photoCtx.drawImage(video, sx, sy, sw, sh, 0, 0, targetWidth, targetHeight);
+  return photoCanvas.toDataURL("image/jpeg", 0.82);
+}
+
 function rollRarity(modeKey) {
   const mode = modes[modeKey];
   let legendary = Math.min(0.01 * mode.multiplier, 0.5);
@@ -415,24 +746,24 @@ function switchTab(tab) {
 
 function updateCatchCopy(mode, isRolling, isRevengeActive) {
   if (isRolling) {
-    els.catchLabel.textContent = "结算中";
-    els.catchMeta.textContent = "正在锁定这次捕捉";
+    els.catchLabel.textContent = t("catching");
+    els.catchMeta.textContent = t("catching_meta");
     return;
   }
   if (state.phase === "nearMiss") {
-    els.catchLabel.textContent = "挣脱中";
-    els.catchMeta.textContent = "猫正在逃跑";
+    els.catchLabel.textContent = t("startled");
+    els.catchMeta.textContent = t("startled_meta");
     return;
   }
   if (state.food < mode.cost) {
-    els.catchLabel.textContent = "猫粮不足";
-    els.catchMeta.textContent = `需要 ${mode.cost} 猫粮`;
+    els.catchLabel.textContent = t("no_treats");
+    els.catchMeta.textContent = t("need_treats", { cost: mode.cost });
     return;
   }
-  els.catchLabel.textContent = isRevengeActive ? "追猎拍摄" : "拍摄捕捉";
+  els.catchLabel.textContent = isRevengeActive ? t("chase_capture") : t("capture");
   els.catchMeta.textContent = isRevengeActive
-    ? `消耗 ${mode.cost} 猫粮追猎传说`
-    : `消耗 ${mode.cost} 猫粮`;
+    ? t("spend_chase", { cost: mode.cost })
+    : t("spend_treats", { cost: mode.cost });
 }
 
 function scanNextCat() {
@@ -451,11 +782,12 @@ function catchCat() {
   const modeKey = revengeAttempt ? "allin" : state.mode;
   const mode = modes[modeKey];
   if (state.food < mode.cost) {
-    showEscapeLikeResult("猫粮不够", `需要 ${mode.cost} 猫粮，先分享一张卡回粮。`);
+    showEscapeLikeResult(t("no_treats"), t("no_treats_copy", { cost: mode.cost }));
     return;
   }
 
   state.food -= mode.cost;
+  const photo = capturePhotoFrame();
   const baseRarity = revengeAttempt ? "legendary" : rollRarity(modeKey);
   const rate = escapeRate(baseRarity, modeKey);
   const escaped = Math.random() < rate;
@@ -467,12 +799,12 @@ function catchCat() {
 
   window.clearTimeout(settleTimer);
   settleTimer = window.setTimeout(() => {
-    settleCatch({ escaped, baseRarity, rate, mode, modeKey, scene, revengeAttempt });
+    settleCatch({ escaped, baseRarity, rate, mode, modeKey, scene, revengeAttempt, photo });
   }, 950);
 }
 
 function settleCatch(result) {
-  const { escaped, baseRarity, rate, mode, modeKey, scene, revengeAttempt } = result;
+  const { escaped, baseRarity, rate, mode, modeKey, scene, revengeAttempt, photo } = result;
   if (escaped) {
     state.lastOutcome = {
       type: "escape",
@@ -481,6 +813,7 @@ function settleCatch(result) {
       cost: mode.cost,
       rate,
       scene,
+      photo,
       revengeAttempt,
     };
     if (baseRarity === "legendary") {
@@ -497,7 +830,7 @@ function settleCatch(result) {
     }, 640);
     return;
   } else {
-    const finalRarity = modeKey === "allin" ? upgradeRarity(baseRarity) : baseRarity;
+    const finalRarity = modes[modeKey].floor ? upgradeRarity(baseRarity) : baseRarity;
     const reward = rewardForCapture(finalRarity);
     const card = {
       id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
@@ -507,6 +840,7 @@ function settleCatch(result) {
       baseRarity,
       upgraded: finalRarity !== baseRarity,
       scene,
+      photo,
       mode: modeKey,
       reward,
       revengeAttempt,
@@ -548,9 +882,9 @@ function rewardForCapture(rarity) {
 }
 
 function startCaptureAnimation(mode, rarity) {
-  els.rollTitle.textContent = `${mode.label}捕捉中`;
+  els.rollTitle.textContent = t("roll_title", { mode: mode.label });
   els.rollCopy.textContent =
-    rarity === "legendary" ? "这次可能是传说，别眨眼" : "正在结算稀有度和逃跑";
+    rarity === "legendary" ? t("roll_legendary") : t("roll_normal");
   els.captureFlash.classList.remove("burst");
   void els.captureFlash.offsetWidth;
   els.captureFlash.classList.add("burst");
@@ -558,22 +892,32 @@ function startCaptureAnimation(mode, rarity) {
 
 function showCardResult(card) {
   const cfg = rarities[card.rarity];
-  const headline = card.revengeAttempt ? "追猎成功" : "抓到了";
+  const headline = card.revengeAttempt ? t("chase_success") : t("caught_title");
   const rewardCopy = card.reward?.total
-    ? `奖励 +${card.reward.total} 猫粮${card.reward.firstLegendaryBonus ? "，含每日首只传说 +5" : ""}。`
-    : "没有返粮奖励。";
+    ? t("reward_food", {
+        total: card.reward.total,
+        bonus: card.reward.firstLegendaryBonus ? t("first_legendary_bonus") : "",
+      })
+    : t("reward_none");
   const upgradeCopy = card.upgraded
-    ? `梭哈升档：${rarities[card.baseRarity].label} → ${cfg.label}。`
+    ? t("heart_upgrade", { from: rarities[card.baseRarity].label, to: cfg.label })
     : "";
-  const revengeCopy = card.revengeAttempt ? "回归传说被你追到了。" : "";
+  const revengeCopy = card.revengeAttempt ? t("revenge_success") : "";
   els.modalCard.className = "modal-card reveal-card success";
   els.modalCard.innerHTML = `
     ${renderCatCard(card)}
     <h2>${headline}</h2>
-    <p>${modes[card.mode].label}成功，${card.scene.name}变成了${cfg.label}猫卡。${revengeCopy}${upgradeCopy}${rewardCopy}</p>
+    <p>${t("card_result", {
+      mode: modes[card.mode].label,
+      scene: card.scene.name,
+      rarity: cfg.label,
+      revenge: revengeCopy,
+      upgrade: upgradeCopy,
+      reward: rewardCopy,
+    })}</p>
     <div class="modal-actions">
-      <button class="main" data-action="share">生成分享图</button>
-      <button class="plain" data-action="close">继续抓猫</button>
+      <button class="main" data-action="share">${t("share_card")}</button>
+      <button class="plain" data-action="close">${t("keep_catching")}</button>
     </div>
   `;
   openModal();
@@ -583,16 +927,22 @@ function showEscapeResult(outcome) {
   const cfg = rarities[outcome.rarity];
   const revengeCopy =
     outcome.rarity === "legendary"
-      ? "这只传说已经进入 24 小时回归池，捕捉页会出现追猎提示。"
+      ? t("fail_revenge")
       : "";
   els.modalCard.className = "modal-card reveal-card failed";
   els.modalCard.innerHTML = `
     <div class="escape-visual">跑</div>
-    <h2>猫跑了</h2>
-    <p>${modes[outcome.mode].label}失败，亏了 ${outcome.cost} 猫粮。本来 roll 到${cfg.label}，逃跑率 ${(outcome.rate * 100).toFixed(0)}%。${revengeCopy}</p>
+    <h2>${t("fail_title")}</h2>
+    <p>${t("fail_copy", {
+      mode: modes[outcome.mode].label,
+      cost: outcome.cost,
+      rarity: cfg.label,
+      rate: (outcome.rate * 100).toFixed(0),
+      revenge: revengeCopy,
+    })}</p>
     <div class="modal-actions">
-      <button class="main" data-action="share">分享失败战绩</button>
-      <button class="plain" data-action="close">再赌一只</button>
+      <button class="main" data-action="share">${t("share_fail")}</button>
+      <button class="plain" data-action="close">${t("try_again")}</button>
     </div>
   `;
   openModal();
@@ -605,7 +955,7 @@ function showEscapeLikeResult(title, copy) {
     <h2>${title}</h2>
     <p>${copy}</p>
     <div class="modal-actions">
-      <button class="plain" data-action="close">知道了</button>
+      <button class="plain" data-action="close">${t("modal_ok")}</button>
     </div>
   `;
   openModal();
@@ -621,8 +971,62 @@ function closeModal() {
   els.resultModal.setAttribute("aria-hidden", "true");
 }
 
+function openAuthPanel() {
+  const disabledAttr = supabaseClient ? "" : "disabled";
+  els.modalCard.className = "modal-card auth-card";
+  els.modalCard.innerHTML = `
+    <h2>${t("auth_title")}</h2>
+    <p>${supabaseClient ? t("auth_intro") : t("auth_missing")}</p>
+    <label class="auth-field">
+      <span>${t("auth_email_placeholder")}</span>
+      <input id="authEmailInput" type="email" inputmode="email" autocomplete="email" placeholder="cat@example.com" ${disabledAttr} />
+    </label>
+    <div class="modal-actions">
+      <button class="main" data-auth="email" ${disabledAttr}>${t("auth_magic")}</button>
+      <button class="plain" data-auth="apple" ${disabledAttr}>${t("auth_apple")}</button>
+      <button class="plain" data-auth="google" ${disabledAttr}>${t("auth_google")}</button>
+      <button class="plain" data-auth="local">${t("auth_local")}</button>
+    </div>
+  `;
+  openModal();
+}
+
+async function handleAuthAction(action) {
+  if (action === "local") {
+    closeModal();
+    return;
+  }
+  if (!supabaseClient) {
+    showEscapeLikeResult(t("supabase_not_configured"), t("auth_missing"));
+    return;
+  }
+  try {
+    if (action === "email") {
+      const email = $("#authEmailInput")?.value.trim();
+      if (!email) {
+        showEscapeLikeResult(t("auth_title"), t("auth_email_needed"));
+        return;
+      }
+      const { error } = await supabaseClient.auth.signInWithOtp({ email });
+      if (error) throw error;
+      showEscapeLikeResult(t("auth_title"), t("auth_email_sent"));
+      return;
+    }
+    if (action === "apple" || action === "google") {
+      const { error } = await supabaseClient.auth.signInWithOAuth({ provider: action });
+      if (error) throw error;
+    }
+  } catch {
+    showEscapeLikeResult(t("auth_title"), t("auth_failed"));
+  }
+}
+
 function catAsset(rarity) {
   return rarities[rarity]?.art || rarities.common.art;
+}
+
+function cardArtSource(card) {
+  return card?.photo || catAsset(card?.rarity || "common");
 }
 
 function rarityStyle(rarity) {
@@ -643,14 +1047,14 @@ function renderCatCard(card, options = {}) {
   const meta = options.meta || `${cfg.label} · ${no} · ${dateLabel(card.capturedAt)}`;
   const name = card.name || weeklyLimitedCat.name;
   return `
-    <article class="cat-card" data-rarity="${card.rarity}" style="${rarityStyle(card.rarity)}">
+    <article class="cat-card ${card.photo ? "has-photo" : ""}" data-rarity="${card.rarity}" style="${rarityStyle(card.rarity)}">
       <div class="cat-card-inner">
         <div class="card-topline">
           <span class="rarity-badge">${cfg.label}</span>
           <span class="card-no">${no}</span>
         </div>
         <div class="card-art">
-          <img class="cat-art-img" src="${catAsset(card.rarity)}" alt="" />
+          <img class="cat-art-img" src="${cardArtSource(card)}" alt="" />
         </div>
         <div class="card-info">
           <strong class="card-name">${name}</strong>
@@ -674,10 +1078,11 @@ function shareDateLabel(date = new Date()) {
 
 function escapeShareCard(outcome) {
   return {
-    name: `差一点的${rarities[outcome.rarity].label}`,
+    name: t("story_fail_name", { rarity: rarities[outcome.rarity].label }),
     rarity: outcome.rarity,
     no: null,
     scene: outcome.scene,
+    photo: outcome.photo,
     cost: outcome.cost,
     rate: outcome.rate,
     mode: outcome.mode,
@@ -698,12 +1103,13 @@ function renderStory() {
     setStoryTheme("common", false);
     els.storyRarityBadge.textContent = "READY";
     els.storyCardArt.src = catAsset("common");
-    els.storyCardName.textContent = "今晚抓猫";
+    els.storyCardArt.classList.remove("is-photo");
+    els.storyCardName.textContent = t("story_empty_name");
     els.storyCardNo.textContent = "#000";
     els.storyCardScene.textContent = "涩谷后巷";
     els.storyCardDate.textContent = shareDateLabel();
-    els.storyHeadline.textContent = "抓到猫后生成分享图";
-    els.storySub.textContent = "真实猫抽卡 · 拍真猫出卡";
+    els.storyHeadline.textContent = t("story_empty_headline");
+    els.storySub.textContent = t("story_empty_sub");
     return;
   }
 
@@ -711,33 +1117,42 @@ function renderStory() {
     const card = escapeShareCard(outcome);
     const cfg = rarities[card.rarity];
     setStoryTheme(card.rarity, true);
-    els.storyRarityBadge.textContent = "猫跑了 ESCAPED";
-    els.storyCardArt.src = catAsset(card.rarity);
+    els.storyRarityBadge.textContent = t("story_fail_badge");
+    els.storyCardArt.src = cardArtSource(card);
+    els.storyCardArt.classList.toggle("is-photo", Boolean(card.photo));
     els.storyCardName.textContent = card.name;
     els.storyCardNo.textContent = "MISS";
     els.storyCardScene.textContent = card.scene?.place || "涩谷后巷";
     els.storyCardDate.textContent = shareDateLabel();
-    els.storyHeadline.textContent = `${modes[outcome.mode].label}失败，猫跑了`;
-    els.storySub.textContent = `本来 roll 到${cfg.label}，逃跑率 ${(outcome.rate * 100).toFixed(0)}%。我不甘心。`;
+    els.storyHeadline.textContent = t("story_fail_headline", { mode: modes[outcome.mode].label });
+    els.storySub.textContent = t("story_fail_sub", {
+      rarity: cfg.label,
+      rate: (outcome.rate * 100).toFixed(0),
+    });
     return;
   }
 
   const card = outcome.card;
   const cfg = rarities[card.rarity];
-  const rewardText = card.reward?.total ? `回了 ${card.reward.total} 猫粮。` : "没有回粮奖励。";
+  const rewardText = card.reward?.total
+    ? t("story_reward_food", { total: card.reward.total })
+    : t("story_reward_none");
   setStoryTheme(card.rarity, false);
   els.storyRarityBadge.textContent = `${cfg.label} ${card.rarity.toUpperCase()}`;
-  els.storyCardArt.src = catAsset(card.rarity);
+  els.storyCardArt.src = cardArtSource(card);
+  els.storyCardArt.classList.toggle("is-photo", Boolean(card.photo));
   els.storyCardName.textContent = card.name;
   els.storyCardNo.textContent = `#${String(card.no).padStart(3, "0")}`;
   els.storyCardScene.textContent = card.scene?.place || "涩谷后巷";
   els.storyCardDate.textContent = shareDateLabel(card.capturedAt ? new Date(card.capturedAt) : new Date());
   els.storyHeadline.textContent =
     card.rarity === "legendary"
-      ? `我在${card.scene.place}抓到传说猫`
-      : `我在${card.scene.place}抓到${cfg.label}猫`;
+      ? t("story_legendary_headline", { place: card.scene.place })
+      : t("story_rarity_headline", { place: card.scene.place, rarity: cfg.label });
   els.storySub.textContent =
-    card.rarity === "legendary" ? `${rewardText}你能抓到传说吗？` : `${rewardText}来 PAWDEX 一起抓猫。`;
+    card.rarity === "legendary"
+      ? t("story_legendary_sub", { reward: rewardText })
+      : t("story_rarity_sub", { reward: rewardText });
 }
 
 function renderDex() {
@@ -751,7 +1166,7 @@ function renderDex() {
           no: null,
           capturedAt: currentDateKey(),
         },
-        { meta: "本周限定 · 已捕获" },
+        { meta: t("limited_caught") },
       )}
     `
     : `
@@ -762,7 +1177,7 @@ function renderDex() {
       </article>
     `;
   if (state.cards.length === 0) {
-    els.dexGrid.innerHTML = `${limitedSlot}<div class="empty-dex">还没有猫卡。先去捕捉页赌一只。</div>`;
+    els.dexGrid.innerHTML = `${limitedSlot}<div class="empty-dex">${t("dex_empty")}</div>`;
     return;
   }
   els.dexGrid.innerHTML = `${limitedSlot}${state.cards.map(renderCard).join("")}`;
@@ -771,17 +1186,24 @@ function renderDex() {
 function renderOutcomeSide() {
   const outcome = state.lastOutcome;
   if (!outcome) {
-    els.lastOutcomeTitle.textContent = "还没下注";
-    els.lastOutcomeCopy.textContent = "先点一次捕捉，看成功晒卡和失败亏损哪一个更有传播感。";
+    els.lastOutcomeTitle.textContent = t("outcome_empty_title");
+    els.lastOutcomeCopy.textContent = t("outcome_empty_copy");
     return;
   }
   if (outcome.type === "escape") {
-    els.lastOutcomeTitle.textContent = "失败也能传播";
-    els.lastOutcomeCopy.textContent = `用户${modes[outcome.mode].label}失败，亏 ${outcome.cost} 猫粮。这种亏损截图更像 meme。`;
+    els.lastOutcomeTitle.textContent = t("outcome_fail_title");
+    els.lastOutcomeCopy.textContent = t("outcome_fail_copy", {
+      mode: modes[outcome.mode].label,
+      cost: outcome.cost,
+    });
     return;
   }
-  els.lastOutcomeTitle.textContent = "成功晒卡";
-  els.lastOutcomeCopy.textContent = `${outcome.card.name} 是${rarities[outcome.card.rarity].label}，本次回了 ${outcome.card.reward?.total || 0} 猫粮，适合生成竖版 story 图。`;
+  els.lastOutcomeTitle.textContent = t("outcome_success_title");
+  els.lastOutcomeCopy.textContent = t("outcome_success_copy", {
+    name: outcome.card.name,
+    rarity: rarities[outcome.card.rarity].label,
+    total: outcome.card.reward?.total || 0,
+  });
 }
 
 function isRecentWeek(card) {
@@ -823,42 +1245,103 @@ function renderLeaderboard() {
     .join("");
 }
 
+async function renderStoryBlob() {
+  if (typeof window.html2canvas !== "function") {
+    throw new Error("html2canvas missing");
+  }
+  const canvas = await window.html2canvas(els.storyPreview, {
+    scale: 3,
+    backgroundColor: null,
+    useCORS: true,
+  });
+  const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+  if (!blob) throw new Error("canvas export failed");
+  return blob;
+}
+
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function grantShareRefund() {
+  applyDailyReset();
+  if (state.shareRewardCount >= shareRewardLimit) return false;
+  state.food = Math.min(state.food + 2, state.maxFood + 10);
+  state.shareRewardCount += 1;
+  persistState();
+  return true;
+}
+
 async function saveStoryImage() {
   if (!state.lastOutcome) {
-    showEscapeLikeResult("还没有分享图", "先抓一只猫，再来保存竖版晒卡图。");
+    showEscapeLikeResult(t("save_no_story_title"), t("save_no_story_copy"));
     return false;
   }
   if (typeof window.html2canvas !== "function") {
-    showEscapeLikeResult("保存组件未加载", "分享图组件还没加载完成，稍等几秒再点一次。");
+    showEscapeLikeResult(t("save_missing_title"), t("save_missing_copy"));
     return false;
   }
 
   const previousText = els.copyShareButton.textContent;
   els.copyShareButton.disabled = true;
-  els.copyShareButton.textContent = "正在生成分享图...";
+  els.copyShareButton.textContent = t("save_working");
   try {
-    const canvas = await window.html2canvas(els.storyPreview, {
-      scale: 3,
-      backgroundColor: null,
-      useCORS: true,
-    });
-    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
-    if (!blob) throw new Error("canvas export failed");
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `pawdex-${Date.now()}.png`;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
+    const blob = await renderStoryBlob();
+    downloadBlob(blob, `pawdex-${Date.now()}.png`);
     return true;
   } catch {
-    showEscapeLikeResult("保存失败", "浏览器没有成功生成图片，可以刷新后再试一次。");
+    showEscapeLikeResult(t("save_failed_title"), t("save_failed_copy"));
     return false;
   } finally {
     els.copyShareButton.disabled = false;
     els.copyShareButton.textContent = previousText;
+  }
+}
+
+async function nativeShare() {
+  const blob = await renderStoryBlob();
+  const file = new File([blob], "pawdex.png", { type: "image/png" });
+  if (navigator.canShare?.({ files: [file] }) && navigator.share) {
+    await navigator.share({ files: [file], text: t("share_text"), url: SHARE_URL });
+  } else {
+    downloadBlob(blob, `pawdex-${Date.now()}.png`);
+    showEscapeLikeResult(t("share_opened_title"), t("share_native_unavailable"));
+  }
+}
+
+async function shareToPlatform(platform) {
+  if (!state.lastOutcome) {
+    showEscapeLikeResult(t("save_no_story_title"), t("save_no_story_copy"));
+    return;
+  }
+  const encodedUrl = encodeURIComponent(SHARE_URL);
+  const encodedText = encodeURIComponent(t("share_text"));
+  let link = "";
+  if (platform === "x") {
+    link = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`;
+  } else if (platform === "fb") {
+    link = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+  } else if (platform === "threads") {
+    link = `https://www.threads.net/intent/post?text=${encodedText}%20${encodedUrl}`;
+  }
+
+  try {
+    if (link) {
+      window.open(link, "_blank", "noopener");
+    } else {
+      await nativeShare();
+    }
+    grantShareRefund();
+    render();
+  } catch {
+    showEscapeLikeResult(t("save_failed_title"), t("save_failed_copy"));
   }
 }
 
@@ -867,10 +1350,10 @@ function renderRevengeBanner(revenge, isRevengeActive) {
   els.revengeBanner.hidden = !visible;
   els.revengeBanner.classList.toggle("armed", Boolean(isRevengeActive));
   if (!revenge) return;
-  els.revengeTitle.textContent = isRevengeActive ? "追猎已锁定" : "它回来了";
+  els.revengeTitle.textContent = isRevengeActive ? t("revenge_armed") : t("revenge_ready");
   els.revengeCopy.textContent = isRevengeActive
-    ? "下一次梭哈必 roll 传说，失败会重新记仇。"
-    : `${revenge.place} · ${compactCountdown(revenge.expiresAt)} 内可追猎`;
+    ? t("revenge_armed_copy")
+    : t("revenge_ready_copy", { place: revenge.place, time: compactCountdown(revenge.expiresAt) });
 }
 
 function render() {
@@ -884,37 +1367,49 @@ function render() {
   const meta = pageMeta[state.tab] || pageMeta.catch;
   els.appPageLabel.textContent = meta.label;
   els.appPageTitle.textContent = meta.title;
+  const authText = state.authUser?.email || t("local_guest");
+  els.authButton.textContent = authText;
+  els.fieldAuthButton.textContent = authText;
+  els.foodLabel.textContent = t("treat");
+  els.fieldFoodLabel.textContent = t("treat");
   els.foodText.textContent = `${state.food}/${state.maxFood}`;
   els.fieldFoodText.textContent = `${state.food}/${state.maxFood}`;
   els.catIntelName.textContent = state.scene.name;
   els.catIntelPlace.textContent = state.scene.place;
-  els.riskHint.textContent = isRevengeActive ? "回归传说锁定：梭哈追猎" : mode.hint;
+  els.riskHint.textContent = isRevengeActive ? "回归传说锁定：全心全意追猎" : mode.hint;
+  els.cameraToggleButton.textContent = state.cameraEnabled ? t("camera_on") : t("camera_open");
   updateCatchCopy(mode, isRolling, isRevengeActive);
   els.catchButton.disabled = isBusy || state.food < mode.cost;
   els.scanButton.disabled = isBusy || isRevengeActive;
   const shareLeft = Math.max(shareRewardLimit - state.shareRewardCount, 0);
   els.copyShareButton.textContent = !state.lastOutcome
-    ? "先抓一只再保存"
+    ? t("save_first")
     : shareLeft > 0
-      ? `保存分享图 +2 猫粮（今日剩 ${shareLeft} 次）`
-      : "保存分享图（今日回粮已用完）";
+      ? t("save_with_refund", { left: shareLeft })
+      : t("save_no_refund");
   els.copyShareButton.disabled = !state.lastOutcome;
   els.rollOverlay.classList.toggle("show", isRolling);
   els.rollOverlay.setAttribute("aria-hidden", isRolling ? "false" : "true");
 
   els.eventStrip.classList.toggle("active", state.legendaryHour);
-  els.eventTitle.textContent = state.legendaryHour ? "传说时段开启" : "传说时段未开启";
+  els.eventTitle.textContent = state.legendaryHour ? t("event_on") : t("event_off");
   els.eventCopy.textContent = state.legendaryHour
     ? legendaryCountdownText()
-    : "普通捕捉概率，适合先存图鉴。";
+    : t("event_normal");
   els.fieldEvent.classList.toggle("active", state.legendaryHour);
-  els.fieldEventTitle.textContent = state.legendaryHour ? "传说时段开启" : "普通时段";
+  els.fieldEventTitle.textContent = state.legendaryHour ? t("event_on") : t("event_field_normal");
   els.fieldEventCopy.textContent = legendaryCountdownText();
-  els.toggleEventButton.textContent = state.legendaryHour ? "关闭" : "开启";
+  els.toggleEventButton.textContent = state.legendaryHour ? t("event_close") : t("event_open");
 
   els.phone.classList.toggle("catch-mode", state.tab === "catch");
+  els.phone.classList.toggle("camera-on", state.cameraEnabled);
   els.phone.dataset.phase = state.phase;
-  $$(".mode").forEach((item) => item.classList.toggle("active", item.dataset.mode === state.mode));
+  $$(".mode").forEach((item) => {
+    const modeConfig = modes[item.dataset.mode];
+    item.classList.toggle("active", item.dataset.mode === state.mode);
+    item.querySelector(".mode-name").textContent = modeConfig.label;
+    item.querySelector(".mode-meta").textContent = modeConfig.sub;
+  });
   $$(".mode").forEach((item) => {
     item.disabled = isBusy || isRevengeActive;
   });
@@ -923,7 +1418,11 @@ function render() {
     item.classList.toggle("active", active);
     item.hidden = !active;
   });
-  $$(".tab,.nav").forEach((item) => item.classList.toggle("active", item.dataset.tab === state.tab));
+  $$(".tab,.nav").forEach((item) => {
+    item.classList.toggle("active", item.dataset.tab === state.tab);
+    const label = item.querySelector("span");
+    if (label && item.dataset.tab) label.textContent = t(`nav_${item.dataset.tab}`);
+  });
 
   renderDex();
   renderStory();
@@ -948,7 +1447,7 @@ function simulate() {
         if (isEscaped) {
           escaped += 1;
         } else {
-          const finalRarity = modeKey === "allin" ? upgradeRarity(baseRarity) : baseRarity;
+          const finalRarity = modes[modeKey].floor ? upgradeRarity(baseRarity) : baseRarity;
           caught += 1;
           if (["rare", "epic", "legendary"].includes(finalRarity)) rarePlus += 1;
           if (finalRarity === "legendary") legendary += 1;
@@ -960,7 +1459,11 @@ function simulate() {
       return `
         <div class="sim-row">
           <strong>${modes[modeKey].label}</strong>
-          <span>每粮 Rare+ ${rarePerFood.toFixed(3)} · 每粮传说 ${legPerFood.toFixed(3)} · 跑 ${(escape * 100).toFixed(1)}%</span>
+          <span>${t("sim_result", {
+            rare: rarePerFood.toFixed(3),
+            legendary: legPerFood.toFixed(3),
+            escape: (escape * 100).toFixed(1),
+          })}</span>
           <div class="bar"><i style="width:${Math.min(rarePerFood * 220, 100)}%"></i></div>
         </div>
       `;
@@ -983,6 +1486,9 @@ $$("[data-tab]").forEach((button) => {
 
 els.scanButton.addEventListener("click", scanNextCat);
 els.catchButton.addEventListener("click", catchCat);
+els.cameraToggleButton.addEventListener("click", startCamera);
+els.authButton.addEventListener("click", openAuthPanel);
+els.fieldAuthButton.addEventListener("click", openAuthPanel);
 els.revengeBanner.addEventListener("click", activateRevengeCat);
 els.toggleEventButton.addEventListener("click", () => {
   if (state.phase !== "ready") return;
@@ -1021,27 +1527,26 @@ els.copyShareButton.addEventListener("click", async () => {
     render();
     return;
   }
-  applyDailyReset();
-  if (state.shareRewardCount >= shareRewardLimit) {
-    render();
-    return;
-  }
-  state.food = Math.min(state.food + 2, state.maxFood + 10);
-  state.shareRewardCount += 1;
-  persistState();
+  grantShareRefund();
   render();
+});
+$$("[data-share]").forEach((button) => {
+  button.addEventListener("click", () => shareToPlatform(button.dataset.share));
 });
 els.simulateButton.addEventListener("click", simulate);
 els.resultModal.addEventListener("click", (event) => {
   if (event.target === els.resultModal) closeModal();
   const action = event.target?.dataset?.action;
+  const authAction = event.target?.dataset?.auth;
   if (action === "close") closeModal();
   if (action === "share") {
     closeModal();
     switchTab("share");
   }
+  if (authAction) handleAuthAction(authAction);
 });
 
+initSupabaseClient();
 hydrateState();
 applyDailyReset();
 drawCamera();

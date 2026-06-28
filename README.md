@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v7`
+Current published version: `v8 P0`
 
 ## What is included
 
@@ -11,6 +11,22 @@ Current published version: `v7`
 - Economy loop: cat food, risk tiers, rare+ refunds, daily legendary bonus.
 - FOMO loop: legendary hour, weekly limited slot, 24h revenge chase, weekly leaderboard.
 - v7 layout: phone-app-only shell, in-app leaderboard page, shutter capture button, hidden developer panel.
+- v8 P0: neutral mode wording via i18n, browser camera capture, photo card art, share image export, X/Facebook/Threads/native share actions.
+
+## Supabase Auth
+
+The auth UI is wired for Supabase but stays in local guest mode until config is provided before `app.js`:
+
+```html
+<script>
+  window.PAWDEX_SUPABASE = {
+    url: "https://YOUR_PROJECT.supabase.co",
+    anonKey: "YOUR_SUPABASE_ANON_KEY"
+  };
+</script>
+```
+
+If Google login is enabled for an iOS build, Apple login also needs to be enabled in Supabase.
 
 ## Run locally
 
