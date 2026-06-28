@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>猫卡梭哈 v6 - 收藏卡视觉版</title>
+    <title>猫卡梭哈 v7 - App Shell</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -17,8 +17,8 @@
 
         <section class="app-top">
           <div>
-            <p class="app-label">PAWDEX FIELD</p>
-            <h2>今晚抓猫</h2>
+            <p class="app-label" id="appPageLabel">PAWDEX FIELD</p>
+            <h2 id="appPageTitle">今晚抓猫</h2>
           </div>
           <div class="food-pill">
             <span>猫粮</span>
@@ -33,12 +33,6 @@
           </div>
           <button id="toggleEventButton" type="button">开启</button>
         </section>
-
-        <nav class="tabs" aria-label="页面">
-          <button class="tab active" type="button" data-tab="catch">捕捉</button>
-          <button class="tab" type="button" data-tab="dex">图鉴</button>
-          <button class="tab" type="button" data-tab="share">分享</button>
-        </nav>
 
         <section class="screen active" id="catchScreen" data-screen="catch">
           <div class="camera-card field-camera">
@@ -105,7 +99,15 @@
                   </button>
                 </div>
 
-                <button class="catch-cta" id="catchButton" data-testid="catch" type="button">消耗 1 猫粮捕捉</button>
+                <div class="shutter-row">
+                  <button class="capture-shutter" id="catchButton" data-testid="catch" type="button" aria-label="拍摄捕捉">
+                    <span class="shutter-core"></span>
+                  </button>
+                  <div class="capture-copy">
+                    <strong id="catchLabel">拍摄捕捉</strong>
+                    <span id="catchMeta">消耗 1 猫粮</span>
+                  </div>
+                </div>
               </section>
             </div>
           </div>
@@ -129,44 +131,50 @@
             <div class="story-footer">真实猫抽卡 · 梭哈捕捉</div>
           </div>
           <button class="catch-cta secondary" id="copyShareButton" type="button">模拟分享 +2 猫粮</button>
+          <button class="small-button dev-entry" type="button" data-tab="debug">开发面板</button>
         </section>
 
-        <footer class="bottom-nav">
-          <button class="nav active" type="button" data-tab="catch">📷<span>抓猫</span></button>
-          <button class="nav" type="button" data-tab="dex">◇<span>图鉴</span></button>
-          <button class="nav" type="button" data-tab="share">↗<span>分享</span></button>
-        </footer>
-      </section>
-
-      <aside class="side">
-        <section class="metric-card">
-          <p class="kicker">玩法反馈</p>
-          <h2 id="lastOutcomeTitle">还没下注</h2>
-          <p id="lastOutcomeCopy">先点一次捕捉，看成功晒卡和失败亏损哪一个更有传播感。</p>
-        </section>
-
-        <section class="metric-card leaderboard-card">
-          <div class="section-head side-head">
+        <section class="screen" id="rankScreen" data-screen="rank" hidden>
+          <div class="section-head dex-head">
             <div>
-              <p class="kicker">周排行榜</p>
-              <h2>本周传说榜</h2>
+              <p class="app-label">WEEKLY RANK</p>
+              <h3>本周传说榜</h3>
             </div>
             <span class="rank-pill" id="leaderboardRank">#5</span>
           </div>
-          <div class="leaderboard-list" id="leaderboardList"></div>
+          <div class="rank-hero">
+            <strong>本周限定·金瞳夜巡</strong>
+            <span>传说数优先，Rare+ 数作为同分排序。</span>
+          </div>
+          <div class="leaderboard-list app-leaderboard" id="leaderboardList"></div>
         </section>
 
-        <section class="metric-card">
-          <div class="section-head side-head">
-            <div>
-              <p class="kicker">经济模拟</p>
-              <h2>10 万次结果</h2>
+        <section class="screen" id="debugScreen" data-screen="debug" hidden>
+          <section class="metric-card">
+            <p class="kicker">玩法反馈</p>
+            <h2 id="lastOutcomeTitle">还没下注</h2>
+            <p id="lastOutcomeCopy">先点一次捕捉，看成功晒卡和失败亏损哪一个更有传播感。</p>
+          </section>
+
+          <section class="metric-card">
+            <div class="section-head side-head">
+              <div>
+                <p class="kicker">经济模拟</p>
+                <h2>10 万次结果</h2>
+              </div>
+              <button class="small-button" id="simulateButton" type="button">重跑</button>
             </div>
-            <button class="small-button" id="simulateButton" type="button">重跑</button>
-          </div>
-          <div class="sim-list" id="simList"></div>
+            <div class="sim-list" id="simList"></div>
+          </section>
         </section>
-      </aside>
+
+        <footer class="bottom-nav">
+          <button class="nav active" type="button" data-tab="catch">⌾<span>抓猫</span></button>
+          <button class="nav" type="button" data-tab="dex">◇<span>图鉴</span></button>
+          <button class="nav" type="button" data-tab="rank">≡<span>榜单</span></button>
+          <button class="nav" type="button" data-tab="share">↗<span>分享</span></button>
+        </footer>
+      </section>
     </main>
 
     <template id="cardTemplate">

@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v6`
+Current published version: `v7`
 
 ## What is included
 
@@ -10,6 +10,7 @@ Current published version: `v6`
 - Local PNG cat art assets for five rarities.
 - Economy loop: cat food, risk tiers, rare+ refunds, daily legendary bonus.
 - FOMO loop: legendary hour, weekly limited slot, 24h revenge chase, weekly leaderboard.
+- v7 layout: phone-app-only shell, in-app leaderboard page, shutter capture button, hidden developer panel.
 
 ## Run locally
 

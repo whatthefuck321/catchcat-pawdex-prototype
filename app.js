@@ -89,8 +89,15 @@ const leaderboardRivals = [
 
 const names = ["麻薯", "豆腐", "奶盖", "团子", "玄米", "乌冬", "小虎", "年糕"];
 const titles = ["便利店守护者", "屋顶赌王", "夜行冠军", "金瞳猎手", "传说候选猫", "巷口幻影"];
-const STORAGE_KEY = "pawdex-html-v6";
+const STORAGE_KEY = "pawdex-html-v7";
 const shareRewardLimit = 3;
+const pageMeta = {
+  catch: { label: "PAWDEX FIELD", title: "今晚抓猫" },
+  dex: { label: "CAT DEX", title: "猫卡图鉴" },
+  rank: { label: "WEEKLY RANK", title: "本周榜单" },
+  share: { label: "STORY SHARE", title: "晒卡分享" },
+  debug: { label: "DEV PANEL", title: "调试面板" },
+};
 
 const state = {
   food: 10,
@@ -119,6 +126,8 @@ const $$ = (selector) => [...document.querySelectorAll(selector)];
 
 const els = {
   phone: $(".phone"),
+  appPageLabel: $("#appPageLabel"),
+  appPageTitle: $("#appPageTitle"),
   canvas: $("#catCanvas"),
   fieldCatArt: $("#fieldCatArt"),
   foodText: $("#foodText"),
@@ -140,6 +149,8 @@ const els = {
   modeList: $("#modeList"),
   riskHint: $("#riskHint"),
   catchButton: $("#catchButton"),
+  catchLabel: $("#catchLabel"),
+  catchMeta: $("#catchMeta"),
   scanButton: $("#scanButton"),
   catIntelName: $("#catIntelName"),
   catIntelPlace: $("#catIntelPlace"),
@@ -392,6 +403,28 @@ function makeName(rarity) {
 function switchTab(tab) {
   state.tab = tab;
   render();
+}
+
+function updateCatchCopy(mode, isRolling, isRevengeActive) {
+  if (isRolling) {
+    els.catchLabel.textContent = "结算中";
+    els.catchMeta.textContent = "正在锁定这次捕捉";
+    return;
+  }
+  if (state.phase === "nearMiss") {
+    els.catchLabel.textContent = "挣脱中";
+    els.catchMeta.textContent = "猫正在逃跑";
+    return;
+  }
+  if (state.food < mode.cost) {
+    els.catchLabel.textContent = "猫粮不足";
+    els.catchMeta.textContent = `需要 ${mode.cost} 猫粮`;
+    return;
+  }
+  els.catchLabel.textContent = isRevengeActive ? "追猎拍摄" : "拍摄捕捉";
+  els.catchMeta.textContent = isRevengeActive
+    ? `消耗 ${mode.cost} 猫粮追猎传说`
+    : `消耗 ${mode.cost} 猫粮`;
 }
 
 function scanNextCat() {
@@ -743,20 +776,15 @@ function render() {
   const mode = modes[isRevengeActive ? "allin" : state.mode];
   const isRolling = state.phase === "rolling";
   const isBusy = state.phase !== "ready";
+  const meta = pageMeta[state.tab] || pageMeta.catch;
+  els.appPageLabel.textContent = meta.label;
+  els.appPageTitle.textContent = meta.title;
   els.foodText.textContent = `${state.food}/${state.maxFood}`;
   els.fieldFoodText.textContent = `${state.food}/${state.maxFood}`;
   els.catIntelName.textContent = state.scene.name;
   els.catIntelPlace.textContent = state.scene.place;
   els.riskHint.textContent = isRevengeActive ? "回归传说锁定：梭哈追猎" : mode.hint;
-  els.catchButton.textContent = isRolling
-    ? "捕捉结算中..."
-    : state.phase === "nearMiss"
-      ? "猫正在挣脱..."
-    : state.food >= mode.cost
-      ? isRevengeActive
-        ? `消耗 ${mode.cost} 猫粮追猎回归传说`
-        : `消耗 ${mode.cost} 猫粮捕捉`
-      : `猫粮不足，需要 ${mode.cost}`;
+  updateCatchCopy(mode, isRolling, isRevengeActive);
   els.catchButton.disabled = isBusy || state.food < mode.cost;
   els.scanButton.disabled = isBusy || isRevengeActive;
   const shareLeft = Math.max(shareRewardLimit - state.shareRewardCount, 0);
