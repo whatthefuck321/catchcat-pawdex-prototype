@@ -126,11 +126,40 @@
 
         <section class="screen" id="shareScreen" data-screen="share" hidden>
           <div class="story-preview" id="storyPreview">
-            <div class="story-top">PAWDEX</div>
-            <div class="story-copy" id="storyCopy">抓到猫或抓失败后，这里会生成分享图。</div>
-            <div class="story-footer">真实猫抽卡 · 梭哈捕捉</div>
+            <div class="story-brand">
+              <span class="brand-logo">PAWDEX</span>
+              <span class="brand-rarity" id="storyRarityBadge">READY</span>
+            </div>
+
+            <div class="story-card" id="storyCard">
+              <div class="story-card-glow" id="storyCardGlow"></div>
+              <img class="story-card-art" id="storyCardArt" src="./assets/cat-common.png" alt="cat" />
+              <div class="story-card-info">
+                <div class="story-card-name" id="storyCardName">今晚抓猫</div>
+                <div class="story-card-meta">
+                  <span id="storyCardNo">#000</span>
+                  <span id="storyCardScene">涩谷后巷</span>
+                  <span id="storyCardDate">--</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="story-headline" id="storyHeadline">抓到猫后生成分享图</div>
+            <div class="story-sub" id="storySub">真实猫抽卡 · 拍真猫出卡</div>
+
+            <div class="story-footer">
+              <div class="story-cta">
+                <div class="cta-text">
+                  <span class="cta-line1">下载 PAWDEX</span>
+                  <span class="cta-line2">@pawdex_app</span>
+                </div>
+                <div class="story-qr" id="storyQr" aria-hidden="true"></div>
+              </div>
+            </div>
+
+            <div class="story-shine"></div>
           </div>
-          <button class="catch-cta secondary" id="copyShareButton" type="button">模拟分享 +2 猫粮</button>
+          <button class="copy-share-btn" id="copyShareButton" type="button">先抓一只再保存</button>
           <button class="small-button dev-entry" type="button" data-tab="debug">开发面板</button>
         </section>
 
@@ -193,6 +222,7 @@
       <div class="modal-card" id="modalCard"></div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>

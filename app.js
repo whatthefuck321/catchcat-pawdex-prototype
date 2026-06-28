@@ -157,7 +157,15 @@ const els = {
   dexTitle: $("#dexTitle"),
   dexGrid: $("#dexGrid"),
   clearDexButton: $("#clearDexButton"),
-  storyCopy: $("#storyCopy"),
+  storyPreview: $("#storyPreview"),
+  storyRarityBadge: $("#storyRarityBadge"),
+  storyCardArt: $("#storyCardArt"),
+  storyCardName: $("#storyCardName"),
+  storyCardNo: $("#storyCardNo"),
+  storyCardScene: $("#storyCardScene"),
+  storyCardDate: $("#storyCardDate"),
+  storyHeadline: $("#storyHeadline"),
+  storySub: $("#storySub"),
   copyShareButton: $("#copyShareButton"),
   lastOutcomeTitle: $("#lastOutcomeTitle"),
   lastOutcomeCopy: $("#lastOutcomeCopy"),
@@ -657,21 +665,79 @@ function renderCard(card) {
   return renderCatCard(card);
 }
 
+function shareDateLabel(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}.${month}.${day}`;
+}
+
+function escapeShareCard(outcome) {
+  return {
+    name: `差一点的${rarities[outcome.rarity].label}`,
+    rarity: outcome.rarity,
+    no: null,
+    scene: outcome.scene,
+    cost: outcome.cost,
+    rate: outcome.rate,
+    mode: outcome.mode,
+  };
+}
+
+function setStoryTheme(rarity, isFail) {
+  const cfg = rarities[rarity] || rarities.common;
+  els.storyPreview.classList.toggle("is-fail", isFail);
+  els.storyPreview.style.setProperty("--glow", cfg.glow);
+  els.storyPreview.style.setProperty("--a", cfg.a);
+  els.storyPreview.style.setProperty("--b", cfg.b);
+}
+
 function renderStory() {
   const outcome = state.lastOutcome;
   if (!outcome) {
-    els.storyCopy.textContent = "抓到猫或抓失败后，这里会生成分享图。";
+    setStoryTheme("common", false);
+    els.storyRarityBadge.textContent = "READY";
+    els.storyCardArt.src = catAsset("common");
+    els.storyCardName.textContent = "今晚抓猫";
+    els.storyCardNo.textContent = "#000";
+    els.storyCardScene.textContent = "涩谷后巷";
+    els.storyCardDate.textContent = shareDateLabel();
+    els.storyHeadline.textContent = "抓到猫后生成分享图";
+    els.storySub.textContent = "真实猫抽卡 · 拍真猫出卡";
     return;
   }
 
   if (outcome.type === "escape") {
-    els.storyCopy.textContent = `我${modes[outcome.mode].label}抓猫失败，猫跑了，亏 ${outcome.cost} 猫粮。`;
+    const card = escapeShareCard(outcome);
+    const cfg = rarities[card.rarity];
+    setStoryTheme(card.rarity, true);
+    els.storyRarityBadge.textContent = "猫跑了 ESCAPED";
+    els.storyCardArt.src = catAsset(card.rarity);
+    els.storyCardName.textContent = card.name;
+    els.storyCardNo.textContent = "MISS";
+    els.storyCardScene.textContent = card.scene?.place || "涩谷后巷";
+    els.storyCardDate.textContent = shareDateLabel();
+    els.storyHeadline.textContent = `${modes[outcome.mode].label}失败，猫跑了`;
+    els.storySub.textContent = `本来 roll 到${cfg.label}，逃跑率 ${(outcome.rate * 100).toFixed(0)}%。我不甘心。`;
     return;
   }
 
   const card = outcome.card;
-  const rewardText = card.reward?.total ? `，回了 ${card.reward.total} 猫粮` : "";
-  els.storyCopy.textContent = `我在${card.scene.place}抓到${rarities[card.rarity].label}猫卡：${card.name}${rewardText}`;
+  const cfg = rarities[card.rarity];
+  const rewardText = card.reward?.total ? `回了 ${card.reward.total} 猫粮。` : "没有回粮奖励。";
+  setStoryTheme(card.rarity, false);
+  els.storyRarityBadge.textContent = `${cfg.label} ${card.rarity.toUpperCase()}`;
+  els.storyCardArt.src = catAsset(card.rarity);
+  els.storyCardName.textContent = card.name;
+  els.storyCardNo.textContent = `#${String(card.no).padStart(3, "0")}`;
+  els.storyCardScene.textContent = card.scene?.place || "涩谷后巷";
+  els.storyCardDate.textContent = shareDateLabel(card.capturedAt ? new Date(card.capturedAt) : new Date());
+  els.storyHeadline.textContent =
+    card.rarity === "legendary"
+      ? `我在${card.scene.place}抓到传说猫`
+      : `我在${card.scene.place}抓到${cfg.label}猫`;
+  els.storySub.textContent =
+    card.rarity === "legendary" ? `${rewardText}你能抓到传说吗？` : `${rewardText}来 PAWDEX 一起抓猫。`;
 }
 
 function renderDex() {
@@ -757,6 +823,45 @@ function renderLeaderboard() {
     .join("");
 }
 
+async function saveStoryImage() {
+  if (!state.lastOutcome) {
+    showEscapeLikeResult("还没有分享图", "先抓一只猫，再来保存竖版晒卡图。");
+    return false;
+  }
+  if (typeof window.html2canvas !== "function") {
+    showEscapeLikeResult("保存组件未加载", "分享图组件还没加载完成，稍等几秒再点一次。");
+    return false;
+  }
+
+  const previousText = els.copyShareButton.textContent;
+  els.copyShareButton.disabled = true;
+  els.copyShareButton.textContent = "正在生成分享图...";
+  try {
+    const canvas = await window.html2canvas(els.storyPreview, {
+      scale: 3,
+      backgroundColor: null,
+      useCORS: true,
+    });
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+    if (!blob) throw new Error("canvas export failed");
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `pawdex-${Date.now()}.png`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    return true;
+  } catch {
+    showEscapeLikeResult("保存失败", "浏览器没有成功生成图片，可以刷新后再试一次。");
+    return false;
+  } finally {
+    els.copyShareButton.disabled = false;
+    els.copyShareButton.textContent = previousText;
+  }
+}
+
 function renderRevengeBanner(revenge, isRevengeActive) {
   const visible = Boolean(revenge && state.tab === "catch" && state.phase === "ready");
   els.revengeBanner.hidden = !visible;
@@ -788,9 +893,12 @@ function render() {
   els.catchButton.disabled = isBusy || state.food < mode.cost;
   els.scanButton.disabled = isBusy || isRevengeActive;
   const shareLeft = Math.max(shareRewardLimit - state.shareRewardCount, 0);
-  els.copyShareButton.textContent =
-    shareLeft > 0 ? `模拟分享 +2 猫粮（今日剩 ${shareLeft} 次）` : "今日分享回粮已用完";
-  els.copyShareButton.disabled = shareLeft <= 0;
+  els.copyShareButton.textContent = !state.lastOutcome
+    ? "先抓一只再保存"
+    : shareLeft > 0
+      ? `保存分享图 +2 猫粮（今日剩 ${shareLeft} 次）`
+      : "保存分享图（今日回粮已用完）";
+  els.copyShareButton.disabled = !state.lastOutcome;
   els.rollOverlay.classList.toggle("show", isRolling);
   els.rollOverlay.setAttribute("aria-hidden", isRolling ? "false" : "true");
 
@@ -907,7 +1015,12 @@ els.clearDexButton.addEventListener("click", () => {
   persistState();
   render();
 });
-els.copyShareButton.addEventListener("click", () => {
+els.copyShareButton.addEventListener("click", async () => {
+  const saved = await saveStoryImage();
+  if (!saved) {
+    render();
+    return;
+  }
   applyDailyReset();
   if (state.shareRewardCount >= shareRewardLimit) {
     render();
