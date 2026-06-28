@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v10 anime location prototype`
+Current published version: `v11 cat spot POI prototype`
 
 ## What is included
 
@@ -14,6 +14,7 @@ Current published version: `v10 anime location prototype`
 - v8 P0: neutral mode wording via i18n, browser camera capture, photo card art, share image export, X/Facebook/Threads/native share actions.
 - v9 game feel: treat meter and floating economy deltas, rarity reel during capture, field particles, premium result reveals, stronger card material.
 - v10 anime/location: browser geolocation cat-spot prototype, nearby habitat UI, anime speed lines and cut-in motion language.
+- v11 cat spot POI: location text now has gameplay meaning. Convenience stores, stations, parks, and rooftops act as supply/spawn/habitat spots; active spots can grant a small cat-food supply with cooldown.
 
 ## Supabase Auth
 

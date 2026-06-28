@@ -491,7 +491,8 @@ button {
 }
 
 .cat-readout span,
-.cat-readout strong {
+.cat-readout strong,
+.cat-readout small {
   display: block;
 }
 
@@ -506,6 +507,14 @@ button {
   font-size: 22px;
   line-height: 1.05;
   font-weight: 950;
+}
+
+.cat-readout small {
+  margin-top: 7px;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 12px;
+  line-height: 1.25;
+  font-weight: 820;
 }
 
 .capture-dock {
@@ -2365,7 +2374,7 @@ body {
 .camera-toggle {
   position: absolute;
   z-index: 5;
-  top: 140px;
+  top: 206px;
   right: 18px;
   min-height: 35px;
   padding: 7px 10px;
@@ -3143,6 +3152,12 @@ body {
     0 16px 36px rgba(90, 200, 250, 0.13);
 }
 
+.location-panel.claimable em {
+  background: linear-gradient(135deg, rgba(255, 214, 10, 0.94), rgba(255, 149, 0, 0.92));
+  color: #1a1205;
+  box-shadow: 0 0 18px rgba(255, 149, 0, 0.32);
+}
+
 .location-panel.searching em {
   animation: locationPulse 0.7s ease-in-out infinite alternate;
 }
@@ -3163,6 +3178,10 @@ body {
 }
 
 .revenge-banner:not([hidden]) ~ .scan-chip {
+  top: 258px;
+}
+
+.revenge-banner:not([hidden]) ~ .camera-toggle {
   top: 258px;
 }
 
