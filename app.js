@@ -46,6 +46,16 @@ const I18N = {
     roll_normal: "正在结算稀有度和逃跑",
     caught_title: "抓到了",
     chase_success: "追猎成功",
+    reveal_step_shutter: "快门",
+    reveal_step_charge: "充能",
+    reveal_step_flip: "翻牌",
+    reveal_step_lock: "定格",
+    breed_label: "趣味品种",
+    breed_confidence_high: "高可信",
+    breed_confidence_medium: "中可信",
+    breed_confidence_low: "低可信",
+    breed_result: "趣味识别：{breed} · {confidence}",
+    breed_source_mock: "本地原型识别",
     reward_none: "没有返粮奖励。",
     reward_food: "奖励 +{total} 猫粮{bonus}。",
     first_legendary_bonus: "，含每日首只传说 +5",
@@ -176,6 +186,16 @@ const I18N = {
     roll_normal: "Resolving rarity and escape chance",
     caught_title: "Caught",
     chase_success: "Chase complete",
+    reveal_step_shutter: "Shutter",
+    reveal_step_charge: "Charge",
+    reveal_step_flip: "Flip",
+    reveal_step_lock: "Lock",
+    breed_label: "Fun breed",
+    breed_confidence_high: "high confidence",
+    breed_confidence_medium: "medium confidence",
+    breed_confidence_low: "low confidence",
+    breed_result: "Fun ID: {breed} · {confidence}",
+    breed_source_mock: "Local prototype ID",
     reward_none: "No treat refund.",
     reward_food: "Reward +{total} treats{bonus}.",
     first_legendary_bonus: ", including first legendary of the day +5",
@@ -428,6 +448,88 @@ const locationSpots = [
     bg2: "#0d0d18",
   },
 ];
+const breedCatalog = {
+  common: [
+    {
+      nameZh: "中华田园短毛",
+      nameEn: "Domestic Shorthair",
+      confidence: "medium",
+      descriptionZh: "街区里最常见的亲人型短毛猫，警惕但好哄。",
+      descriptionEn: "A street-smart shorthair: cautious, social, and easy to bribe.",
+    },
+    {
+      nameZh: "橘白短毛",
+      nameEn: "Orange Tabby",
+      confidence: "medium",
+      descriptionZh: "典型补给点常客，对猫粮反应最快。",
+      descriptionEn: "A supply-spot regular with a fast reaction to treats.",
+    },
+  ],
+  uncommon: [
+    {
+      nameZh: "美短系虎斑",
+      nameEn: "American Shorthair Mix",
+      confidence: "medium",
+      descriptionZh: "花纹清晰，移动速度快，适合做图鉴早期收藏。",
+      descriptionEn: "Crisp tabby marks and quick movement make it a strong early dex pull.",
+    },
+    {
+      nameZh: "俄罗斯蓝猫系",
+      nameEn: "Russian Blue Mix",
+      confidence: "low",
+      descriptionZh: "冷色毛感明显，夜间灯源下更容易被误认为稀有。",
+      descriptionEn: "Cool-toned fur reads rare under night lighting.",
+    },
+  ],
+  rare: [
+    {
+      nameZh: "布偶猫系",
+      nameEn: "Ragdoll Mix",
+      confidence: "medium",
+      descriptionZh: "浅色脸谱和温顺姿态很适合做高质感收藏卡。",
+      descriptionEn: "Soft mask markings and calm posture make it card-ready.",
+    },
+    {
+      nameZh: "缅因猫系",
+      nameEn: "Maine Coon Mix",
+      confidence: "low",
+      descriptionZh: "轮廓更大，耳尖更明显，像一只小型守夜兽。",
+      descriptionEn: "A larger silhouette with pointed ears gives it a night-guardian feel.",
+    },
+  ],
+  epic: [
+    {
+      nameZh: "孟加拉猫系",
+      nameEn: "Bengal Mix",
+      confidence: "medium",
+      descriptionZh: "斑纹强烈，镜头里有明显的野性和速度感。",
+      descriptionEn: "Bold patterning gives the frame a wild, fast read.",
+    },
+    {
+      nameZh: "暹罗猫系",
+      nameEn: "Siamese Mix",
+      confidence: "medium",
+      descriptionZh: "脸部重点色明显，适合紫色高稀有光效。",
+      descriptionEn: "Clear point coloration works well with epic purple effects.",
+    },
+  ],
+  legendary: [
+    {
+      nameZh: "金瞳传说猫",
+      nameEn: "Golden-Eyed Mythic",
+      confidence: "high",
+      descriptionZh: "不像标准品种，更像这片街区自己养出来的传说。",
+      descriptionEn: "Less a standard breed, more a local myth raised by the street.",
+    },
+    {
+      nameZh: "土耳其梵猫系",
+      nameEn: "Turkish Van Mix",
+      confidence: "low",
+      descriptionZh: "罕见感来自毛色和姿态，适合传说级开卡演出。",
+      descriptionEn: "Rare by posture and coat read, strong enough for a legendary reveal.",
+    },
+  ],
+};
 const weeklyLimitedCat = {
   name: "本周限定·金瞳夜巡",
   rarity: "legendary",
@@ -949,6 +1051,37 @@ function makeName(rarity) {
   return `${first}·${title}`;
 }
 
+function hashText(value) {
+  return String(value)
+    .split("")
+    .reduce((total, char) => (total * 31 + char.charCodeAt(0)) >>> 0, 7);
+}
+
+function makeBreedProfile(rarity, scene, no) {
+  const options = breedCatalog[rarity] || breedCatalog.common;
+  const seed = hashText(`${rarity}-${scene?.place || ""}-${scene?.name || ""}-${no}`);
+  const picked = options[seed % options.length];
+  return {
+    ...picked,
+    source: "local-prototype",
+  };
+}
+
+function breedDisplayName(profile) {
+  if (!profile) return "";
+  return LANG === "en" ? profile.nameEn : profile.nameZh;
+}
+
+function breedDescription(profile) {
+  if (!profile) return "";
+  return LANG === "en" ? profile.descriptionEn : profile.descriptionZh;
+}
+
+function breedConfidenceLabel(profile) {
+  if (!profile) return "";
+  return t(`breed_confidence_${profile.confidence || "medium"}`);
+}
+
 function switchTab(tab) {
   state.tab = tab;
   render();
@@ -1053,6 +1186,7 @@ function settleCatch(result) {
       rarity: finalRarity,
       baseRarity,
       upgraded: finalRarity !== baseRarity,
+      breed: makeBreedProfile(finalRarity, scene, state.nextNo),
       scene,
       photo,
       mode: modeKey,
@@ -1125,13 +1259,40 @@ function showCardResult(card) {
     ? t("heart_upgrade", { from: rarities[card.baseRarity].label, to: cfg.label })
     : "";
   const revengeCopy = card.revengeAttempt ? t("revenge_success") : "";
-  els.modalCard.className = `modal-card reveal-card success rarity-${card.rarity}`;
+  const breedCopy = card.breed
+    ? t("breed_result", {
+        breed: breedDisplayName(card.breed),
+        confidence: breedConfidenceLabel(card.breed),
+      })
+    : "";
+  els.modalCard.className = `modal-card reveal-card wow success rarity-${card.rarity}`;
   setRarityVars(els.modalCard, card.rarity);
   els.modalCard.innerHTML = `
     ${resultBurstMarkup(card.rarity, "success")}
+    <div class="reveal-steps" aria-hidden="true">
+      <span>${t("reveal_step_shutter")}</span>
+      <span>${t("reveal_step_charge")}</span>
+      <span>${t("reveal_step_flip")}</span>
+      <span>${t("reveal_step_lock")}</span>
+    </div>
     <div class="result-rarity-label">${cfg.label} CARD</div>
-    ${renderCatCard(card)}
+    <div class="opening-card-stage">
+      <div class="card-back" aria-hidden="true">
+        <strong>PAWDEX</strong>
+        <span>${cfg.label}</span>
+      </div>
+      ${renderCatCard(card)}
+    </div>
     <h2>${headline}</h2>
+    ${
+      card.breed
+        ? `<div class="breed-panel">
+            <strong>${breedCopy}</strong>
+            <span>${breedDescription(card.breed)}</span>
+            <small>${t("breed_source_mock")}</small>
+          </div>`
+        : ""
+    }
     <p>${t("card_result", {
       mode: modes[card.mode].label,
       scene: card.scene.name,
@@ -1358,6 +1519,7 @@ function renderCatCard(card, options = {}) {
   const no = card.no ? `#${String(card.no).padStart(3, "0")}` : "LIMITED";
   const meta = options.meta || `${cfg.label} · ${no} · ${dateLabel(card.capturedAt)}`;
   const name = card.name || weeklyLimitedCat.name;
+  const breed = card.breed;
   return `
     <article class="cat-card ${card.photo ? "has-photo" : ""}" data-rarity="${card.rarity}" style="${rarityStyle(card.rarity)}">
       <div class="cat-card-inner">
@@ -1371,6 +1533,11 @@ function renderCatCard(card, options = {}) {
         <div class="card-info">
           <strong class="card-name">${name}</strong>
           <span class="card-meta">${meta}</span>
+          ${
+            breed
+              ? `<span class="card-breed">${t("breed_label")} · ${breedDisplayName(breed)}</span>`
+              : ""
+          }
         </div>
       </div>
     </article>
@@ -1449,6 +1616,7 @@ function renderStory() {
   const rewardText = card.reward?.total
     ? t("story_reward_food", { total: card.reward.total })
     : t("story_reward_none");
+  const breedPrefix = card.breed ? `${breedDisplayName(card.breed)} · ` : "";
   setStoryTheme(card.rarity, false);
   els.storyRarityBadge.textContent = `${cfg.label} ${card.rarity.toUpperCase()}`;
   els.storyCardArt.src = cardArtSource(card);
@@ -1463,8 +1631,8 @@ function renderStory() {
       : t("story_rarity_headline", { place: card.scene.place, rarity: cfg.label });
   els.storySub.textContent =
     card.rarity === "legendary"
-      ? t("story_legendary_sub", { reward: rewardText })
-      : t("story_rarity_sub", { reward: rewardText });
+      ? `${breedPrefix}${t("story_legendary_sub", { reward: rewardText })}`
+      : `${breedPrefix}${t("story_rarity_sub", { reward: rewardText })}`;
 }
 
 function renderDex() {
@@ -1512,7 +1680,9 @@ function renderOutcomeSide() {
   }
   els.lastOutcomeTitle.textContent = t("outcome_success_title");
   els.lastOutcomeCopy.textContent = t("outcome_success_copy", {
-    name: outcome.card.name,
+    name: outcome.card.breed
+      ? `${outcome.card.name} · ${breedDisplayName(outcome.card.breed)}`
+      : outcome.card.name,
     rarity: rarities[outcome.card.rarity].label,
     total: outcome.card.reward?.total || 0,
   });

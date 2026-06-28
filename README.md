@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v11 cat spot POI prototype`
+Current published version: `v12 wow reveal prototype`
 
 ## What is included
 
@@ -15,6 +15,11 @@ Current published version: `v11 cat spot POI prototype`
 - v9 game feel: treat meter and floating economy deltas, rarity reel during capture, field particles, premium result reveals, stronger card material.
 - v10 anime/location: browser geolocation cat-spot prototype, nearby habitat UI, anime speed lines and cut-in motion language.
 - v11 cat spot POI: location text now has gameplay meaning. Convenience stores, stations, parks, and rooftops act as supply/spawn/habitat spots; active spots can grant a small cat-food supply with cooldown.
+- v12 wow reveal: staged card-back reveal, stronger rarity ceremony, and a local prototype breed-ID result on each captured card.
+
+## Breed ID note
+
+The static GitHub Pages build does not call Gemini or any other cloud breed API directly because browser-side API keys would be exposed. The current breed result is a local prototype field shaped like a future API response. A production build should call Gemini or another vision model through a backend/Supabase Edge Function, then store the result with the catch record.
 
 ## Supabase Auth
 
