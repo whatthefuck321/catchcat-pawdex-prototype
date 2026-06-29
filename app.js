@@ -401,6 +401,9 @@ const rarities = {
   },
 };
 
+const FALLBACK_CAT_DATAURI =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 360'%3E%3Crect width='360' height='360' rx='56' fill='%2307090d'/%3E%3Cpath d='M109 134 86 73l62 37a113 113 0 0 1 65 0l62-37-23 61c24 22 38 54 38 89 0 69-50 110-110 110S70 292 70 223c0-35 15-67 39-89Z' fill='%23f5f7fa'/%3E%3Ccircle cx='142' cy='207' r='13' fill='%2307090d'/%3E%3Ccircle cx='218' cy='207' r='13' fill='%2307090d'/%3E%3Cpath d='M166 240c9 9 19 13 30 13s21-4 30-13' fill='none' stroke='%2307090d' stroke-width='12' stroke-linecap='round'/%3E%3Cpath d='M180 222 164 238h32l-16-16Z' fill='%23ff9500'/%3E%3C/svg%3E";
+
 const rarityOrder = ["common", "uncommon", "rare", "epic", "legendary"];
 const rarityRewards = {
   common: 0,
@@ -1588,7 +1591,7 @@ function showEscapeResult(outcome) {
     ${resultBurstMarkup(outcome.rarity, "fail")}
     <div class="result-rarity-label miss">${cfg.label} CLOSE CALL</div>
     <div class="escape-visual ${outcome.photo ? "has-photo" : ""}">
-      <img src="${cardArtSource(escapedCard)}" alt="" />
+      <img src="${cardArtSource(escapedCard)}" ${fallbackImageAttr()} alt="" />
       <span>MISS</span>
     </div>
     <h2>${t("fail_title")}</h2>
@@ -1714,11 +1717,31 @@ async function handleAuthAction(action) {
 }
 
 function catAsset(rarity) {
-  return rarities[rarity]?.art || rarities.common.art;
+  return rarities[rarity]?.art || rarities.common?.art || FALLBACK_CAT_DATAURI;
+}
+
+function isUsableImageSource(source) {
+  if (!source || typeof source !== "string") return false;
+  if (source.startsWith("data:image/")) return source.length > 120;
+  return /^(?:\.\/|\/|https?:)/.test(source);
 }
 
 function cardArtSource(card) {
-  return card?.photo || catAsset(card?.rarity || "common");
+  const photo = card?.photo;
+  return isUsableImageSource(photo) ? photo : catAsset(card?.rarity || "common");
+}
+
+function fallbackImageAttr() {
+  return `onerror="this.onerror=null;this.src='${FALLBACK_CAT_DATAURI}'"`;
+}
+
+function applyImageFallback(image, fallback = FALLBACK_CAT_DATAURI) {
+  if (!image) return;
+  image.onerror = () => {
+    if (image.src === fallback) return;
+    image.classList.remove("is-photo");
+    image.src = fallback;
+  };
 }
 
 function rarityStyle(rarity) {
@@ -1827,7 +1850,7 @@ function renderCatCard(card, options = {}) {
           <span class="card-no">${no}</span>
         </div>
         <div class="card-art">
-          <img class="cat-art-img" src="${cardArtSource(card)}" alt="" />
+          <img class="cat-art-img" src="${cardArtSource(card)}" ${fallbackImageAttr()} alt="" />
         </div>
         <div class="card-info">
           <strong class="card-name">${name}</strong>
@@ -2451,6 +2474,9 @@ els.resultModal.addEventListener("click", (event) => {
   }
   if (authAction) handleAuthAction(authAction);
 });
+
+applyImageFallback(els.fieldCatArt);
+applyImageFallback(els.storyCardArt);
 
 initSupabaseClient();
 hydrateState();

@@ -19,6 +19,7 @@ Current published version: `v15 true cat card prototype`
 - v13 breed API adapter: optional frontend adapter plus Supabase Edge Function sample for Gemini-based breed ID. If no API URL is configured, the app falls back to the local prototype breed result.
 - v14 founder reserve: configurable Founder payment links remain available as a landing-page reserve path. The static prototype opens real configured checkout URLs only; it does not fake payment confirmation.
 - v15 true cat card: capture now requires a real camera frame or uploaded cat photo before rolling. System cat illustrations are no longer used as captured card art; they remain only as idle/demo placeholders. Founder checkout is kept as a landing-page reserve, not the main GTM path.
+- v15 photo safety: card, near-miss, field, and share images now have explicit broken-image fallback handling so bad URLs or failed assets do not render as black/empty blocks.
 
 ## v15 Approval Route
 
