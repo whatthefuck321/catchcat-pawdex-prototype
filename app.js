@@ -708,6 +708,9 @@ const els = {
   fieldEvent: $("#fieldEvent"),
   fieldEventTitle: $("#fieldEventTitle"),
   fieldEventCopy: $("#fieldEventCopy"),
+  fieldMap: $("#fieldMap"),
+  mapSpotTitle: $("#mapSpotTitle"),
+  mapSpotMeta: $("#mapSpotMeta"),
   locationButton: $("#locationButton"),
   locationTitle: $("#locationTitle"),
   locationCopy: $("#locationCopy"),
@@ -1040,6 +1043,27 @@ function drawCamera() {
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, w, h);
 
+  const skyline = ctx.createLinearGradient(0, 0, 0, h * 0.42);
+  skyline.addColorStop(0, "rgba(255,255,255,.1)");
+  skyline.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = skyline;
+  ctx.fillRect(0, 0, w, h * 0.42);
+
+  ctx.save();
+  ctx.translate(w * 0.5, h * 0.58);
+  ctx.rotate(-0.04);
+  for (let i = -3; i <= 3; i += 1) {
+    const x = i * 118;
+    const height = 190 + ((i + 4) % 3) * 56;
+    ctx.fillStyle = i % 2 ? "rgba(5,8,15,.36)" : "rgba(255,255,255,.045)";
+    ctx.fillRect(x - 48, -height - 120, 96, height);
+    ctx.fillStyle = "rgba(255,214,10,.16)";
+    for (let y = -height - 96; y < -160; y += 34) {
+      ctx.fillRect(x - 24, y, 48, 5);
+    }
+  }
+  ctx.restore();
+
   const glow = ctx.createRadialGradient(w * 0.5, h * 0.46, 40, w * 0.5, h * 0.46, 390);
   glow.addColorStop(0, "rgba(255,255,255,.14)");
   glow.addColorStop(0.56, "rgba(255,255,255,.04)");
@@ -1047,17 +1071,37 @@ function drawCamera() {
   ctx.fillStyle = glow;
   ctx.fillRect(0, 0, w, h);
 
-  ctx.fillStyle = "rgba(255,255,255,.065)";
-  for (let i = 0; i < 10; i += 1) {
-    ctx.fillRect((i * 103) % w, 150 + ((i * 127) % 500), 150, 3);
+  ctx.strokeStyle = "rgba(90,200,250,.18)";
+  ctx.lineWidth = 2;
+  for (let i = 0; i < 8; i += 1) {
+    const y = 110 + i * 88;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(w, y + 32);
+    ctx.stroke();
+  }
+  for (let i = 0; i < 9; i += 1) {
+    const x = -80 + i * 116;
+    ctx.beginPath();
+    ctx.moveTo(x, 80);
+    ctx.lineTo(x + 180, h * 0.82);
+    ctx.stroke();
   }
 
   ctx.fillStyle = "rgba(0,0,0,.34)";
   ctx.fillRect(0, h * 0.74, w, h * 0.26);
-  ctx.fillStyle = "rgba(255,214,10,.08)";
+  ctx.fillStyle = "rgba(255,214,10,.09)";
   ctx.beginPath();
   ctx.ellipse(w * 0.52, h * 0.75, 250, 42, 0, 0, Math.PI * 2);
   ctx.fill();
+
+  ctx.strokeStyle = "rgba(255,214,10,.36)";
+  ctx.lineWidth = 5;
+  ctx.setLineDash([18, 16]);
+  ctx.beginPath();
+  ctx.ellipse(w * 0.52, h * 0.74, 210, 34, 0, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.setLineDash([]);
 }
 
 async function startCamera() {
@@ -1512,6 +1556,7 @@ function startCaptureAnimation(mode, rarity) {
   els.captureFlash.classList.remove("burst");
   void els.captureFlash.offsetWidth;
   els.captureFlash.classList.add("burst");
+  if (navigator.vibrate) navigator.vibrate([18, 36, 24]);
 }
 
 function showCardResult(card) {
@@ -2282,6 +2327,14 @@ function render() {
   els.fieldEventTitle.textContent = state.legendaryHour ? t("event_on") : t("event_field_normal");
   els.fieldEventCopy.textContent = legendaryCountdownText();
   els.toggleEventButton.textContent = state.legendaryHour ? t("event_close") : t("event_open");
+  els.fieldMap.classList.toggle("located", Boolean(state.locationSpot));
+  els.fieldMap.classList.toggle("claimable", Boolean(state.locationSpot) && canClaimSpotReward());
+  els.mapSpotTitle.textContent = state.locationSpot
+    ? state.locationSpot.title
+    : state.scene.poiTitle || state.scene.place;
+  els.mapSpotMeta.textContent = state.locationSpot
+    ? `${state.locationSpot.habitat} · ${state.locationDistance || "--"}m`
+    : "点击定位刷新附近猫点";
   els.locationButton.classList.toggle("active", Boolean(state.locationSpot));
   els.locationButton.classList.toggle("searching", state.locationStatus === "searching");
   els.locationButton.classList.toggle(

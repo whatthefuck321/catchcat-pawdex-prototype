@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PAWDEX v16 - Real Cat Hunt Game Prototype</title>
+    <title>PAWDEX v17 - Anime Cat Hunt Prototype</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -100,6 +100,11 @@
             <input id="photoInput" class="photo-input" type="file" accept="image/*" capture="environment" />
             <canvas id="catCanvas" width="760" height="980"></canvas>
             <img class="field-cat-art" id="fieldCatArt" src="./assets/cat-common.png" alt="" />
+            <div class="encounter-ring" aria-hidden="true">
+              <i></i>
+              <i></i>
+              <b></b>
+            </div>
             <div class="camera-ui">
               <div class="anime-aura" aria-hidden="true"><i></i><i></i><i></i></div>
               <div class="field-top">
@@ -120,6 +125,20 @@
               <div class="field-event" id="fieldEvent">
                 <strong id="fieldEventTitle">普通时段</strong>
                 <span id="fieldEventCopy">传说概率未加成</span>
+              </div>
+
+              <div class="field-map" id="fieldMap" aria-label="附近猫点雷达">
+                <div class="map-grid" aria-hidden="true"></div>
+                <div class="map-route" aria-hidden="true"></div>
+                <div class="map-player" aria-hidden="true"><i></i></div>
+                <div class="map-node node-main" aria-hidden="true"><i></i></div>
+                <div class="map-node node-rare" aria-hidden="true"><i></i></div>
+                <div class="map-node node-supply" aria-hidden="true"><i></i></div>
+                <div class="map-copy">
+                  <span>NEARBY CAT SPOT</span>
+                  <strong id="mapSpotTitle">未定位</strong>
+                  <small id="mapSpotMeta">点击定位刷新附近猫点</small>
+                </div>
               </div>
 
               <button class="location-panel" id="locationButton" type="button">

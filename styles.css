@@ -4418,3 +4418,477 @@ body {
     0 0 120px rgba(255, 214, 10, 0.48),
     0 32px 96px rgba(0, 0, 0, 0.62);
 }
+
+/* v17 game field: radar, encounter ring, and stronger mobile-game HUD */
+.field-camera {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    inset 0 -120px 110px rgba(0, 0, 0, 0.24);
+}
+
+.field-camera::after {
+  background:
+    linear-gradient(to bottom, rgba(3, 5, 10, 0.76), rgba(3, 5, 10, 0.22) 35%, transparent 52%),
+    linear-gradient(to top, rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.46) 36%, transparent 62%),
+    radial-gradient(circle at 50% 54%, transparent 0 28%, rgba(3, 5, 10, 0.22) 54%, rgba(3, 5, 10, 0.5) 100%);
+}
+
+.encounter-ring {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 54%;
+  width: min(76%, 340px);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  opacity: 0.92;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotateX(64deg);
+  transform-style: preserve-3d;
+}
+
+.encounter-ring::before,
+.encounter-ring::after,
+.encounter-ring i,
+.encounter-ring b {
+  content: "";
+  position: absolute;
+  border-radius: inherit;
+}
+
+.encounter-ring::before {
+  inset: 8%;
+  border: 2px solid rgba(255, 214, 10, 0.58);
+  box-shadow:
+    0 0 32px rgba(255, 214, 10, 0.24),
+    inset 0 0 28px rgba(255, 214, 10, 0.12);
+  animation: encounterPulse 1.65s ease-in-out infinite;
+}
+
+.encounter-ring::after {
+  inset: 0;
+  border: 1px dashed rgba(90, 200, 250, 0.48);
+  animation: encounterOrbit 6s linear infinite;
+}
+
+.encounter-ring i {
+  inset: 20%;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+}
+
+.encounter-ring i:nth-child(2) {
+  inset: 34%;
+  border-color: rgba(255, 45, 85, 0.32);
+  animation: encounterPulse 1.1s ease-in-out infinite reverse;
+}
+
+.encounter-ring b {
+  left: 50%;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  background: #ffd60a;
+  box-shadow:
+    0 0 0 8px rgba(255, 214, 10, 0.1),
+    0 0 26px rgba(255, 214, 10, 0.62);
+  transform: translate(-50%, -50%);
+}
+
+.phone.camera-on .encounter-ring,
+.phone.photo-ready .encounter-ring {
+  z-index: 3;
+  opacity: 0.66;
+}
+
+.phone[data-phase="rolling"] .encounter-ring {
+  opacity: 1;
+  animation: encounterLock 0.38s ease-in-out infinite alternate;
+}
+
+.phone[data-phase="nearMiss"] .encounter-ring::before,
+.phone[data-phase="nearMiss"] .encounter-ring::after {
+  border-color: rgba(255, 45, 85, 0.76);
+  box-shadow: 0 0 38px rgba(255, 45, 85, 0.34);
+}
+
+@keyframes encounterPulse {
+  0%,
+  100% {
+    opacity: 0.58;
+    transform: scale(0.96);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes encounterOrbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes encounterLock {
+  from {
+    filter: brightness(1);
+    transform: translate(-50%, -50%) rotateX(64deg) scale(0.98);
+  }
+
+  to {
+    filter: brightness(1.45);
+    transform: translate(-50%, -50%) rotateX(64deg) scale(1.04);
+  }
+}
+
+.field-map {
+  position: absolute;
+  z-index: 4;
+  top: 136px;
+  left: 18px;
+  right: 18px;
+  height: 128px;
+  overflow: hidden;
+  border: 1px solid rgba(90, 200, 250, 0.32);
+  border-top-color: rgba(255, 255, 255, 0.24);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 72% 38%, rgba(255, 214, 10, 0.18), transparent 18%),
+    radial-gradient(circle at 22% 72%, rgba(90, 200, 250, 0.18), transparent 24%),
+    linear-gradient(135deg, rgba(5, 8, 16, 0.82), rgba(15, 20, 34, 0.7));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 18px 42px rgba(0, 0, 0, 0.28);
+  pointer-events: none;
+  backdrop-filter: blur(18px);
+}
+
+.map-grid,
+.map-route,
+.map-player,
+.map-node,
+.map-copy {
+  position: absolute;
+}
+
+.map-grid {
+  inset: -30%;
+  opacity: 0.36;
+  background:
+    linear-gradient(rgba(90, 200, 250, 0.24) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(90, 200, 250, 0.2) 1px, transparent 1px);
+  background-size: 28px 28px;
+  transform: rotate(28deg);
+  animation: mapDrift 8s linear infinite;
+}
+
+.map-route {
+  left: 22%;
+  right: 8%;
+  top: 58%;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(255, 214, 10, 0.8), rgba(90, 200, 250, 0.7));
+  transform: rotate(-18deg);
+  box-shadow: 0 0 16px rgba(255, 214, 10, 0.3);
+}
+
+.map-player {
+  left: 20%;
+  bottom: 20%;
+  width: 30px;
+  height: 30px;
+  border: 2px solid rgba(255, 255, 255, 0.82);
+  border-radius: 999px;
+  background: rgba(10, 132, 255, 0.52);
+  box-shadow: 0 0 18px rgba(10, 132, 255, 0.52);
+}
+
+.map-player::after {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  border: 1px solid rgba(90, 200, 250, 0.36);
+  border-radius: inherit;
+  animation: mapPing 1.8s ease-out infinite;
+}
+
+.map-player i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #fff;
+  transform: translate(-50%, -50%);
+}
+
+.map-node {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(255, 214, 10, 0.24);
+  box-shadow: 0 0 22px rgba(255, 214, 10, 0.36);
+  animation: nodeFloat 1.9s ease-in-out infinite;
+}
+
+.map-node i {
+  position: absolute;
+  inset: 6px;
+  border-radius: inherit;
+  background: #ffd60a;
+}
+
+.node-main {
+  right: 18%;
+  top: 22%;
+}
+
+.node-rare {
+  left: 48%;
+  top: 52%;
+  background: rgba(175, 82, 222, 0.24);
+  box-shadow: 0 0 20px rgba(175, 82, 222, 0.4);
+  animation-delay: 0.42s;
+}
+
+.node-rare i {
+  background: #af52de;
+}
+
+.node-supply {
+  right: 33%;
+  bottom: 17%;
+  background: rgba(52, 199, 89, 0.24);
+  box-shadow: 0 0 20px rgba(52, 199, 89, 0.34);
+  animation-delay: 0.86s;
+}
+
+.node-supply i {
+  background: #34c759;
+}
+
+.map-copy {
+  left: 12px;
+  top: 11px;
+  right: 98px;
+  min-width: 0;
+}
+
+.map-copy span,
+.map-copy strong,
+.map-copy small {
+  display: block;
+}
+
+.map-copy span {
+  color: #9be8ff;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 1000;
+  letter-spacing: 0.08em;
+}
+
+.map-copy strong {
+  margin-top: 7px;
+  overflow: hidden;
+  color: #fff;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 1000;
+}
+
+.map-copy small {
+  margin-top: 6px;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.64);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  line-height: 1.15;
+  font-weight: 820;
+}
+
+.field-map.located {
+  border-color: rgba(255, 214, 10, 0.48);
+}
+
+.field-map.claimable .node-supply {
+  animation:
+    nodeFloat 1.9s ease-in-out infinite,
+    supplyGlow 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes mapDrift {
+  to {
+    transform: rotate(28deg) translate(28px, 28px);
+  }
+}
+
+@keyframes mapPing {
+  from {
+    opacity: 0.8;
+    transform: scale(0.7);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}
+
+@keyframes nodeFloat {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-5px) scale(1.08);
+  }
+}
+
+@keyframes supplyGlow {
+  to {
+    box-shadow:
+      0 0 0 8px rgba(52, 199, 89, 0.08),
+      0 0 30px rgba(52, 199, 89, 0.52);
+  }
+}
+
+.location-panel {
+  top: 278px;
+  min-height: 54px;
+  border-radius: 16px;
+}
+
+.revenge-banner:not([hidden]) {
+  top: 338px;
+}
+
+.scan-chip {
+  top: 344px;
+  left: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  box-shadow: 0 0 20px rgba(52, 199, 89, 0.22);
+}
+
+.camera-toggle {
+  top: 344px;
+}
+
+.photo-pick {
+  top: 344px;
+  right: 96px;
+}
+
+.revenge-banner:not([hidden]) ~ .scan-chip {
+  top: 398px;
+}
+
+.revenge-banner:not([hidden]) ~ .camera-toggle {
+  top: 398px;
+}
+
+.revenge-banner:not([hidden]) ~ .photo-pick {
+  top: 398px;
+}
+
+.cat-readout {
+  bottom: 348px;
+  border-left-color: rgba(255, 214, 10, 0.72);
+  background:
+    linear-gradient(135deg, rgba(255, 214, 10, 0.11), rgba(90, 200, 250, 0.08)),
+    rgba(5, 7, 12, 0.62);
+}
+
+.phone.catch-mode .cat-readout {
+  display: none;
+}
+
+.cat-readout strong {
+  color: #fff5b9;
+}
+
+.target-box {
+  top: 42%;
+  height: 21%;
+  border-color: rgba(255, 214, 10, 0.72);
+  box-shadow:
+    0 0 34px rgba(255, 214, 10, 0.2),
+    inset 0 0 22px rgba(255, 214, 10, 0.08);
+}
+
+.target-box::before,
+.target-box::after {
+  border-color: #ffd60a;
+}
+
+.capture-dock {
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.095), transparent),
+    rgba(4, 6, 11, 0.78);
+}
+
+.capture-shutter {
+  animation: shutterReady 1.24s ease-in-out infinite alternate;
+}
+
+.capture-shutter:disabled {
+  animation: none;
+}
+
+.phone[data-phase="rolling"] .capture-shutter {
+  animation: shutterLock 0.28s ease-in-out infinite alternate;
+}
+
+@keyframes shutterReady {
+  to {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.86),
+      0 0 0 11px rgba(255, 214, 10, 0.1),
+      0 0 38px rgba(255, 214, 10, 0.38);
+  }
+}
+
+@keyframes shutterLock {
+  from {
+    transform: scale(0.98);
+  }
+
+  to {
+    transform: scale(1.04);
+    filter: brightness(1.3);
+  }
+}
+
+@media (max-width: 760px) {
+  .field-map {
+    top: 132px;
+    height: 116px;
+  }
+
+  .location-panel {
+    top: 258px;
+  }
+
+  .scan-chip,
+  .camera-toggle {
+    top: 320px;
+  }
+
+  .photo-pick {
+    top: 320px;
+    right: 92px;
+  }
+
+  .cat-readout {
+    bottom: 344px;
+  }
+}
