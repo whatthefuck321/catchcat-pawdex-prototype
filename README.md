@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v17 anime cat-hunt field prototype`
+Current published version: `v18 anime card-reveal prototype`
 
 ## What is included
 
@@ -22,6 +22,7 @@ Current published version: `v17 anime cat-hunt field prototype`
 - v15 photo safety: card, near-miss, field, and share images now have explicit broken-image fallback handling so bad URLs or failed assets do not render as black/empty blocks.
 - v16 game-site shell: the first screen now presents PAWDEX as a cat-hunting game with a bold game hero, gameplay CTA, visible phone prototype, and a compact game-loop section instead of opening directly as a dense card/prototype surface.
 - v17 field game HUD: capture view now has a radar-style nearby cat-spot map, player/POI markers, encounter ring, stronger shutter pulse, canvas street-map background, dynamic location copy, and small vibration feedback during capture.
+- v18 card reveal ceremony: successful captures now get rarity-specific anime opening copy, summon rings, a charging gate, stronger card-back flip timing, legendary gold burst styling, and near-miss failure warning feedback.
 
 ## v15 Approval Route
 

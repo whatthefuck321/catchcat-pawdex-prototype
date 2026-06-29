@@ -4892,3 +4892,447 @@ body {
     bottom: 344px;
   }
 }
+
+/* v18 card-opening ceremony: make the catch result feel like a game pull */
+.modal.show {
+  background:
+    radial-gradient(circle at 50% 32%, var(--rarity-glow, rgba(255, 214, 10, 0.26)), transparent 26%),
+    radial-gradient(circle at 50% 62%, rgba(90, 200, 250, 0.14), transparent 34%),
+    rgba(0, 0, 0, 0.84);
+}
+
+.reveal-card.wow {
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--rarity-a, #ffd60a) 54%, rgba(255, 255, 255, 0.2));
+  background:
+    radial-gradient(110% 70% at 50% -8%, var(--rarity-glow), transparent 62%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 24%),
+    #070910;
+}
+
+.reveal-card.wow::before,
+.reveal-card.wow::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.reveal-card.wow::before {
+  inset: -30%;
+  z-index: 0;
+  opacity: 0.32;
+  background:
+    repeating-conic-gradient(from 0deg at 50% 42%, color-mix(in srgb, var(--rarity-a, #ffd60a) 44%, transparent) 0deg 4deg, transparent 4deg 14deg);
+  animation: revealAuraSpin 14s linear infinite;
+}
+
+.reveal-card.wow::after {
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(110deg, transparent 0 38%, rgba(255, 255, 255, 0.18) 46%, transparent 54% 100%),
+    repeating-linear-gradient(180deg, transparent 0 18px, rgba(255, 255, 255, 0.045) 19px 20px);
+  mix-blend-mode: screen;
+  animation: revealScreenSweep 2.2s ease-in-out 0.34s both;
+}
+
+@keyframes revealAuraSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes revealScreenSweep {
+  0% {
+    opacity: 0;
+    transform: translateX(-40%);
+  }
+
+  24%,
+  70% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(46%);
+  }
+}
+
+.summon-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.summon-bg i {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: 280px;
+  height: 280px;
+  border: 1px solid color-mix(in srgb, var(--rarity-a, #ffd60a) 42%, transparent);
+  border-radius: 999px;
+  box-shadow: 0 0 46px var(--rarity-glow, rgba(255, 214, 10, 0.28));
+  transform: translate(-50%, -50%) scale(0.6);
+  animation: summonWave 1.42s ease-out both;
+}
+
+.summon-bg i:nth-child(2) {
+  width: 360px;
+  height: 360px;
+  animation-delay: 0.18s;
+}
+
+.summon-bg i:nth-child(3) {
+  width: 440px;
+  height: 440px;
+  animation-delay: 0.36s;
+}
+
+@keyframes summonWave {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.38);
+  }
+
+  22% {
+    opacity: 0.85;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+.summon-title {
+  position: relative;
+  z-index: 4;
+  margin: 4px 0 12px;
+  text-align: center;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: summonTitleIn 0.52s cubic-bezier(0.16, 0.86, 0.18, 1.08) 0.12s both;
+}
+
+.summon-title span,
+.summon-title strong,
+.summon-title em {
+  display: block;
+}
+
+.summon-title span {
+  color: color-mix(in srgb, var(--rarity-a, #ffd60a) 82%, white 8%);
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 1000;
+  letter-spacing: 0.12em;
+}
+
+.summon-title strong {
+  margin-top: 7px;
+  color: #fff;
+  font-size: 34px;
+  line-height: 0.96;
+  font-weight: 1000;
+  text-shadow:
+    3px 3px 0 color-mix(in srgb, var(--rarity-a, #ffd60a) 75%, #000 25%),
+    0 0 28px var(--rarity-glow, rgba(255, 214, 10, 0.42));
+}
+
+.summon-title em {
+  margin-top: 7px;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.68);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  line-height: 1.2;
+  font-style: normal;
+  font-weight: 900;
+}
+
+@keyframes summonTitleIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.opening-card-stage {
+  z-index: 3;
+  perspective: 1100px;
+}
+
+.opening-card-stage::before,
+.opening-card-stage::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  border-radius: 999px;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotateX(72deg);
+}
+
+.opening-card-stage::before {
+  z-index: 0;
+  width: 112%;
+  aspect-ratio: 1;
+  border: 2px solid color-mix(in srgb, var(--rarity-a, #ffd60a) 58%, transparent);
+  box-shadow:
+    0 0 36px var(--rarity-glow, rgba(255, 214, 10, 0.24)),
+    inset 0 0 34px rgba(255, 255, 255, 0.06);
+  animation: openingRing 1.8s ease-in-out infinite alternate;
+}
+
+.opening-card-stage::after {
+  z-index: 2;
+  width: 88%;
+  aspect-ratio: 1;
+  border: 1px dashed rgba(255, 255, 255, 0.24);
+  animation: openingOrbit 5.4s linear infinite;
+}
+
+@keyframes openingRing {
+  to {
+    filter: brightness(1.55);
+    transform: translate(-50%, -50%) rotateX(72deg) scale(1.04);
+  }
+}
+
+@keyframes openingOrbit {
+  to {
+    transform: translate(-50%, -50%) rotateX(72deg) rotateZ(360deg);
+  }
+}
+
+.summon-gate {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 9px;
+  border-radius: 24px 9px 24px 9px;
+  background:
+    radial-gradient(80% 60% at 50% 40%, var(--rarity-glow), transparent 70%),
+    rgba(5, 7, 12, 0.36);
+  opacity: 0;
+  pointer-events: none;
+  animation: summonGate 1.08s cubic-bezier(0.16, 0.86, 0.18, 1) both;
+}
+
+.summon-gate span,
+.summon-gate em {
+  position: relative;
+  z-index: 2;
+}
+
+.summon-gate span {
+  padding: 7px 13px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--rarity-a), var(--rarity-b));
+  color: #100b04;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 1000;
+  letter-spacing: 0.1em;
+}
+
+.summon-gate b {
+  width: 108px;
+  height: 108px;
+  border: 6px solid rgba(255, 255, 255, 0.12);
+  border-top-color: var(--rarity-a);
+  border-right-color: var(--rarity-b);
+  border-radius: 999px;
+  box-shadow:
+    0 0 42px var(--rarity-glow),
+    inset 0 0 28px rgba(255, 255, 255, 0.08);
+  animation: summonGateSpin 0.5s linear infinite;
+}
+
+.summon-gate em {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 11px;
+  line-height: 1;
+  font-style: normal;
+  font-weight: 950;
+}
+
+@keyframes summonGate {
+  0% {
+    opacity: 0;
+    transform: scale(0.72);
+    filter: brightness(0.9) blur(2px);
+  }
+
+  18%,
+  70% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1.2) blur(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.14);
+    filter: brightness(1.8) blur(3px);
+  }
+}
+
+@keyframes summonGateSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.reveal-card.wow .card-back {
+  z-index: 5;
+  animation-duration: 1.34s;
+}
+
+.reveal-card.wow .opening-card-stage .cat-card {
+  position: relative;
+  z-index: 3;
+  animation-delay: 0.86s;
+}
+
+.reveal-card.rarity-legendary .summon-title strong {
+  color: #fff6c9;
+  font-size: 40px;
+  text-shadow:
+    3px 3px 0 #ff9500,
+    -2px -2px 0 #fff3a0,
+    0 0 42px rgba(255, 214, 10, 0.76);
+}
+
+.reveal-card.rarity-legendary .opening-card-stage::before {
+  border-width: 3px;
+  box-shadow:
+    0 0 60px rgba(255, 214, 10, 0.58),
+    inset 0 0 46px rgba(255, 214, 10, 0.16);
+}
+
+.reveal-card.rarity-legendary .cat-card {
+  filter: drop-shadow(0 0 28px rgba(255, 214, 10, 0.34));
+}
+
+.miss-warning {
+  position: relative;
+  z-index: 4;
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 45, 85, 0.44);
+  border-radius: 14px;
+  background:
+    repeating-linear-gradient(135deg, rgba(255, 45, 85, 0.12) 0 8px, transparent 8px 16px),
+    rgba(20, 6, 13, 0.62);
+  color: #fff;
+  text-align: center;
+  animation: missWarning 0.58s ease-out both;
+}
+
+.miss-warning span,
+.miss-warning strong {
+  display: block;
+}
+
+.miss-warning span {
+  color: #ff8aa1;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 1000;
+  letter-spacing: 0.16em;
+}
+
+.miss-warning strong {
+  margin-top: 5px;
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 1000;
+}
+
+@keyframes missWarning {
+  0% {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+
+  28% {
+    transform: translateX(12px);
+  }
+
+  54% {
+    opacity: 1;
+    transform: translateX(-6px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.reveal-card.failed .escape-visual {
+  position: relative;
+  overflow: hidden;
+  animation: nearMissCard 0.66s cubic-bezier(0.22, 0.86, 0.22, 1.1) both;
+}
+
+.reveal-card.failed .escape-visual::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: linear-gradient(110deg, transparent 34%, rgba(255, 255, 255, 0.2) 50%, transparent 66%);
+  transform: translateX(-100%);
+  animation: missSweep 0.72s ease-out 0.12s both;
+}
+
+@keyframes nearMissCard {
+  0% {
+    transform: rotate(-2deg) scale(0.96);
+    filter: blur(1px) brightness(0.9);
+  }
+
+  44% {
+    transform: rotate(1.5deg) scale(1.03);
+    filter: blur(0) brightness(1.18);
+  }
+
+  100% {
+    transform: rotate(0) scale(1);
+    filter: brightness(1);
+  }
+}
+
+@keyframes missSweep {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@media (max-width: 760px) {
+  .summon-title strong {
+    font-size: 30px;
+  }
+
+  .reveal-card.rarity-legendary .summon-title strong {
+    font-size: 34px;
+  }
+
+  .summon-title em {
+    white-space: normal;
+  }
+}

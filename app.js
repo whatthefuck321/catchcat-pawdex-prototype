@@ -1559,9 +1559,48 @@ function startCaptureAnimation(mode, rarity) {
   if (navigator.vibrate) navigator.vibrate([18, 36, 24]);
 }
 
+function revealDramaCopy(card) {
+  const rarityLabel = rarities[card.rarity].label;
+  if (card.rarity === "legendary") {
+    return {
+      kicker: "LEGENDARY SIGNAL",
+      title: "传说开卡",
+      subtitle: `${card.scene.place} 出现金色反应`,
+      seal: "LIMITED",
+      pulse: "金色猫影已锁定",
+    };
+  }
+  if (card.rarity === "epic") {
+    return {
+      kicker: "EPIC SIGNAL",
+      title: "史诗反应",
+      subtitle: `${card.scene.name} 进入高稀有区间`,
+      seal: "EPIC",
+      pulse: "紫色反应上升",
+    };
+  }
+  if (card.rarity === "rare") {
+    return {
+      kicker: "RARE SIGNAL",
+      title: "稀有开卡",
+      subtitle: `${card.scene.name} 稀有度确认`,
+      seal: "RARE",
+      pulse: "蓝色反应稳定",
+    };
+  }
+  return {
+    kicker: "PAWDEX OPENING",
+    title: `${rarityLabel}开卡`,
+    subtitle: `${card.scene.name} 已收入图鉴`,
+    seal: rarityLabel,
+    pulse: "猫影同步完成",
+  };
+}
+
 function showCardResult(card) {
   const cfg = rarities[card.rarity];
   const headline = card.revengeAttempt ? t("chase_success") : t("caught_title");
+  const drama = revealDramaCopy(card);
   const rewardCopy = card.reward?.total
     ? t("reward_food", {
         total: card.reward.total,
@@ -1582,14 +1621,29 @@ function showCardResult(card) {
   setRarityVars(els.modalCard, card.rarity);
   els.modalCard.innerHTML = `
     ${resultBurstMarkup(card.rarity, "success")}
+    <div class="summon-bg" aria-hidden="true">
+      <i></i>
+      <i></i>
+      <i></i>
+    </div>
     <div class="reveal-steps" aria-hidden="true">
       <span>${t("reveal_step_shutter")}</span>
       <span>${t("reveal_step_charge")}</span>
       <span>${t("reveal_step_flip")}</span>
       <span>${t("reveal_step_lock")}</span>
     </div>
+    <div class="summon-title">
+      <span>${drama.kicker}</span>
+      <strong>${drama.title}</strong>
+      <em>${drama.subtitle}</em>
+    </div>
     <div class="result-rarity-label">${cfg.label} CARD</div>
     <div class="opening-card-stage">
+      <div class="summon-gate" aria-hidden="true">
+        <span>${drama.seal}</span>
+        <b></b>
+        <em>${drama.pulse}</em>
+      </div>
       <div class="card-back" aria-hidden="true">
         <strong>PAWDEX</strong>
         <span>${cfg.label}</span>
@@ -1621,6 +1675,9 @@ function showCardResult(card) {
     </div>
   `;
   openModal();
+  if (navigator.vibrate) {
+    navigator.vibrate(card.rarity === "legendary" ? [24, 42, 28, 42, 52] : [16, 28, 18]);
+  }
 }
 
 function showEscapeResult(outcome) {
@@ -1634,6 +1691,10 @@ function showEscapeResult(outcome) {
   const escapedCard = escapeShareCard(outcome);
   els.modalCard.innerHTML = `
     ${resultBurstMarkup(outcome.rarity, "fail")}
+    <div class="miss-warning" aria-hidden="true">
+      <span>NEAR MISS</span>
+      <strong>${cfg.label} SIGNAL LOST</strong>
+    </div>
     <div class="result-rarity-label miss">${cfg.label} CLOSE CALL</div>
     <div class="escape-visual ${outcome.photo ? "has-photo" : ""}">
       <img src="${cardArtSource(escapedCard)}" ${fallbackImageAttr()} alt="" />
@@ -1653,6 +1714,7 @@ function showEscapeResult(outcome) {
     </div>
   `;
   openModal();
+  if (navigator.vibrate) navigator.vibrate([30, 26, 16]);
 }
 
 function showNoTreatsResult(cost) {
