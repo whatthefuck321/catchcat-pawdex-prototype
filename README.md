@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v14 founder revenue prototype`
+Current published version: `v15 true cat card prototype`
 
 ## What is included
 
@@ -17,9 +17,19 @@ Current published version: `v14 founder revenue prototype`
 - v11 cat spot POI: location text now has gameplay meaning. Convenience stores, stations, parks, and rooftops act as supply/spawn/habitat spots; active spots can grant a small cat-food supply with cooldown.
 - v12 wow reveal: staged card-back reveal, stronger rarity ceremony, and a local prototype breed-ID result on each captured card.
 - v13 breed API adapter: optional frontend adapter plus Supabase Edge Function sample for Gemini-based breed ID. If no API URL is configured, the app falls back to the local prototype breed result.
-- v14 founder revenue: in-app Founder Store, depleted-food revenue gate, and configurable payment links. The static prototype opens real configured checkout URLs only; it does not fake payment confirmation.
+- v14 founder reserve: configurable Founder payment links remain available as a landing-page reserve path. The static prototype opens real configured checkout URLs only; it does not fake payment confirmation.
+- v15 true cat card: capture now requires a real camera frame or uploaded cat photo before rolling. System cat illustrations are no longer used as captured card art; they remain only as idle/demo placeholders. Founder checkout is kept as a landing-page reserve, not the main GTM path.
 
-## Founder Store / Payment Links
+## v15 Approval Route
+
+The approved product route is no longer "HTML page first, charge first." The HTML build is a demo and landing page. The main validation target is:
+
+1. Real cat photo appears inside the generated card.
+2. iOS beta distribution via TestFlight becomes the primary competitive window.
+3. Share cards use the real cat card plus a download/invite CTA.
+4. Founder checkout opens only after real capture/share traction is proven.
+
+## Founder Reserve / Payment Links
 
 The static GitHub Pages build can open checkout links without adding server cost. Configure payment URLs before `app.js`:
 
@@ -33,7 +43,7 @@ The static GitHub Pages build can open checkout links without adding server cost
 </script>
 ```
 
-Without `window.PAWDEX_PAYMENT_LINKS`, the Founder Store deliberately shows a missing-link dialog instead of opening a fake checkout. Real paid entitlement still needs server-side confirmation later, for example Stripe webhook -> Supabase profile flag.
+Without `window.PAWDEX_PAYMENT_LINKS`, the Founder Reserve deliberately shows a missing-link dialog instead of opening a fake checkout. Real paid entitlement still needs server-side confirmation later, for example Stripe webhook -> Supabase profile flag. This remains a reserve path after traction, not the current main line.
 
 ## Breed ID note
 

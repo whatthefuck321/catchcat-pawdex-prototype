@@ -27,9 +27,15 @@ const I18N = {
     camera_open: "打开相机",
     camera_on: "相机已开",
     camera_blocked_title: "相机没打开",
-    camera_blocked_copy: "浏览器拒绝了相机权限，当前会用猫插画作为卡面。线上 HTTPS 页面可正常请求相机。",
+    camera_blocked_copy: "浏览器拒绝了相机权限。v15 不再用系统猫替代卡面，请上传一张真猫照片继续测试。",
     camera_ready: "真实相机已启用",
-    camera_fallback: "未开相机，使用插画卡面",
+    camera_fallback: "先开相机或上传真猫照片",
+    photo_upload: "上传猫图",
+    photo_ready: "真猫照片已锁定",
+    photo_required_title: "先拍真猫",
+    photo_required_copy: "这版不再用系统猫替代卡面。请打开相机，或上传一张真猫照片，再进行捕捉。",
+    photo_loaded_title: "真猫照片已载入",
+    photo_loaded_copy: "下一次捕捉会把这张照片裁进卡框；AI 只负责边框、光效和趣味品种文案。",
     catching: "结算中",
     catching_meta: "正在锁定这次捕捉",
     startled: "被惊扰",
@@ -42,7 +48,7 @@ const I18N = {
     spend_chase: "消耗 {cost} 猫粮追猎传说",
     no_treats_copy: "需要 {cost} 猫粮。保存分享图可以回粮；要马上继续就升级 Founder。",
     no_treats_share: "去保存分享图",
-    no_treats_store: "去 Founder 商店",
+    no_treats_store: "查看预留权益",
     roll_title: "{mode}捕捉中",
     roll_legendary: "这次可能是传说，别眨眼",
     roll_normal: "正在结算稀有度和逃跑",
@@ -106,19 +112,19 @@ const I18N = {
     share_opened_title: "分享已打开",
     share_opened_copy: "已打开分享窗口，今日分享回粮会按上限结算。",
     share_native_unavailable: "系统分享不可用，已改为下载图片。",
-    store_page_title: "Day1 收钱",
-    store_goal: "首周目标 $90",
-    store_hero_title: "先卖身份，不先烧钱",
-    store_hero_copy: "免费用户负责传播，Founder 收入先覆盖云、识别和后续开发成本。",
+    store_page_title: "Founder 预留",
+    store_goal: "有流量后开启",
+    store_hero_title: "先跑通真猫晒卡，再收钱",
+    store_hero_copy: "当前主线是 iOS beta 和真实猫卡传播；Founder 入口只作为落地页预留。",
     founder_upgrade: "升级 Founder",
     founder_checkout: "立即支持",
     founder_missing_title: "收款链接未配置",
     founder_missing_copy: "先创建 Stripe Payment Link，再配置 window.PAWDEX_PAYMENT_LINKS。现在不会打开假收款页。",
     founder_opened_title: "收款页面已打开",
     founder_opened_copy: "付款确认需要 Stripe webhook 或 Supabase 记录；当前静态原型只负责打开收款入口。",
-    founder_note: "Day1 只卖身份、外观和展示权；识别 API 等成本功能只给支持者优先开放。",
+    founder_note: "审批路线已调整：先验证 100 个陌生人拍真猫晒卡，再正式开启 Founder 收款和权益发放。",
     founder_popular: "推荐",
-    founder_revenue_math: "10 个 Early = $90；5 个 Founder = $95；1 个猫点赞助 = $49。",
+    founder_revenue_math: "GTM 验收线：真猫上卡 + iOS beta + 晒卡传播；收入是结果，不是前提。",
     revenge_ready: "它回来了",
     revenge_armed: "追猎已锁定",
     revenge_armed_copy: "下一次全心全意必遇到传说，失败会重新记仇。",
@@ -152,7 +158,7 @@ const I18N = {
     sim_result: "每粮 Rare+ {rare} · 每粮传说 {legendary} · 跑 {escape}%",
     nav_catch: "抓猫",
     nav_dex: "图鉴",
-    nav_store: "商店",
+    nav_store: "预留",
     nav_rank: "榜单",
     nav_share: "分享",
     share_text: "我在 PAWDEX 抓到一只稀有猫！你也来试试",
@@ -184,9 +190,15 @@ const I18N = {
     camera_open: "Open camera",
     camera_on: "Camera on",
     camera_blocked_title: "Camera is not available",
-    camera_blocked_copy: "The browser blocked camera access. This session will use illustration art for cards.",
+    camera_blocked_copy: "The browser blocked camera access. v15 no longer swaps in system cat art; upload a real cat photo to continue testing.",
     camera_ready: "Real camera enabled",
-    camera_fallback: "Camera off, using illustration art",
+    camera_fallback: "Open camera or upload a real cat photo",
+    photo_upload: "Upload cat photo",
+    photo_ready: "Real cat photo locked",
+    photo_required_title: "Capture a real cat first",
+    photo_required_copy: "This build no longer replaces the cat with system art. Open the camera or upload a real cat photo before capturing.",
+    photo_loaded_title: "Real cat photo loaded",
+    photo_loaded_copy: "The next capture will crop this photo into the card frame. AI only adds frames, effects, and fun breed copy.",
     catching: "Resolving",
     catching_meta: "Locking this capture",
     startled: "Startled",
@@ -199,7 +211,7 @@ const I18N = {
     spend_chase: "Spend {cost} treats to chase a legendary",
     no_treats_copy: "Needs {cost} treats. Save a share card to recover treats, or upgrade Founder to continue now.",
     no_treats_share: "Save share card",
-    no_treats_store: "Open Founder Store",
+    no_treats_store: "View reserve perks",
     roll_title: "{mode} capture",
     roll_legendary: "This could be legendary. Do not blink.",
     roll_normal: "Resolving rarity and escape chance",
@@ -263,19 +275,19 @@ const I18N = {
     share_opened_title: "Share opened",
     share_opened_copy: "The share window is open. Treat refunds follow the daily cap.",
     share_native_unavailable: "Native share is unavailable, so the image was downloaded instead.",
-    store_page_title: "Day1 Revenue",
-    store_goal: "Week 1 goal $90",
-    store_hero_title: "Sell identity before spending money",
-    store_hero_copy: "Free users spread the loop; Founder revenue covers cloud, breed ID, and development costs.",
+    store_page_title: "Founder Reserve",
+    store_goal: "Open after traction",
+    store_hero_title: "Ship real cat cards before charging",
+    store_hero_copy: "The main line is iOS beta plus real-cat share cards. Founder checkout stays as a landing-page reserve.",
     founder_upgrade: "Upgrade Founder",
     founder_checkout: "Support now",
     founder_missing_title: "Payment link is not configured",
     founder_missing_copy: "Create Stripe Payment Links, then configure window.PAWDEX_PAYMENT_LINKS. This prototype will not open a fake checkout.",
     founder_opened_title: "Checkout opened",
     founder_opened_copy: "Payment confirmation needs Stripe webhooks or Supabase records. This static prototype only opens checkout.",
-    founder_note: "Day1 sells identity, cosmetics, and display rights. Costly AI features open to supporters first.",
+    founder_note: "Route adjusted: prove 100 strangers will capture and share real cat cards before opening Founder checkout and entitlements.",
     founder_popular: "Recommended",
-    founder_revenue_math: "10 Early packs = $90; 5 Founder packs = $95; 1 cat spot sponsor = $49.",
+    founder_revenue_math: "GTM gate: real cat on card + iOS beta + share-card spread. Revenue is the result, not the prerequisite.",
     revenge_ready: "It came back",
     revenge_armed: "Chase locked",
     revenge_armed_copy: "The next All Heart attempt will meet a legendary. A miss will mark it again.",
@@ -309,7 +321,7 @@ const I18N = {
     sim_result: "Rare+ per treat {rare} · Legendary per treat {legendary} · Escape {escape}%",
     nav_catch: "Catch",
     nav_dex: "Dex",
-    nav_store: "Store",
+    nav_store: "Reserve",
     nav_rank: "Rank",
     nav_share: "Share",
     share_text: "I just caught a rare cat on PAWDEX! Come try",
@@ -628,7 +640,7 @@ const BREED_API_CONFIG = {
 const pageMeta = {
   catch: { label: "PAWDEX FIELD", title: "今晚抓猫" },
   dex: { label: "CAT DEX", title: "猫卡图鉴" },
-  store: { label: "FOUNDER STORE", title: "Day1 收钱" },
+  store: { label: "FOUNDER RESERVE", title: "Founder 预留" },
   rank: { label: "WEEKLY RANK", title: "本周榜单" },
   share: { label: "STORY SHARE", title: "晒卡分享" },
   debug: { label: "DEV PANEL", title: "调试面板" },
@@ -655,6 +667,7 @@ const state = {
   revengeCat: null,
   revengeActive: false,
   cameraEnabled: false,
+  photoOverride: null,
   authUser: null,
   locationStatus: "idle",
   locationSpot: null,
@@ -675,6 +688,9 @@ const els = {
   canvas: $("#catCanvas"),
   cameraVideo: $("#cameraVideo"),
   cameraToggleButton: $("#cameraToggleButton"),
+  photoInput: $("#photoInput"),
+  photoPickButton: $("#photoPickButton"),
+  photoPreview: $("#photoPreview"),
   fieldCatArt: $("#fieldCatArt"),
   foodLabel: $("#foodLabel"),
   fieldFoodLabel: $("#fieldFoodLabel"),
@@ -702,6 +718,7 @@ const els = {
   animeCutIn: $("#animeCutIn"),
   cutInTitle: $("#cutInTitle"),
   cutInCopy: $("#cutInCopy"),
+  scanChip: $("#scanChip"),
   revengeBanner: $("#revengeBanner"),
   revengeTitle: $("#revengeTitle"),
   revengeCopy: $("#revengeCopy"),
@@ -1069,9 +1086,79 @@ async function startCamera() {
   }
 }
 
-function capturePhotoFrame() {
+function hasLiveVideoSource() {
   const video = els.cameraVideo;
-  if (!state.cameraEnabled || !video.videoWidth || !video.videoHeight) return null;
+  return Boolean(state.cameraEnabled && video.videoWidth && video.videoHeight);
+}
+
+function hasTruePhotoSource() {
+  return Boolean(state.photoOverride || hasLiveVideoSource());
+}
+
+function readFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(reader.error || new Error("photo read failed"));
+    reader.readAsDataURL(file);
+  });
+}
+
+function loadImage(dataUrl) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error("photo load failed"));
+    image.src = dataUrl;
+  });
+}
+
+async function normalizePhotoDataUrl(dataUrl) {
+  const image = await loadImage(dataUrl);
+  const targetWidth = 900;
+  const targetHeight = 1200;
+  const targetRatio = targetWidth / targetHeight;
+  const sourceRatio = image.naturalWidth / image.naturalHeight;
+  let sx = 0;
+  let sy = 0;
+  let sw = image.naturalWidth;
+  let sh = image.naturalHeight;
+
+  if (sourceRatio > targetRatio) {
+    sw = image.naturalHeight * targetRatio;
+    sx = (image.naturalWidth - sw) / 2;
+  } else {
+    sh = image.naturalWidth / targetRatio;
+    sy = (image.naturalHeight - sh) / 2;
+  }
+
+  const photoCanvas = document.createElement("canvas");
+  photoCanvas.width = targetWidth;
+  photoCanvas.height = targetHeight;
+  const photoCtx = photoCanvas.getContext("2d");
+  photoCtx.drawImage(image, sx, sy, sw, sh, 0, 0, targetWidth, targetHeight);
+  return photoCanvas.toDataURL("image/jpeg", 0.86);
+}
+
+async function handlePhotoUpload(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  try {
+    const dataUrl = await readFileAsDataUrl(file);
+    state.photoOverride = await normalizePhotoDataUrl(dataUrl);
+    showEscapeLikeResult(t("photo_loaded_title"), t("photo_loaded_copy"));
+    render();
+  } catch {
+    showEscapeLikeResult(t("camera_blocked_title"), t("camera_blocked_copy"));
+  } finally {
+    event.target.value = "";
+  }
+}
+
+function capturePhotoFrame() {
+  if (state.photoOverride) return state.photoOverride;
+  const video = els.cameraVideo;
+  if (!hasLiveVideoSource()) return null;
 
   const targetWidth = 900;
   const targetHeight = 1200;
@@ -1259,6 +1346,11 @@ function updateCatchCopy(mode, isRolling, isRevengeActive) {
     els.catchMeta.textContent = t("startled_meta");
     return;
   }
+  if (!hasTruePhotoSource()) {
+    els.catchLabel.textContent = t("photo_required_title");
+    els.catchMeta.textContent = t("camera_fallback");
+    return;
+  }
   if (state.food < mode.cost) {
     els.catchLabel.textContent = t("no_treats");
     els.catchMeta.textContent = t("need_treats", { cost: mode.cost });
@@ -1286,6 +1378,11 @@ function catchCat() {
   const revengeAttempt = Boolean(state.revengeActive && activeRevengeCat());
   const modeKey = revengeAttempt ? "allin" : state.mode;
   const mode = modes[modeKey];
+  const photo = capturePhotoFrame();
+  if (!photo) {
+    showTruePhotoRequired();
+    return;
+  }
   if (state.food < mode.cost) {
     showNoTreatsResult(mode.cost);
     return;
@@ -1293,7 +1390,7 @@ function catchCat() {
 
   state.food -= mode.cost;
   showEconomyToast(`-${mode.cost} ${t("treat")}`, "spend");
-  const photo = capturePhotoFrame();
+  state.photoOverride = null;
   const baseRarity = revengeAttempt ? "legendary" : rollRarity(modeKey);
   const rate = escapeRate(baseRarity, modeKey);
   const escaped = Math.random() < rate;
@@ -1522,6 +1619,21 @@ function showNoTreatsResult(cost) {
     <div class="modal-actions">
       ${shareAction}
       <button class="${shareAction ? "plain founder-action" : "main founder-action"}" data-action="store">${t("no_treats_store")}</button>
+      <button class="plain" data-action="close">${t("modal_ok")}</button>
+    </div>
+  `;
+  openModal();
+}
+
+function showTruePhotoRequired() {
+  els.modalCard.className = "modal-card revenue-gate photo-gate";
+  els.modalCard.innerHTML = `
+    <div class="gate-icon photo">PHOTO</div>
+    <h2>${t("photo_required_title")}</h2>
+    <p>${t("photo_required_copy")}</p>
+    <div class="modal-actions">
+      <button class="main" data-action="camera">${t("camera_open")}</button>
+      <button class="plain" data-action="upload">${t("photo_upload")}</button>
       <button class="plain" data-action="close">${t("modal_ok")}</button>
     </div>
   `;
@@ -2119,6 +2231,12 @@ function render() {
   }
   els.riskHint.textContent = isRevengeActive ? "回归传说锁定：全心全意追猎" : mode.hint;
   els.cameraToggleButton.textContent = state.cameraEnabled ? t("camera_on") : t("camera_open");
+  els.photoPickButton.textContent = t("photo_upload");
+  els.scanChip.textContent = hasTruePhotoSource() ? t("photo_ready") : t("camera_fallback");
+  els.photoPreview.hidden = !state.photoOverride;
+  if (state.photoOverride && els.photoPreview.src !== state.photoOverride) {
+    els.photoPreview.src = state.photoOverride;
+  }
   updateCatchCopy(mode, isRolling, isRevengeActive);
   els.catchButton.disabled = isBusy;
   els.scanButton.disabled = isBusy || isRevengeActive;
@@ -2168,6 +2286,8 @@ function render() {
 
   els.phone.classList.toggle("catch-mode", state.tab === "catch");
   els.phone.classList.toggle("camera-on", state.cameraEnabled);
+  els.phone.classList.toggle("photo-ready", Boolean(state.photoOverride));
+  els.phone.classList.toggle("true-photo-ready", hasTruePhotoSource());
   els.phone.dataset.phase = state.phase;
   $$(".mode").forEach((item) => {
     const modeConfig = modes[item.dataset.mode];
@@ -2253,6 +2373,8 @@ $$("[data-tab]").forEach((button) => {
 els.scanButton.addEventListener("click", scanNextCat);
 els.catchButton.addEventListener("click", catchCat);
 els.cameraToggleButton.addEventListener("click", startCamera);
+els.photoPickButton.addEventListener("click", () => els.photoInput.click());
+els.photoInput.addEventListener("change", handlePhotoUpload);
 els.locationButton.addEventListener("click", claimSpotReward);
 els.authButton.addEventListener("click", openAuthPanel);
 els.fieldAuthButton.addEventListener("click", openAuthPanel);
@@ -2318,6 +2440,14 @@ els.resultModal.addEventListener("click", (event) => {
   if (action === "store") {
     closeModal();
     switchTab("store");
+  }
+  if (action === "camera") {
+    closeModal();
+    startCamera();
+  }
+  if (action === "upload") {
+    closeModal();
+    els.photoInput.click();
   }
   if (authAction) handleAuthAction(authAction);
 });

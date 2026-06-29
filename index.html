@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PAWDEX v14 - Founder Revenue Prototype</title>
+    <title>PAWDEX v15 - True Cat Card Prototype</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -39,6 +39,8 @@
         <section class="screen active" id="catchScreen" data-screen="catch">
           <div class="camera-card field-camera">
             <video class="camera-video" id="cameraVideo" autoplay playsinline muted></video>
+            <img class="photo-preview" id="photoPreview" alt="" />
+            <input id="photoInput" class="photo-input" type="file" accept="image/*" capture="environment" />
             <canvas id="catCanvas" width="760" height="980"></canvas>
             <img class="field-cat-art" id="fieldCatArt" src="./assets/cat-common.png" alt="" />
             <div class="camera-ui">
@@ -77,6 +79,7 @@
               </button>
 
               <button class="camera-toggle" id="cameraToggleButton" type="button">打开相机</button>
+              <button class="photo-pick" id="photoPickButton" type="button">上传猫图</button>
               <div class="scan-chip" id="scanChip">猫已识别 94%</div>
               <div class="scan-sweep"></div>
               <div class="target-box"></div>
@@ -196,7 +199,7 @@
         <section class="screen" id="storeScreen" data-screen="store" hidden>
           <div class="section-head dex-head">
             <div>
-              <p class="app-label">FOUNDER STORE</p>
+              <p class="app-label">FOUNDER RESERVE</p>
               <h3 id="storeTitle">Day1 收钱</h3>
             </div>
             <span class="rank-pill" id="storeGoal">$90</span>
@@ -247,7 +250,7 @@
         <footer class="bottom-nav">
           <button class="nav active" type="button" data-tab="catch">⌾<span>抓猫</span></button>
           <button class="nav" type="button" data-tab="dex">◇<span>图鉴</span></button>
-          <button class="nav" type="button" data-tab="store">★<span>商店</span></button>
+          <button class="nav" type="button" data-tab="store">★<span>预留</span></button>
           <button class="nav" type="button" data-tab="rank">≡<span>榜单</span></button>
           <button class="nav" type="button" data-tab="share">↗<span>分享</span></button>
         </footer>
