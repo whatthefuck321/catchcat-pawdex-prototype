@@ -3,13 +3,70 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PAWDEX v15 - True Cat Card Prototype</title>
+    <title>PAWDEX v16 - Real Cat Hunt Game Prototype</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <main class="stage">
-      <section class="phone" aria-label="手机 App 原型">
+    <main class="site-shell">
+      <nav class="site-nav" aria-label="PAWDEX">
+        <a class="brand-mark" href="#top" aria-label="PAWDEX 首页">
+          <img src="./assets/cat-legendary.png" alt="" />
+          <span>PAWDEX</span>
+        </a>
+        <div class="site-nav-links">
+          <a href="#hunt">玩法</a>
+          <a href="#prototype">原型</a>
+          <a href="#loop">经济</a>
+        </div>
+        <a class="nav-cta" href="#prototype">开始抓猫</a>
+      </nav>
+
+      <section class="game-hero" id="top">
+        <div class="hero-bg-cat hero-bg-cat-a" aria-hidden="true">
+          <img src="./assets/cat-rare.png" alt="" />
+        </div>
+        <div class="hero-bg-cat hero-bg-cat-b" aria-hidden="true">
+          <img src="./assets/cat-legendary.png" alt="" />
+        </div>
+
+        <section class="hero-copy" id="hunt" aria-label="游戏介绍">
+          <p class="hero-kicker">REAL CAT HUNT / PHOTO CARD</p>
+          <h1><span>拍真猫，</span><span>开传说卡。</span></h1>
+          <p class="hero-lead">
+            拍真猫、选风险、开卡、晒稀有。PAWDEX 不是图鉴工具，核心是一次 10 秒的开卡紧张感:
+            今天这只猫，会不会出传说?
+          </p>
+          <div class="hero-actions">
+            <a class="hero-primary" href="#prototype">试玩原型</a>
+            <a class="hero-secondary" href="#loop">看经济循环</a>
+          </div>
+          <div class="hero-stats" aria-label="核心玩法">
+            <div>
+              <strong>真猫上卡</strong>
+              <span>相机/相册照片直接进卡面</span>
+            </div>
+            <div>
+              <strong>三档风险</strong>
+              <span>稳抓、冒险、全心全意</span>
+            </div>
+            <div>
+              <strong>限时传说</strong>
+              <span>猫粮、首杀、限定猫拉回访</span>
+            </div>
+          </div>
+        </section>
+
+        <div class="hero-phone-wrap" id="prototype">
+          <div class="phone-callout top">
+            <span>LIVE</span>
+            <strong>上传真猫后才能捕捉</strong>
+          </div>
+          <div class="phone-callout bottom">
+            <span>LEGENDARY</span>
+            <strong>限定猫错过会留空位</strong>
+          </div>
+          <section class="phone" aria-label="手机 App 原型">
         <header class="status-bar">
           <span>13:28</span>
           <span>5G  87%</span>
@@ -200,7 +257,7 @@
           <div class="section-head dex-head">
             <div>
               <p class="app-label">FOUNDER RESERVE</p>
-              <h3 id="storeTitle">Day1 收钱</h3>
+              <h3 id="storeTitle">Founder 预留</h3>
             </div>
             <span class="rank-pill" id="storeGoal">$90</span>
           </div>
@@ -255,6 +312,37 @@
           <button class="nav" type="button" data-tab="share">↗<span>分享</span></button>
         </footer>
         <div class="economy-toast" id="economyToast" aria-live="polite"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="game-loop-band" id="loop" aria-label="玩法循环">
+        <div class="loop-head">
+          <p class="hero-kicker">GAME LOOP</p>
+          <h2>我们现在缺的不是更多卡片，是更像游戏的外壳。</h2>
+        </div>
+        <div class="loop-grid">
+          <article>
+            <span>01</span>
+            <strong>街头发现</strong>
+            <p>用定位和猫点把“便利店/后巷/公园”变成出没区域，而不是普通信息卡。</p>
+          </article>
+          <article>
+            <span>02</span>
+            <strong>风险捕捉</strong>
+            <p>拍到真猫后才开卡，三档风险决定猫粮消耗、逃跑和传说率。</p>
+          </article>
+          <article>
+            <span>03</span>
+            <strong>开卡演出</strong>
+            <p>传说卡必须有全屏演出、金光、震动和可分享截图，这是传播瞬间。</p>
+          </article>
+          <article>
+            <span>04</span>
+            <strong>晒卡回流</strong>
+            <p>分享图要带真猫卡、邀请入口和限定信息，让用户替我们发传播物料。</p>
+          </article>
+        </div>
       </section>
     </main>
 

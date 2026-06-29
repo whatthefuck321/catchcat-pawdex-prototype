@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v15 true cat card prototype`
+Current published version: `v16 game-site shell + true cat card prototype`
 
 ## What is included
 
@@ -20,6 +20,7 @@ Current published version: `v15 true cat card prototype`
 - v14 founder reserve: configurable Founder payment links remain available as a landing-page reserve path. The static prototype opens real configured checkout URLs only; it does not fake payment confirmation.
 - v15 true cat card: capture now requires a real camera frame or uploaded cat photo before rolling. System cat illustrations are no longer used as captured card art; they remain only as idle/demo placeholders. Founder checkout is kept as a landing-page reserve, not the main GTM path.
 - v15 photo safety: card, near-miss, field, and share images now have explicit broken-image fallback handling so bad URLs or failed assets do not render as black/empty blocks.
+- v16 game-site shell: the first screen now presents PAWDEX as a cat-hunting game with a bold game hero, gameplay CTA, visible phone prototype, and a compact game-loop section instead of opening directly as a dense card/prototype surface.
 
 ## v15 Approval Route
 
