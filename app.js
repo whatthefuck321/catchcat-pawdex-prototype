@@ -743,6 +743,8 @@ const els = {
   clearDexButton: $("#clearDexButton"),
   storyPreview: $("#storyPreview"),
   storyRarityBadge: $("#storyRarityBadge"),
+  storyStamp: $("#storyStamp"),
+  storySignal: $("#storySignal"),
   storyCardArt: $("#storyCardArt"),
   storyCardName: $("#storyCardName"),
   storyCardNo: $("#storyCardNo"),
@@ -750,6 +752,9 @@ const els = {
   storyCardDate: $("#storyCardDate"),
   storyHeadline: $("#storyHeadline"),
   storySub: $("#storySub"),
+  storyLootRarity: $("#storyLootRarity"),
+  storyLootCost: $("#storyLootCost"),
+  storyLootReward: $("#storyLootReward"),
   copyShareButton: $("#copyShareButton"),
   lastOutcomeTitle: $("#lastOutcomeTitle"),
   lastOutcomeCopy: $("#lastOutcomeCopy"),
@@ -2005,11 +2010,21 @@ function setStoryTheme(rarity, isFail) {
   els.storyPreview.style.setProperty("--b", cfg.b);
 }
 
+function setStorySignal(kicker, title) {
+  if (!els.storySignal) return;
+  const kickerEl = els.storySignal.querySelector("span");
+  const titleEl = els.storySignal.querySelector("strong");
+  if (kickerEl) kickerEl.textContent = kicker;
+  if (titleEl) titleEl.textContent = title;
+}
+
 function renderStory() {
   const outcome = state.lastOutcome;
   if (!outcome) {
     setStoryTheme("common", false);
     els.storyRarityBadge.textContent = "READY";
+    els.storyStamp.textContent = "REAL CAT TROPHY";
+    setStorySignal("LIVE CAPTURE", "今晚抓猫");
     els.storyCardArt.src = catAsset("common");
     els.storyCardArt.classList.remove("is-photo");
     els.storyCardName.textContent = t("story_empty_name");
@@ -2018,6 +2033,9 @@ function renderStory() {
     els.storyCardDate.textContent = shareDateLabel();
     els.storyHeadline.textContent = t("story_empty_headline");
     els.storySub.textContent = t("story_empty_sub");
+    els.storyLootRarity.textContent = "READY";
+    els.storyLootCost.textContent = "--";
+    els.storyLootReward.textContent = "拍真猫";
     return;
   }
 
@@ -2026,6 +2044,8 @@ function renderStory() {
     const cfg = rarities[card.rarity];
     setStoryTheme(card.rarity, true);
     els.storyRarityBadge.textContent = t("story_fail_badge");
+    els.storyStamp.textContent = "NEAR MISS";
+    setStorySignal("SIGNAL LOST", `${cfg.label}猫差一点`);
     els.storyCardArt.src = cardArtSource(card);
     els.storyCardArt.classList.toggle("is-photo", Boolean(card.photo));
     els.storyCardName.textContent = card.name;
@@ -2037,6 +2057,9 @@ function renderStory() {
       rarity: cfg.label,
       rate: (outcome.rate * 100).toFixed(0),
     });
+    els.storyLootRarity.textContent = cfg.label;
+    els.storyLootCost.textContent = `-${outcome.cost || modes[outcome.mode]?.cost || 0} 猫粮`;
+    els.storyLootReward.textContent = `${(outcome.rate * 100).toFixed(0)}% 跑掉`;
     return;
   }
 
@@ -2048,6 +2071,11 @@ function renderStory() {
   const breedPrefix = card.breed ? `${breedDisplayName(card.breed)} · ` : "";
   setStoryTheme(card.rarity, false);
   els.storyRarityBadge.textContent = `${cfg.label} ${card.rarity.toUpperCase()}`;
+  els.storyStamp.textContent = card.rarity === "legendary" ? "LEGENDARY TROPHY" : "CAT TROPHY";
+  setStorySignal(
+    card.rarity === "legendary" ? "GOLD SIGNAL LOCKED" : "CAPTURE COMPLETE",
+    card.rarity === "legendary" ? "传说猫已上卡" : `${cfg.label}猫已上卡`,
+  );
   els.storyCardArt.src = cardArtSource(card);
   els.storyCardArt.classList.toggle("is-photo", Boolean(card.photo));
   els.storyCardName.textContent = card.name;
@@ -2062,6 +2090,9 @@ function renderStory() {
     card.rarity === "legendary"
       ? `${breedPrefix}${t("story_legendary_sub", { reward: rewardText })}`
       : `${breedPrefix}${t("story_rarity_sub", { reward: rewardText })}`;
+  els.storyLootRarity.textContent = cfg.label;
+  els.storyLootCost.textContent = `-${modes[card.mode]?.cost || 0} 猫粮`;
+  els.storyLootReward.textContent = card.reward?.total ? `+${card.reward.total} 猫粮` : "无返粮";
 }
 
 function renderDex() {
