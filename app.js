@@ -40,7 +40,9 @@ const I18N = {
     chase_capture: "追猎拍摄",
     spend_treats: "消耗 {cost} 猫粮",
     spend_chase: "消耗 {cost} 猫粮追猎传说",
-    no_treats_copy: "需要 {cost} 猫粮，先分享一张卡回粮。",
+    no_treats_copy: "需要 {cost} 猫粮。保存分享图可以回粮；要马上继续就升级 Founder。",
+    no_treats_share: "去保存分享图",
+    no_treats_store: "去 Founder 商店",
     roll_title: "{mode}捕捉中",
     roll_legendary: "这次可能是传说，别眨眼",
     roll_normal: "正在结算稀有度和逃跑",
@@ -104,6 +106,19 @@ const I18N = {
     share_opened_title: "分享已打开",
     share_opened_copy: "已打开分享窗口，今日分享回粮会按上限结算。",
     share_native_unavailable: "系统分享不可用，已改为下载图片。",
+    store_page_title: "Day1 收钱",
+    store_goal: "首周目标 $90",
+    store_hero_title: "先卖身份，不先烧钱",
+    store_hero_copy: "免费用户负责传播，Founder 收入先覆盖云、识别和后续开发成本。",
+    founder_upgrade: "升级 Founder",
+    founder_checkout: "立即支持",
+    founder_missing_title: "收款链接未配置",
+    founder_missing_copy: "先创建 Stripe Payment Link，再配置 window.PAWDEX_PAYMENT_LINKS。现在不会打开假收款页。",
+    founder_opened_title: "收款页面已打开",
+    founder_opened_copy: "付款确认需要 Stripe webhook 或 Supabase 记录；当前静态原型只负责打开收款入口。",
+    founder_note: "Day1 只卖身份、外观和展示权；识别 API 等成本功能只给支持者优先开放。",
+    founder_popular: "推荐",
+    founder_revenue_math: "10 个 Early = $90；5 个 Founder = $95；1 个猫点赞助 = $49。",
     revenge_ready: "它回来了",
     revenge_armed: "追猎已锁定",
     revenge_armed_copy: "下一次全心全意必遇到传说，失败会重新记仇。",
@@ -137,6 +152,7 @@ const I18N = {
     sim_result: "每粮 Rare+ {rare} · 每粮传说 {legendary} · 跑 {escape}%",
     nav_catch: "抓猫",
     nav_dex: "图鉴",
+    nav_store: "商店",
     nav_rank: "榜单",
     nav_share: "分享",
     share_text: "我在 PAWDEX 抓到一只稀有猫！你也来试试",
@@ -181,7 +197,9 @@ const I18N = {
     chase_capture: "Chase capture",
     spend_treats: "Spend {cost} treats",
     spend_chase: "Spend {cost} treats to chase a legendary",
-    no_treats_copy: "Needs {cost} treats. Share a card first to recover treats.",
+    no_treats_copy: "Needs {cost} treats. Save a share card to recover treats, or upgrade Founder to continue now.",
+    no_treats_share: "Save share card",
+    no_treats_store: "Open Founder Store",
     roll_title: "{mode} capture",
     roll_legendary: "This could be legendary. Do not blink.",
     roll_normal: "Resolving rarity and escape chance",
@@ -245,6 +263,19 @@ const I18N = {
     share_opened_title: "Share opened",
     share_opened_copy: "The share window is open. Treat refunds follow the daily cap.",
     share_native_unavailable: "Native share is unavailable, so the image was downloaded instead.",
+    store_page_title: "Day1 Revenue",
+    store_goal: "Week 1 goal $90",
+    store_hero_title: "Sell identity before spending money",
+    store_hero_copy: "Free users spread the loop; Founder revenue covers cloud, breed ID, and development costs.",
+    founder_upgrade: "Upgrade Founder",
+    founder_checkout: "Support now",
+    founder_missing_title: "Payment link is not configured",
+    founder_missing_copy: "Create Stripe Payment Links, then configure window.PAWDEX_PAYMENT_LINKS. This prototype will not open a fake checkout.",
+    founder_opened_title: "Checkout opened",
+    founder_opened_copy: "Payment confirmation needs Stripe webhooks or Supabase records. This static prototype only opens checkout.",
+    founder_note: "Day1 sells identity, cosmetics, and display rights. Costly AI features open to supporters first.",
+    founder_popular: "Recommended",
+    founder_revenue_math: "10 Early packs = $90; 5 Founder packs = $95; 1 cat spot sponsor = $49.",
     revenge_ready: "It came back",
     revenge_armed: "Chase locked",
     revenge_armed_copy: "The next All Heart attempt will meet a legendary. A miss will mark it again.",
@@ -278,6 +309,7 @@ const I18N = {
     sim_result: "Rare+ per treat {rare} · Legendary per treat {legendary} · Escape {escape}%",
     nav_catch: "Catch",
     nav_dex: "Dex",
+    nav_store: "Store",
     nav_rank: "Rank",
     nav_share: "Share",
     share_text: "I just caught a rare cat on PAWDEX! Come try",
@@ -543,6 +575,39 @@ const leaderboardRivals = [
   { name: "大安金瞳", legendary: 3, rarePlus: 18 },
   { name: "大阪巷口", legendary: 2, rarePlus: 15 },
 ];
+const founderPacks = [
+  {
+    id: "early",
+    price: "$9",
+    nameZh: "Early Cat Hunter",
+    nameEn: "Early Cat Hunter",
+    badgeZh: "第一批支持者",
+    badgeEn: "First supporters",
+    perksZh: ["Founder 徽章", "限定卡框", "每日额外猫粮", "公开主页优先展示"],
+    perksEn: ["Founder badge", "Limited card frame", "Daily extra treats", "Priority public profile"],
+  },
+  {
+    id: "founder",
+    price: "$19",
+    nameZh: "Founder Pass",
+    nameEn: "Founder Pass",
+    badgeZh: "推荐",
+    badgeEn: "Recommended",
+    perksZh: ["永久 Founder 标记", "专属卡背", "限定猫任务优先", "高清分享图"],
+    perksEn: ["Permanent Founder mark", "Exclusive card back", "Limited-cat priority", "HD share exports"],
+    featured: true,
+  },
+  {
+    id: "sponsor",
+    price: "$49",
+    nameZh: "Sponsor Cat Spot",
+    nameEn: "Sponsor Cat Spot",
+    badgeZh: "社群/店铺",
+    badgeEn: "Community / shop",
+    perksZh: ["命名一个猫点", "猫点公开展示", "赞助者署名", "首批地图权益"],
+    perksEn: ["Name a cat spot", "Public spot display", "Sponsor credit", "Early map rights"],
+  },
+];
 
 const names = ["麻薯", "豆腐", "奶盖", "团子", "玄米", "乌冬", "小虎", "年糕"];
 const titles = ["便利店守护者", "屋顶明星", "夜行冠军", "金瞳猎手", "传说候选猫", "巷口幻影"];
@@ -551,6 +616,7 @@ const shareRewardLimit = 3;
 const SPOT_REWARD_COOLDOWN_MS = 5 * 60 * 1000;
 const SHARE_URL =
   window.PAWDEX_SHARE_URL || "https://whatthefuck321.github.io/catchcat-pawdex-prototype/";
+const PAYMENT_LINKS = window.PAWDEX_PAYMENT_LINKS || {};
 const SUPABASE_CONFIG = window.PAWDEX_SUPABASE || { url: "", anonKey: "" };
 const BREED_API_CONFIG = {
   url: window.PAWDEX_BREED_API?.url || "",
@@ -562,6 +628,7 @@ const BREED_API_CONFIG = {
 const pageMeta = {
   catch: { label: "PAWDEX FIELD", title: "今晚抓猫" },
   dex: { label: "CAT DEX", title: "猫卡图鉴" },
+  store: { label: "FOUNDER STORE", title: "Day1 收钱" },
   rank: { label: "WEEKLY RANK", title: "本周榜单" },
   share: { label: "STORY SHARE", title: "晒卡分享" },
   debug: { label: "DEV PANEL", title: "调试面板" },
@@ -593,6 +660,7 @@ const state = {
   locationSpot: null,
   locationDistance: null,
   spotRewardAt: null,
+  checkoutStartedPack: null,
 };
 
 const $ = (selector) => document.querySelector(selector);
@@ -664,6 +732,13 @@ const els = {
   lastOutcomeCopy: $("#lastOutcomeCopy"),
   leaderboardRank: $("#leaderboardRank"),
   leaderboardList: $("#leaderboardList"),
+  storeTitle: $("#storeTitle"),
+  storeGoal: $("#storeGoal"),
+  storeHeroTitle: $("#storeHeroTitle"),
+  storeHeroCopy: $("#storeHeroCopy"),
+  storeMath: $("#storeMath"),
+  founderList: $("#founderList"),
+  paymentNote: $("#paymentNote"),
   simulateButton: $("#simulateButton"),
   simList: $("#simList"),
   resultModal: $("#resultModal"),
@@ -719,6 +794,7 @@ function hydrateState() {
     state.revengeCat = saved.revengeCat || null;
     state.revengeActive = Boolean(saved.revengeActive);
     state.spotRewardAt = Number.isFinite(saved.spotRewardAt) ? saved.spotRewardAt : null;
+    state.checkoutStartedPack = saved.checkoutStartedPack || null;
   } catch {
     localStorage.removeItem(STORAGE_KEY);
   }
@@ -758,6 +834,7 @@ function persistState() {
     revengeCat: state.revengeCat,
     revengeActive: state.revengeActive,
     spotRewardAt: state.spotRewardAt,
+    checkoutStartedPack: state.checkoutStartedPack,
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
 }
@@ -1210,7 +1287,7 @@ function catchCat() {
   const modeKey = revengeAttempt ? "allin" : state.mode;
   const mode = modes[modeKey];
   if (state.food < mode.cost) {
-    showEscapeLikeResult(t("no_treats"), t("no_treats_copy", { cost: mode.cost }));
+    showNoTreatsResult(mode.cost);
     return;
   }
 
@@ -1394,6 +1471,7 @@ function showCardResult(card) {
     })}</p>
     <div class="modal-actions">
       <button class="main" data-action="share">${t("share_card")}</button>
+      <button class="plain founder-action" data-action="store">${t("founder_upgrade")}</button>
       <button class="plain" data-action="close">${t("keep_catching")}</button>
     </div>
   `;
@@ -1427,6 +1505,24 @@ function showEscapeResult(outcome) {
     <div class="modal-actions">
       <button class="main" data-action="share">${t("share_fail")}</button>
       <button class="plain" data-action="close">${t("try_again")}</button>
+    </div>
+  `;
+  openModal();
+}
+
+function showNoTreatsResult(cost) {
+  const shareAction = state.lastOutcome
+    ? `<button class="main" data-action="share">${t("no_treats_share")}</button>`
+    : "";
+  els.modalCard.className = "modal-card revenue-gate";
+  els.modalCard.innerHTML = `
+    <div class="gate-icon">0</div>
+    <h2>${t("no_treats")}</h2>
+    <p>${t("no_treats_copy", { cost })}</p>
+    <div class="modal-actions">
+      ${shareAction}
+      <button class="${shareAction ? "plain founder-action" : "main founder-action"}" data-action="store">${t("no_treats_store")}</button>
+      <button class="plain" data-action="close">${t("modal_ok")}</button>
     </div>
   `;
   openModal();
@@ -1818,6 +1914,71 @@ function renderLeaderboard() {
     .join("");
 }
 
+function packName(pack) {
+  return LANG === "en" ? pack.nameEn : pack.nameZh;
+}
+
+function packBadge(pack) {
+  return LANG === "en" ? pack.badgeEn : pack.badgeZh;
+}
+
+function packPerks(pack) {
+  return LANG === "en" ? pack.perksEn : pack.perksZh;
+}
+
+function paymentLinkForPack(packId) {
+  return PAYMENT_LINKS[packId] || "";
+}
+
+function isSafePaymentLink(url) {
+  return /^https:\/\//.test(url) || /^http:\/\/(127\.0\.0\.1|localhost)(:\d+)?\//.test(url);
+}
+
+function renderFounderStore() {
+  if (!els.founderList) return;
+  els.storeTitle.textContent = t("store_page_title");
+  els.storeGoal.textContent = t("store_goal");
+  els.storeHeroTitle.textContent = t("store_hero_title");
+  els.storeHeroCopy.textContent = t("store_hero_copy");
+  els.storeMath.textContent = t("founder_revenue_math");
+  els.paymentNote.textContent = t("founder_note");
+  els.founderList.innerHTML = founderPacks
+    .map((pack) => {
+      const hasLink = isSafePaymentLink(paymentLinkForPack(pack.id));
+      const started = state.checkoutStartedPack === pack.id;
+      return `
+        <article class="founder-pack ${pack.featured ? "featured" : ""} ${started ? "started" : ""}">
+          <div class="founder-pack-head">
+            <span>${packBadge(pack)}</span>
+            <strong>${pack.price}</strong>
+          </div>
+          <h4>${packName(pack)}</h4>
+          <ul>
+            ${packPerks(pack).map((perk) => `<li>${perk}</li>`).join("")}
+          </ul>
+          <button class="buy-button" type="button" data-buy="${pack.id}">
+            ${hasLink ? t("founder_checkout") : t("founder_missing_title")}
+          </button>
+        </article>
+      `;
+    })
+    .join("");
+}
+
+function buyFounderPack(packId) {
+  const pack = founderPacks.find((item) => item.id === packId);
+  if (!pack) return;
+  const link = paymentLinkForPack(pack.id);
+  if (!isSafePaymentLink(link)) {
+    showEscapeLikeResult(t("founder_missing_title"), t("founder_missing_copy"));
+    return;
+  }
+  state.checkoutStartedPack = pack.id;
+  persistState();
+  window.open(link, "_blank", "noopener");
+  showEscapeLikeResult(t("founder_opened_title"), `${packName(pack)} · ${t("founder_opened_copy")}`);
+}
+
 async function renderStoryBlob() {
   if (typeof window.html2canvas !== "function") {
     throw new Error("html2canvas missing");
@@ -1959,7 +2120,7 @@ function render() {
   els.riskHint.textContent = isRevengeActive ? "回归传说锁定：全心全意追猎" : mode.hint;
   els.cameraToggleButton.textContent = state.cameraEnabled ? t("camera_on") : t("camera_open");
   updateCatchCopy(mode, isRolling, isRevengeActive);
-  els.catchButton.disabled = isBusy || state.food < mode.cost;
+  els.catchButton.disabled = isBusy;
   els.scanButton.disabled = isBusy || isRevengeActive;
   const shareLeft = Math.max(shareRewardLimit - state.shareRewardCount, 0);
   els.copyShareButton.textContent = !state.lastOutcome
@@ -2032,6 +2193,7 @@ function render() {
   renderStory();
   renderOutcomeSide();
   renderLeaderboard();
+  renderFounderStore();
   renderRevengeBanner(revenge, isRevengeActive);
 }
 
@@ -2138,6 +2300,11 @@ els.copyShareButton.addEventListener("click", async () => {
 $$("[data-share]").forEach((button) => {
   button.addEventListener("click", () => shareToPlatform(button.dataset.share));
 });
+els.founderList.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-buy]");
+  if (!button) return;
+  buyFounderPack(button.dataset.buy);
+});
 els.simulateButton.addEventListener("click", simulate);
 els.resultModal.addEventListener("click", (event) => {
   if (event.target === els.resultModal) closeModal();
@@ -2147,6 +2314,10 @@ els.resultModal.addEventListener("click", (event) => {
   if (action === "share") {
     closeModal();
     switchTab("share");
+  }
+  if (action === "store") {
+    closeModal();
+    switchTab("store");
   }
   if (authAction) handleAuthAction(authAction);
 });

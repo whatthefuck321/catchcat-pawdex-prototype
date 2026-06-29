@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v13 breed API adapter prototype`
+Current published version: `v14 founder revenue prototype`
 
 ## What is included
 
@@ -17,6 +17,23 @@ Current published version: `v13 breed API adapter prototype`
 - v11 cat spot POI: location text now has gameplay meaning. Convenience stores, stations, parks, and rooftops act as supply/spawn/habitat spots; active spots can grant a small cat-food supply with cooldown.
 - v12 wow reveal: staged card-back reveal, stronger rarity ceremony, and a local prototype breed-ID result on each captured card.
 - v13 breed API adapter: optional frontend adapter plus Supabase Edge Function sample for Gemini-based breed ID. If no API URL is configured, the app falls back to the local prototype breed result.
+- v14 founder revenue: in-app Founder Store, depleted-food revenue gate, and configurable payment links. The static prototype opens real configured checkout URLs only; it does not fake payment confirmation.
+
+## Founder Store / Payment Links
+
+The static GitHub Pages build can open checkout links without adding server cost. Configure payment URLs before `app.js`:
+
+```html
+<script>
+  window.PAWDEX_PAYMENT_LINKS = {
+    early: "https://buy.stripe.com/YOUR_EARLY_LINK",
+    founder: "https://buy.stripe.com/YOUR_FOUNDER_LINK",
+    sponsor: "https://buy.stripe.com/YOUR_SPONSOR_LINK"
+  };
+</script>
+```
+
+Without `window.PAWDEX_PAYMENT_LINKS`, the Founder Store deliberately shows a missing-link dialog instead of opening a fake checkout. Real paid entitlement still needs server-side confirmation later, for example Stripe webhook -> Supabase profile flag.
 
 ## Breed ID note
 

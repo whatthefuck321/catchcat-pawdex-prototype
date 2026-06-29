@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PAWDEX v13 - Breed API Adapter Prototype</title>
+    <title>PAWDEX v14 - Founder Revenue Prototype</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -193,6 +193,23 @@
           <button class="small-button dev-entry" type="button" data-tab="debug">开发面板</button>
         </section>
 
+        <section class="screen" id="storeScreen" data-screen="store" hidden>
+          <div class="section-head dex-head">
+            <div>
+              <p class="app-label">FOUNDER STORE</p>
+              <h3 id="storeTitle">Day1 收钱</h3>
+            </div>
+            <span class="rank-pill" id="storeGoal">$90</span>
+          </div>
+          <div class="store-hero">
+            <strong id="storeHeroTitle">先卖身份，不先烧钱</strong>
+            <span id="storeHeroCopy">Founder 收入先覆盖云、识别和后续开发成本。</span>
+          </div>
+          <div class="store-math" id="storeMath">10 个 Early = $90</div>
+          <div class="founder-list" id="founderList"></div>
+          <div class="payment-note" id="paymentNote"></div>
+        </section>
+
         <section class="screen" id="rankScreen" data-screen="rank" hidden>
           <div class="section-head dex-head">
             <div>
@@ -230,6 +247,7 @@
         <footer class="bottom-nav">
           <button class="nav active" type="button" data-tab="catch">⌾<span>抓猫</span></button>
           <button class="nav" type="button" data-tab="dex">◇<span>图鉴</span></button>
+          <button class="nav" type="button" data-tab="store">★<span>商店</span></button>
           <button class="nav" type="button" data-tab="rank">≡<span>榜单</span></button>
           <button class="nav" type="button" data-tab="share">↗<span>分享</span></button>
         </footer>
