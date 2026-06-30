@@ -155,6 +155,19 @@ const I18N = {
     founder_note: "当前静态原型只打开你配置过的真实收款链接；没有链接时不会伪造付款成功。",
     founder_popular: "推荐",
     founder_revenue_math: "Day1 收入线：10 个 Early = $90，先覆盖识别/云成本，再继续加功能。",
+    daily_done: "已完成",
+    daily_claim: "领取",
+    daily_claimed: "已领取",
+    daily_locked: "未完成",
+    daily_reward: "+{amount} 猫粮",
+    daily_summary: "{done}/{total} 已完成",
+    daily_capture_title: "开一次卡",
+    daily_capture_copy: "完成任意一次捕捉结算",
+    daily_rare_title: "Rare+ 入册",
+    daily_rare_copy: "今日抓到 1 张 Rare+ 猫卡",
+    daily_share_title: "晒卡一次",
+    daily_share_copy: "保存或分享 1 次晒卡图",
+    daily_claim_toast: "今日行动 +{amount} 猫粮",
     revenge_ready: "它回来了",
     revenge_armed: "追猎已锁定",
     revenge_armed_copy: "下一次全心全意必遇到传说，失败会重新记仇。",
@@ -348,6 +361,19 @@ const I18N = {
     founder_note: "This static prototype only opens configured real payment links. Without links, it will not fake a paid state.",
     founder_popular: "Recommended",
     founder_revenue_math: "Day-1 revenue line: 10 Early supporters = $90, covering ID/cloud cost before adding more features.",
+    daily_done: "Done",
+    daily_claim: "Claim",
+    daily_claimed: "Claimed",
+    daily_locked: "Locked",
+    daily_reward: "+{amount} treats",
+    daily_summary: "{done}/{total} done",
+    daily_capture_title: "Reveal once",
+    daily_capture_copy: "Finish any capture result today",
+    daily_rare_title: "Rare+ logged",
+    daily_rare_copy: "Catch 1 Rare+ card today",
+    daily_share_title: "Share once",
+    daily_share_copy: "Save or share 1 story card today",
+    daily_claim_toast: "Daily loop +{amount} treats",
     revenge_ready: "It came back",
     revenge_armed: "Chase locked",
     revenge_armed_copy: "The next All Heart attempt will meet a legendary. A miss will mark it again.",
@@ -689,6 +715,32 @@ const titles = ["星灯守护者", "屋顶明星", "夜行冠军", "金瞳猎手
 const STORAGE_KEY = "pawdex-html-v7";
 const INSTALL_DISMISS_KEY = "pawdex-install-dismissed-v1";
 const shareRewardLimit = 3;
+const dailyMissionConfigs = [
+  {
+    id: "capture",
+    titleKey: "daily_capture_title",
+    copyKey: "daily_capture_copy",
+    reward: 1,
+    target: 1,
+    tone: "blue",
+  },
+  {
+    id: "rare",
+    titleKey: "daily_rare_title",
+    copyKey: "daily_rare_copy",
+    reward: 2,
+    target: 1,
+    tone: "violet",
+  },
+  {
+    id: "share",
+    titleKey: "daily_share_title",
+    copyKey: "daily_share_copy",
+    reward: 2,
+    target: 1,
+    tone: "gold",
+  },
+];
 const SPOT_REWARD_COOLDOWN_MS = 5 * 60 * 1000;
 const SHARE_URL =
   window.PAWDEX_SHARE_URL || "https://whatthefuck321.github.io/catchcat-pawdex-prototype/";
@@ -697,6 +749,7 @@ const SUPABASE_CONFIG = window.PAWDEX_SUPABASE || { url: "", anonKey: "" };
 const QUERY_PARAMS = new URLSearchParams(window.location.search);
 const DEMO_CAPTURE_MODE = QUERY_PARAMS.get("demo") === "1";
 const DEMO_AUTOPLAY_CAPTURE = DEMO_CAPTURE_MODE && QUERY_PARAMS.get("autoplay") === "1";
+const SHOW_INSTALL_STRIP = QUERY_PARAMS.get("install") === "1";
 const DEMO_CAT_PHOTO =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 1200'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='28%25' r='78%25'%3E%3Cstop offset='0%25' stop-color='%23f7fbff'/%3E%3Cstop offset='50%25' stop-color='%238fa6c8'/%3E%3Cstop offset='100%25' stop-color='%23111826'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='900' height='1200' fill='url(%23g)'/%3E%3Cellipse cx='450' cy='760' rx='248' ry='300' fill='%23d8e1ee'/%3E%3Cpath d='M248 516 318 298l124 154c38-10 78-10 116 0l124-154 70 218c64 61 96 140 96 237 0 212-157 336-348 336S152 965 152 753c0-97 32-176 96-237Z' fill='%23eef3f8'/%3E%3Cpath d='M326 334 354 472 284 432Z M574 334 546 472 616 432Z' fill='%23aebdd2'/%3E%3Cellipse cx='352' cy='665' rx='34' ry='42' fill='%2316222f'/%3E%3Cellipse cx='548' cy='665' rx='34' ry='42' fill='%2316222f'/%3E%3Ccircle cx='340' cy='650' r='10' fill='%23fff'/%3E%3Ccircle cx='536' cy='650' r='10' fill='%23fff'/%3E%3Cpath d='M450 710 414 752h72Z' fill='%23ff9f8f'/%3E%3Cpath d='M376 804c46 44 102 44 148 0' fill='none' stroke='%2316222f' stroke-width='24' stroke-linecap='round'/%3E%3Cpath d='M244 706c-72-24-124-20-178 14M248 764c-86 0-142 22-194 68M656 706c72-24 124-20 178 14M652 764c86 0 142 22 194 68' stroke='%23f7fbff' stroke-width='16' stroke-linecap='round'/%3E%3Ctext x='450' y='1120' text-anchor='middle' fill='%23ffffff' font-size='44' font-family='Arial' font-weight='700'%3EPAWDEX DEMO CAT%3C/text%3E%3C/svg%3E";
 const BREED_API_CONFIG = {
@@ -732,6 +785,11 @@ const state = {
   firstLegendaryDate: null,
   shareRewardDate: currentDateKey(),
   shareRewardCount: 0,
+  dailyMissionClaims: {},
+  dailyStats: {
+    date: currentDateKey(),
+    captures: 0,
+  },
   limitedCatCaught: false,
   revengeCat: null,
   revengeActive: false,
@@ -867,6 +925,8 @@ const els = {
   economyShareStatus: $("#economyShareStatus"),
   economyResetStatus: $("#economyResetStatus"),
   economyLegendStatus: $("#economyLegendStatus"),
+  dailyMissionSummary: $("#dailyMissionSummary"),
+  dailyMissionList: $("#dailyMissionList"),
   supplyShareButton: $("#supplyShareButton"),
   supplyHuntButton: $("#supplyHuntButton"),
   founderList: $("#founderList"),
@@ -919,7 +979,7 @@ function installDismissed() {
 
 function renderInstallStrip() {
   if (!els.installStrip) return;
-  const visible = !isStandaloneApp() && !installDismissed();
+  const visible = SHOW_INSTALL_STRIP && !isStandaloneApp() && !installDismissed();
   els.installStrip.hidden = !visible;
   els.phone.classList.toggle("install-ready", visible);
   if (!visible) return;
@@ -1005,6 +1065,17 @@ function hydrateState() {
     state.firstLegendaryDate = saved.firstLegendaryDate || null;
     state.shareRewardDate = saved.shareRewardDate || state.shareRewardDate;
     state.shareRewardCount = Number.isFinite(saved.shareRewardCount) ? saved.shareRewardCount : 0;
+    state.dailyMissionClaims =
+      saved.dailyMissionClaims && typeof saved.dailyMissionClaims === "object"
+        ? saved.dailyMissionClaims
+        : {};
+    state.dailyStats =
+      saved.dailyStats && typeof saved.dailyStats === "object"
+        ? {
+            date: saved.dailyStats.date || currentDateKey(),
+            captures: Number.isFinite(saved.dailyStats.captures) ? saved.dailyStats.captures : 0,
+          }
+        : state.dailyStats;
     state.limitedCatCaught = Boolean(saved.limitedCatCaught);
     state.legendaryHourEndsAt = saved.legendaryHourEndsAt || null;
     state.revengeCat = saved.revengeCat || null;
@@ -1039,6 +1110,24 @@ function applyDailyReset() {
     state.shareRewardCount = 0;
     changed = true;
   }
+  if (!state.dailyMissionClaims || typeof state.dailyMissionClaims !== "object") {
+    state.dailyMissionClaims = {};
+    changed = true;
+  }
+  if (!state.dailyStats || typeof state.dailyStats !== "object" || state.dailyStats.date !== today) {
+    state.dailyStats = {
+      date: today,
+      captures: 0,
+    };
+    changed = true;
+  }
+  const claimDates = Object.keys(state.dailyMissionClaims);
+  if (claimDates.some((date) => date !== today)) {
+    state.dailyMissionClaims = {
+      [today]: state.dailyMissionClaims[today] || {},
+    };
+    changed = true;
+  }
   if (changed) persistState();
 }
 
@@ -1053,6 +1142,8 @@ function persistState() {
     firstLegendaryDate: state.firstLegendaryDate,
     shareRewardDate: state.shareRewardDate,
     shareRewardCount: state.shareRewardCount,
+    dailyMissionClaims: state.dailyMissionClaims,
+    dailyStats: state.dailyStats,
     limitedCatCaught: state.limitedCatCaught,
     legendaryHourEndsAt: state.legendaryHourEndsAt,
     revengeCat: state.revengeCat,
@@ -1788,6 +1879,7 @@ function catchCat() {
 
 async function settleCatch(result) {
   const { escaped, baseRarity, rate, mode, modeKey, scene, revengeAttempt, photo } = result;
+  recordDailyCaptureResult();
   if (escaped) {
     state.lastOutcome = {
       type: "escape",
@@ -1862,6 +1954,17 @@ async function settleCatch(result) {
   render();
 }
 
+function recordDailyCaptureResult() {
+  const today = currentDateKey();
+  if (!state.dailyStats || state.dailyStats.date !== today) {
+    state.dailyStats = {
+      date: today,
+      captures: 0,
+    };
+  }
+  state.dailyStats.captures += 1;
+}
+
 function rewardForCapture(rarity) {
   const baseRefund = rarityRewards[rarity] || 0;
   const today = currentDateKey();
@@ -1872,6 +1975,73 @@ function rewardForCapture(rarity) {
     firstLegendaryBonus,
     total: baseRefund + firstLegendaryBonus,
   };
+}
+
+function isRarePlus(rarity) {
+  return ["rare", "epic", "legendary"].includes(rarity);
+}
+
+function cardIsFromToday(card) {
+  if (!card?.capturedAt) return false;
+  const today = currentDateKey();
+  if (typeof card.capturedAt === "string" && card.capturedAt.slice(0, 10) === today) return true;
+  const capturedAt = new Date(card.capturedAt);
+  return Number.isFinite(capturedAt.getTime()) && currentDateKey(capturedAt) === today;
+}
+
+function todayCards() {
+  return state.cards.filter(cardIsFromToday);
+}
+
+function dailyMissionClaimBucket(today = currentDateKey(), create = false) {
+  if (!state.dailyMissionClaims || typeof state.dailyMissionClaims !== "object") {
+    state.dailyMissionClaims = {};
+  }
+  if (create && !state.dailyMissionClaims[today]) state.dailyMissionClaims[today] = {};
+  return state.dailyMissionClaims[today] || {};
+}
+
+function dailyMissionProgress(id) {
+  const cards = todayCards();
+  if (id === "capture") {
+    const dailyCaptures = state.dailyStats?.date === currentDateKey() ? state.dailyStats.captures || 0 : 0;
+    return Math.max(dailyCaptures, cards.length);
+  }
+  if (id === "rare") return cards.filter((card) => isRarePlus(card.rarity)).length;
+  if (id === "share") return state.shareRewardDate === currentDateKey() ? state.shareRewardCount : 0;
+  return 0;
+}
+
+function dailyMissionStatus(config) {
+  const progress = Math.min(dailyMissionProgress(config.id), config.target);
+  const claims = dailyMissionClaimBucket();
+  const complete = progress >= config.target;
+  const claimed = Boolean(claims[config.id]);
+  return {
+    ...config,
+    progress,
+    complete,
+    claimed,
+    claimable: complete && !claimed,
+  };
+}
+
+function claimDailyMission(id) {
+  applyDailyReset();
+  const config = dailyMissionConfigs.find((item) => item.id === id);
+  if (!config) return;
+  const mission = dailyMissionStatus(config);
+  if (!mission.claimable) {
+    showEconomyToast(mission.claimed ? t("daily_claimed") : t("daily_locked"), "spend");
+    render();
+    return;
+  }
+  const claims = dailyMissionClaimBucket(currentDateKey(), true);
+  claims[id] = true;
+  state.food = Math.min(state.food + config.reward, state.maxFood + 10);
+  persistState();
+  showEconomyToast(t("daily_claim_toast", { amount: config.reward }), "gain");
+  render();
 }
 
 function startCaptureAnimation(mode, rarity) {
@@ -2577,6 +2747,7 @@ function renderFounderStore() {
   if (!els.founderList) return;
   const shareLeft = Math.max(shareRewardLimit - state.shareRewardCount, 0);
   const today = currentDateKey();
+  renderDailyMissions();
   els.storeTitle.textContent = t("store_page_title");
   els.storeGoal.textContent = t("store_goal");
   els.storeHeroTitle.textContent = t("store_hero_title");
@@ -2618,6 +2789,48 @@ function renderFounderStore() {
           </ul>
           <button class="buy-button" type="button" data-buy="${pack.id}">
             ${hasLink ? t("founder_checkout") : t("founder_missing_title")}
+          </button>
+        </article>
+      `;
+    })
+    .join("");
+}
+
+function renderDailyMissions() {
+  if (!els.dailyMissionList || !els.dailyMissionSummary) return;
+  const missions = dailyMissionConfigs.map(dailyMissionStatus);
+  const done = missions.filter((mission) => mission.complete).length;
+  els.dailyMissionSummary.textContent = t("daily_summary", {
+    done,
+    total: missions.length,
+  });
+  els.dailyMissionList.innerHTML = missions
+    .map((mission, index) => {
+      const percent = Math.min((mission.progress / mission.target) * 100, 100);
+      const stateLabel = mission.claimed
+        ? t("daily_claimed")
+        : mission.complete
+          ? t("daily_done")
+          : `${mission.progress}/${mission.target}`;
+      const buttonLabel = mission.claimed
+        ? t("daily_claimed")
+        : mission.claimable
+          ? t("daily_claim")
+          : t("daily_locked");
+      return `
+        <article class="daily-mission ${mission.tone} ${mission.complete ? "complete" : ""} ${mission.claimable ? "claimable" : ""} ${mission.claimed ? "claimed" : ""}">
+          <div class="daily-mission-index">${String(index + 1).padStart(2, "0")}</div>
+          <div class="daily-mission-copy">
+            <span>${stateLabel}</span>
+            <strong>${t(mission.titleKey)}</strong>
+            <small>${t(mission.copyKey)}</small>
+            <div class="daily-progress" aria-label="${stateLabel}">
+              <i style="width:${percent}%"></i>
+            </div>
+          </div>
+          <button class="daily-claim" type="button" data-claim-mission="${mission.id}" ${mission.claimable ? "" : "disabled"}>
+            <span>${t("daily_reward", { amount: mission.reward })}</span>
+            <strong>${buttonLabel}</strong>
           </button>
         </article>
       `;
@@ -3016,6 +3229,11 @@ els.founderList.addEventListener("click", (event) => {
   const button = event.target.closest("[data-buy]");
   if (!button) return;
   buyFounderPack(button.dataset.buy);
+});
+els.dailyMissionList.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-claim-mission]");
+  if (!button) return;
+  claimDailyMission(button.dataset.claimMission);
 });
 els.simulateButton.addEventListener("click", simulate);
 els.resultModal.addEventListener("click", (event) => {

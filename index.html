@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PAWDEX v31 - Installable App Shell Prototype</title>
+    <title>PAWDEX v32 - Functional Daily Loop Prototype</title>
     <link rel="icon" href="data:," />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="PAWDEX" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=32" />
   </head>
   <body>
     <main class="site-shell">
@@ -454,6 +454,16 @@
             <strong id="storeHeroTitle">先卖身份，不先烧钱</strong>
             <span id="storeHeroCopy">Founder 收入先覆盖云、识别和后续开发成本。</span>
           </div>
+          <section class="daily-missions" aria-label="每日目标">
+            <div class="daily-mission-head">
+              <div>
+                <span>DAILY LOOP</span>
+                <strong>今日行动</strong>
+              </div>
+              <b id="dailyMissionSummary">0/3 已完成</b>
+            </div>
+            <div class="daily-mission-list" id="dailyMissionList"></div>
+          </section>
           <section class="economy-console" aria-label="猫粮经济状态">
             <div class="economy-core">
               <span id="economyFoodStatus">10/10</span>
@@ -586,7 +596,7 @@
       <div class="modal-card" id="modalCard"></div>
     </div>
 
-    <script src="./app.js"></script>
+    <script src="./app.js?v=32"></script>
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onload="window.initSupabaseClient?.()"></script>
   </body>

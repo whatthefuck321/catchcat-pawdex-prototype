@@ -9577,6 +9577,237 @@ body {
   font-weight: 1000;
 }
 
+.daily-missions {
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 12px;
+  padding: 12px;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-top-color: rgba(255, 255, 255, 0.18);
+  background:
+    radial-gradient(circle at 0 0, rgba(90, 200, 250, 0.16), transparent 34%),
+    linear-gradient(180deg, rgba(10, 13, 22, 0.88), rgba(5, 7, 12, 0.72));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 18px 42px rgba(0, 0, 0, 0.25);
+}
+
+.daily-missions::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  background:
+    linear-gradient(110deg, transparent 0 40%, rgba(255, 255, 255, 0.06) 41%, transparent 43%),
+    repeating-linear-gradient(90deg, transparent 0 26px, rgba(255, 255, 255, 0.028) 27px 28px);
+}
+
+.daily-mission-head,
+.daily-mission {
+  position: relative;
+  z-index: 1;
+}
+
+.daily-mission-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.daily-mission-head span,
+.daily-mission-head strong,
+.daily-mission-head b {
+  display: block;
+}
+
+.daily-mission-head span {
+  color: #5ac8fa;
+  font-size: 9px;
+  font-weight: 1000;
+}
+
+.daily-mission-head strong {
+  margin-top: 2px;
+  color: #fff;
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 1000;
+}
+
+.daily-mission-head b {
+  color: #ffe47a;
+  font-size: 11px;
+  font-weight: 1000;
+  text-align: right;
+}
+
+.daily-mission-list {
+  display: grid;
+  gap: 8px;
+}
+
+.daily-mission {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 78px;
+  align-items: center;
+  gap: 9px;
+  min-height: 74px;
+  padding: 9px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.018)),
+    rgba(255, 255, 255, 0.035);
+}
+
+.daily-mission::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  border-radius: 16px 0 0 16px;
+  background: var(--mission-color, #5ac8fa);
+  box-shadow: 0 0 18px var(--mission-glow, rgba(90, 200, 250, 0.38));
+}
+
+.daily-mission.blue {
+  --mission-color: #5ac8fa;
+  --mission-glow: rgba(90, 200, 250, 0.38);
+}
+
+.daily-mission.violet {
+  --mission-color: #af52de;
+  --mission-glow: rgba(175, 82, 222, 0.42);
+}
+
+.daily-mission.gold {
+  --mission-color: #ffd60a;
+  --mission-glow: rgba(255, 214, 10, 0.42);
+}
+
+.daily-mission.complete {
+  border-color: color-mix(in srgb, var(--mission-color) 34%, rgba(255, 255, 255, 0.08));
+  background:
+    radial-gradient(circle at 90% 12%, color-mix(in srgb, var(--mission-color) 20%, transparent), transparent 38%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.02));
+}
+
+.daily-mission.claimed {
+  opacity: 0.72;
+}
+
+.daily-mission-index {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 1000;
+  background:
+    radial-gradient(circle, var(--mission-color, #5ac8fa), rgba(255, 255, 255, 0.08) 62%),
+    rgba(255, 255, 255, 0.07);
+  box-shadow: 0 0 20px var(--mission-glow, rgba(90, 200, 250, 0.38));
+}
+
+.daily-mission-copy {
+  min-width: 0;
+}
+
+.daily-mission-copy span,
+.daily-mission-copy strong,
+.daily-mission-copy small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.daily-mission-copy span {
+  color: var(--mission-color, #5ac8fa);
+  font-size: 9px;
+  font-weight: 1000;
+}
+
+.daily-mission-copy strong {
+  margin-top: 2px;
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.05;
+  font-weight: 1000;
+}
+
+.daily-mission-copy small {
+  margin-top: 3px;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 10px;
+  font-weight: 850;
+}
+
+.daily-progress {
+  overflow: hidden;
+  height: 4px;
+  margin-top: 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.daily-progress i {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--mission-color, #5ac8fa), #fff);
+  box-shadow: 0 0 12px var(--mission-glow, rgba(90, 200, 250, 0.38));
+  transition: width 0.28s ease;
+}
+
+.daily-claim {
+  min-width: 0;
+  height: 48px;
+  display: grid;
+  align-content: center;
+  gap: 2px;
+  border: 0;
+  border-radius: 14px;
+  color: #111317;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ffd60a, #ff9500);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    0 10px 22px rgba(255, 149, 0, 0.22);
+}
+
+.daily-claim span,
+.daily-claim strong {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.daily-claim span {
+  font-size: 9px;
+  font-weight: 1000;
+}
+
+.daily-claim strong {
+  font-size: 12px;
+  font-weight: 1000;
+}
+
+.daily-claim:disabled {
+  color: rgba(255, 255, 255, 0.46);
+  cursor: default;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
 .phone:not(.catch-mode) .store-hero {
   border-radius: 28px 28px 16px 16px;
 }
