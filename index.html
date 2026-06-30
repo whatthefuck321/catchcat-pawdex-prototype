@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PAWDEX v32 - Functional Daily Loop Prototype</title>
+    <title>PAWDEX v33 - Functional Season Loop Prototype</title>
     <link rel="icon" href="data:," />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="PAWDEX" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <link rel="stylesheet" href="./styles.css?v=32" />
+    <link rel="stylesheet" href="./styles.css?v=33" />
   </head>
   <body>
     <main class="site-shell">
@@ -510,12 +510,23 @@
           <div class="rank-hero season-broadcast">
             <div class="season-medal" aria-hidden="true">01</div>
             <strong>本周限定·金瞳夜巡</strong>
-            <span>传说数优先，Rare+ 数作为同分排序。榜单只放在 App 内，不再占网页下半屏。</span>
+            <span>传说数优先，Rare+ 数作为同分排序。周赛奖励会按本周图鉴实时解锁。</span>
+            <div class="season-statline" aria-label="本周战绩">
+              <b id="seasonScoreText">0 传说 · 0 Rare+</b>
+              <small id="seasonEndsText">本周剩余 --:--</small>
+            </div>
             <div class="season-progress" aria-label="赛季进度">
               <i id="seasonProgressFill"></i>
               <small id="seasonProgressText">距离前一名还差 1 传说</small>
             </div>
           </div>
+          <section class="season-rewards" aria-label="周赛奖励">
+            <div class="season-reward-head">
+              <span>SEASON TARGETS</span>
+              <strong>周赛奖励</strong>
+            </div>
+            <div class="season-reward-list" id="seasonRewardList"></div>
+          </section>
           <div class="leaderboard-list app-leaderboard" id="leaderboardList"></div>
         </section>
 
@@ -596,7 +607,7 @@
       <div class="modal-card" id="modalCard"></div>
     </div>
 
-    <script src="./app.js?v=32"></script>
+    <script src="./app.js?v=33"></script>
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onload="window.initSupabaseClient?.()"></script>
   </body>

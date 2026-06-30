@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v32 functional daily loop prototype`
+Current published version: `v33 functional season loop prototype`
 
 ## What is included
 
@@ -37,6 +37,7 @@ Current published version: `v32 functional daily loop prototype`
 - v30 game menu rails: the dex page becomes a horizontal collection rail, the supply page gets actionable share-refund and field-run buttons, paid supply packs are compressed into shop rows, and the rank page now shows a live season progress bar.
 - v31 installable shell: the GitHub Pages build now includes a Web App Manifest, service worker cache, iOS/Android home-screen icons, and an in-app install prompt. This supports a phone home-screen app test without Apple signing or app-store distribution.
 - v32 functional daily loop: the supply page now has claimable daily missions tied to today's capture, Rare+ card, and share-save actions. Mission rewards persist locally, reset by local date, and feed back into the cat-food economy. The service worker cache was also bumped and JS/CSS now carry v32 cache-busting URLs so feature updates do not get stuck behind the old app shell. The install prompt is hidden by default for this function pass and can be shown with `?install=1`.
+- v33 functional season loop: the weekly rank page now has a local Monday-to-Monday season window, live player score, season countdown, and claimable weekly rewards for Rare+ and legendary collection targets. Reward claims persist locally by season and feed cat food back into the economy.
 
 ## Installable phone test
 

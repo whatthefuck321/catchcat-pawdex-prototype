@@ -2439,6 +2439,233 @@ body {
   font-weight: 800;
 }
 
+.season-statline {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  margin-top: 11px;
+  padding: 9px 10px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.season-statline b,
+.season-statline small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.season-statline b {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 1000;
+}
+
+.season-statline small {
+  color: #ffe47a;
+  font-size: 10px;
+  font-weight: 950;
+  text-align: right;
+}
+
+.season-rewards {
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 12px;
+  padding: 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top-color: rgba(255, 255, 255, 0.16);
+  background:
+    radial-gradient(circle at 90% 0, rgba(255, 214, 10, 0.13), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.012));
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.18);
+}
+
+.season-rewards::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.44;
+  background: repeating-linear-gradient(115deg, transparent 0 18px, rgba(255, 255, 255, 0.035) 19px 20px);
+}
+
+.season-reward-head,
+.season-reward {
+  position: relative;
+  z-index: 1;
+}
+
+.season-reward-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 9px;
+}
+
+.season-reward-head span,
+.season-reward-head strong {
+  display: block;
+}
+
+.season-reward-head span {
+  color: #5ac8fa;
+  font-size: 9px;
+  font-weight: 1000;
+}
+
+.season-reward-head strong {
+  color: #fff;
+  font-size: 17px;
+  line-height: 1;
+  font-weight: 1000;
+}
+
+.season-reward-list {
+  display: grid;
+  gap: 8px;
+}
+
+.season-reward {
+  --season-color: #5ac8fa;
+  --season-glow: rgba(90, 200, 250, 0.36);
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) 76px;
+  gap: 9px;
+  align-items: center;
+  min-height: 68px;
+  padding: 9px;
+  border-radius: 15px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.015)),
+    rgba(0, 0, 0, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.season-reward.violet {
+  --season-color: #af52de;
+  --season-glow: rgba(175, 82, 222, 0.4);
+}
+
+.season-reward.gold {
+  --season-color: #ffd60a;
+  --season-glow: rgba(255, 214, 10, 0.42);
+}
+
+.season-reward.complete {
+  border-color: color-mix(in srgb, var(--season-color) 36%, rgba(255, 255, 255, 0.08));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--season-color) 18%, transparent);
+}
+
+.season-reward.claimed {
+  opacity: 0.72;
+}
+
+.season-reward > span {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 1000;
+  background: var(--season-color);
+  box-shadow: 0 0 18px var(--season-glow);
+}
+
+.season-reward div {
+  min-width: 0;
+}
+
+.season-reward strong,
+.season-reward small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.season-reward strong {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 1000;
+}
+
+.season-reward small {
+  margin-top: 3px;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 10px;
+  font-weight: 850;
+}
+
+.season-reward i {
+  display: block;
+  overflow: hidden;
+  height: 4px;
+  margin-top: 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.season-reward i b {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--season-color), #fff);
+  box-shadow: 0 0 12px var(--season-glow);
+  transition: width 0.28s ease;
+}
+
+.season-reward button {
+  min-width: 0;
+  height: 46px;
+  display: grid;
+  align-content: center;
+  gap: 2px;
+  border: 0;
+  border-radius: 13px;
+  color: #111317;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ffd60a, #ff9500);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    0 10px 20px rgba(255, 149, 0, 0.2);
+}
+
+.season-reward button small,
+.season-reward button b {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.season-reward button small {
+  color: inherit;
+  font-size: 9px;
+  font-weight: 1000;
+}
+
+.season-reward button b {
+  font-size: 12px;
+  font-weight: 1000;
+}
+
+.season-reward button:disabled {
+  color: rgba(255, 255, 255, 0.46);
+  cursor: default;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
 .app-leaderboard {
   margin-top: 0;
 }

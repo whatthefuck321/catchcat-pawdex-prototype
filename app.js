@@ -168,6 +168,19 @@ const I18N = {
     daily_share_title: "晒卡一次",
     daily_share_copy: "保存或分享 1 次晒卡图",
     daily_claim_toast: "今日行动 +{amount} 猫粮",
+    season_score: "{legendary} 传说 · {rarePlus} Rare+",
+    season_ends: "本周剩余 {time}",
+    season_reward_claim: "领取",
+    season_reward_claimed: "已领取",
+    season_reward_locked: "未解锁",
+    season_reward_food: "+{amount} 猫粮",
+    season_reward_toast: "周赛奖励 +{amount} 猫粮",
+    season_rare1_title: "Rare+ 开局",
+    season_rare1_copy: "本周收集 1 张 Rare+",
+    season_rare5_title: "稀有连收",
+    season_rare5_copy: "本周收集 5 张 Rare+",
+    season_legend1_title: "传说入榜",
+    season_legend1_copy: "本周收集 1 张传说",
     revenge_ready: "它回来了",
     revenge_armed: "追猎已锁定",
     revenge_armed_copy: "下一次全心全意必遇到传说，失败会重新记仇。",
@@ -374,6 +387,19 @@ const I18N = {
     daily_share_title: "Share once",
     daily_share_copy: "Save or share 1 story card today",
     daily_claim_toast: "Daily loop +{amount} treats",
+    season_score: "{legendary} legendary · {rarePlus} Rare+",
+    season_ends: "Season ends in {time}",
+    season_reward_claim: "Claim",
+    season_reward_claimed: "Claimed",
+    season_reward_locked: "Locked",
+    season_reward_food: "+{amount} treats",
+    season_reward_toast: "Season reward +{amount} treats",
+    season_rare1_title: "Rare+ start",
+    season_rare1_copy: "Collect 1 Rare+ this week",
+    season_rare5_title: "Rare streak",
+    season_rare5_copy: "Collect 5 Rare+ this week",
+    season_legend1_title: "Ranked legend",
+    season_legend1_copy: "Collect 1 legendary this week",
     revenge_ready: "It came back",
     revenge_armed: "Chase locked",
     revenge_armed_copy: "The next All Heart attempt will meet a legendary. A miss will mark it again.",
@@ -676,6 +702,35 @@ const leaderboardRivals = [
   { name: "雨廊金瞳", legendary: 3, rarePlus: 18 },
   { name: "月台巷口", legendary: 2, rarePlus: 15 },
 ];
+const seasonRewardConfigs = [
+  {
+    id: "rare-1",
+    metric: "rarePlus",
+    target: 1,
+    reward: 1,
+    titleKey: "season_rare1_title",
+    copyKey: "season_rare1_copy",
+    tone: "blue",
+  },
+  {
+    id: "rare-5",
+    metric: "rarePlus",
+    target: 5,
+    reward: 3,
+    titleKey: "season_rare5_title",
+    copyKey: "season_rare5_copy",
+    tone: "violet",
+  },
+  {
+    id: "legend-1",
+    metric: "legendary",
+    target: 1,
+    reward: 5,
+    titleKey: "season_legend1_title",
+    copyKey: "season_legend1_copy",
+    tone: "gold",
+  },
+];
 const founderPacks = [
   {
     id: "early",
@@ -786,6 +841,7 @@ const state = {
   shareRewardDate: currentDateKey(),
   shareRewardCount: 0,
   dailyMissionClaims: {},
+  seasonRewardClaims: {},
   dailyStats: {
     date: currentDateKey(),
     captures: 0,
@@ -916,6 +972,9 @@ const els = {
   leaderboardList: $("#leaderboardList"),
   seasonProgressFill: $("#seasonProgressFill"),
   seasonProgressText: $("#seasonProgressText"),
+  seasonScoreText: $("#seasonScoreText"),
+  seasonEndsText: $("#seasonEndsText"),
+  seasonRewardList: $("#seasonRewardList"),
   storeTitle: $("#storeTitle"),
   storeGoal: $("#storeGoal"),
   storeHeroTitle: $("#storeHeroTitle"),
@@ -1050,6 +1109,24 @@ function currentDateKey(date = new Date()) {
   return `${year}-${month}-${day}`;
 }
 
+function seasonStartDate(date = new Date()) {
+  const start = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const mondayOffset = (start.getDay() + 6) % 7;
+  start.setDate(start.getDate() - mondayOffset);
+  start.setHours(0, 0, 0, 0);
+  return start;
+}
+
+function seasonEndDate(date = new Date()) {
+  const end = seasonStartDate(date);
+  end.setDate(end.getDate() + 7);
+  return end;
+}
+
+function seasonWeekKey(date = new Date()) {
+  return currentDateKey(seasonStartDate(date));
+}
+
 function hydrateState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -1068,6 +1145,10 @@ function hydrateState() {
     state.dailyMissionClaims =
       saved.dailyMissionClaims && typeof saved.dailyMissionClaims === "object"
         ? saved.dailyMissionClaims
+        : {};
+    state.seasonRewardClaims =
+      saved.seasonRewardClaims && typeof saved.seasonRewardClaims === "object"
+        ? saved.seasonRewardClaims
         : {};
     state.dailyStats =
       saved.dailyStats && typeof saved.dailyStats === "object"
@@ -1097,6 +1178,7 @@ function hydrateState() {
 
 function applyDailyReset() {
   const today = currentDateKey();
+  const week = seasonWeekKey();
   let changed = false;
   if (state.lastResetDate !== today) {
     state.food = Math.max(state.food, state.maxFood);
@@ -1128,6 +1210,17 @@ function applyDailyReset() {
     };
     changed = true;
   }
+  if (!state.seasonRewardClaims || typeof state.seasonRewardClaims !== "object") {
+    state.seasonRewardClaims = {};
+    changed = true;
+  }
+  const rewardWeeks = Object.keys(state.seasonRewardClaims);
+  if (rewardWeeks.some((key) => key !== week)) {
+    state.seasonRewardClaims = {
+      [week]: state.seasonRewardClaims[week] || {},
+    };
+    changed = true;
+  }
   if (changed) persistState();
 }
 
@@ -1143,6 +1236,7 @@ function persistState() {
     shareRewardDate: state.shareRewardDate,
     shareRewardCount: state.shareRewardCount,
     dailyMissionClaims: state.dailyMissionClaims,
+    seasonRewardClaims: state.seasonRewardClaims,
     dailyStats: state.dailyStats,
     limitedCatCaught: state.limitedCatCaught,
     legendaryHourEndsAt: state.legendaryHourEndsAt,
@@ -2676,7 +2770,7 @@ function isRecentWeek(card) {
   if (!card.capturedAt) return true;
   const capturedAt = new Date(card.capturedAt).getTime();
   if (!Number.isFinite(capturedAt)) return true;
-  return Date.now() - capturedAt < 7 * 24 * 60 * 60 * 1000;
+  return capturedAt >= seasonStartDate().getTime() && capturedAt < seasonEndDate().getTime();
 }
 
 function playerLeaderboardStats() {
@@ -2689,6 +2783,75 @@ function playerLeaderboardStats() {
     },
     { name: "你", legendary: 0, rarePlus: 0, isPlayer: true },
   );
+}
+
+function seasonRewardClaimBucket(week = seasonWeekKey(), create = false) {
+  if (!state.seasonRewardClaims || typeof state.seasonRewardClaims !== "object") {
+    state.seasonRewardClaims = {};
+  }
+  if (create && !state.seasonRewardClaims[week]) state.seasonRewardClaims[week] = {};
+  return state.seasonRewardClaims[week] || {};
+}
+
+function seasonRewardStatus(config, stats = playerLeaderboardStats()) {
+  const progress = Math.min(stats[config.metric] || 0, config.target);
+  const claims = seasonRewardClaimBucket();
+  const complete = progress >= config.target;
+  const claimed = Boolean(claims[config.id]);
+  return {
+    ...config,
+    progress,
+    complete,
+    claimed,
+    claimable: complete && !claimed,
+  };
+}
+
+function claimSeasonReward(id) {
+  applyDailyReset();
+  const config = seasonRewardConfigs.find((item) => item.id === id);
+  if (!config) return;
+  const mission = seasonRewardStatus(config);
+  if (!mission.claimable) {
+    showEconomyToast(mission.claimed ? t("season_reward_claimed") : t("season_reward_locked"), "spend");
+    render();
+    return;
+  }
+  const claims = seasonRewardClaimBucket(seasonWeekKey(), true);
+  claims[id] = true;
+  state.food = Math.min(state.food + config.reward, state.maxFood + 10);
+  persistState();
+  showEconomyToast(t("season_reward_toast", { amount: config.reward }), "gain");
+  render();
+}
+
+function renderSeasonRewards(stats) {
+  if (!els.seasonRewardList) return;
+  const rewards = seasonRewardConfigs.map((config) => seasonRewardStatus(config, stats));
+  els.seasonRewardList.innerHTML = rewards
+    .map((reward, index) => {
+      const percent = Math.min((reward.progress / reward.target) * 100, 100);
+      const buttonLabel = reward.claimed
+        ? t("season_reward_claimed")
+        : reward.claimable
+          ? t("season_reward_claim")
+          : t("season_reward_locked");
+      return `
+        <article class="season-reward ${reward.tone} ${reward.complete ? "complete" : ""} ${reward.claimable ? "claimable" : ""} ${reward.claimed ? "claimed" : ""}">
+          <span>${String(index + 1).padStart(2, "0")}</span>
+          <div>
+            <strong>${t(reward.titleKey)}</strong>
+            <small>${t(reward.copyKey)}</small>
+            <i><b style="width:${percent}%"></b></i>
+          </div>
+          <button type="button" data-claim-season="${reward.id}" ${reward.claimable ? "" : "disabled"}>
+            <small>${t("season_reward_food", { amount: reward.reward })}</small>
+            <b>${buttonLabel}</b>
+          </button>
+        </article>
+      `;
+    })
+    .join("");
 }
 
 function renderLeaderboard() {
@@ -2704,6 +2867,17 @@ function renderLeaderboard() {
     ? Math.max(1, previous.legendary - player.legendary + 1)
     : 0;
   els.leaderboardRank.textContent = `#${rank}`;
+  if (els.seasonScoreText) {
+    els.seasonScoreText.textContent = t("season_score", {
+      legendary: player.legendary,
+      rarePlus: player.rarePlus,
+    });
+  }
+  if (els.seasonEndsText) {
+    els.seasonEndsText.textContent = t("season_ends", {
+      time: compactCountdown(seasonEndDate().toISOString()),
+    });
+  }
   if (els.seasonProgressFill) els.seasonProgressFill.style.width = `${progress}%`;
   if (els.seasonProgressText) {
     els.seasonProgressText.textContent =
@@ -2721,6 +2895,7 @@ function renderLeaderboard() {
       `,
     )
     .join("");
+  renderSeasonRewards(player);
 }
 
 function packName(pack) {
@@ -3234,6 +3409,11 @@ els.dailyMissionList.addEventListener("click", (event) => {
   const button = event.target.closest("[data-claim-mission]");
   if (!button) return;
   claimDailyMission(button.dataset.claimMission);
+});
+els.seasonRewardList.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-claim-season]");
+  if (!button) return;
+  claimSeasonReward(button.dataset.claimSeason);
 });
 els.simulateButton.addEventListener("click", simulate);
 els.resultModal.addEventListener("click", (event) => {
