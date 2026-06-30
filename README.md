@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v29 in-app city menus prototype`
+Current published version: `v30 game menu rail prototype`
 
 ## What is included
 
@@ -34,6 +34,7 @@ Current published version: `v29 in-app city menus prototype`
 - v27 field live anime HUD: the catch screen is pushed further away from cards with a full-screen FIELD LIVE scene, manga edge masks, GPS-style location rail, poster-like cat readout, tactical risk controls, and a floating mobile nav treatment.
 - v28 app theater route lock: the outer marketing/game-loop panels are hidden so the phone app owns the first screen, while tapping cat spots now triggers route-scan animation, an AREA LOCK HUD, spot-themed scene tint, and stronger phone-device chrome.
 - v29 in-app city menus: dex, supply/economy, ranking, and share views now live as game subpages inside the phone shell. The supply page exposes live cat-food, share-refund, daily reset, and first-legendary state instead of leaving economy as an external explanation block.
+- v30 game menu rails: the dex page becomes a horizontal collection rail, the supply page gets actionable share-refund and field-run buttons, paid supply packs are compressed into shop rows, and the rank page now shows a live season progress bar.
 
 ## v15 Approval Route
 

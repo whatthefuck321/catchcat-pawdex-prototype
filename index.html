@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PAWDEX v29 - In-App City Menus Prototype</title>
+    <title>PAWDEX v30 - Game Menu Rail Prototype</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -356,7 +356,9 @@
               <span><b id="dexLimitedStatus">未得</b> 限定</span>
             </div>
           </section>
-          <div class="dex-grid" id="dexGrid"></div>
+          <div class="dex-book-rail" aria-label="横滑收藏册">
+            <div class="dex-grid" id="dexGrid"></div>
+          </div>
         </section>
 
         <section class="screen app-sub-screen share-page" id="shareScreen" data-screen="share" hidden>
@@ -456,6 +458,16 @@
               </div>
             </div>
           </section>
+          <div class="supply-actions" aria-label="补给快捷操作">
+            <button class="supply-action primary" id="supplyShareButton" type="button" data-tab="share">
+              <span>SHARE REFUND</span>
+              <strong>保存晒卡 +2</strong>
+            </button>
+            <button class="supply-action" id="supplyHuntButton" type="button" data-tab="catch">
+              <span>FIELD RUN</span>
+              <strong>回到夜巡</strong>
+            </button>
+          </div>
           <div class="store-math" id="storeMath">10 个 Early = $90</div>
           <div class="founder-list" id="founderList"></div>
           <div class="payment-note" id="paymentNote"></div>
@@ -473,6 +485,10 @@
             <div class="season-medal" aria-hidden="true">01</div>
             <strong>本周限定·金瞳夜巡</strong>
             <span>传说数优先，Rare+ 数作为同分排序。榜单只放在 App 内，不再占网页下半屏。</span>
+            <div class="season-progress" aria-label="赛季进度">
+              <i id="seasonProgressFill"></i>
+              <small id="seasonProgressText">距离前一名还差 1 传说</small>
+            </div>
           </div>
           <div class="leaderboard-list app-leaderboard" id="leaderboardList"></div>
         </section>

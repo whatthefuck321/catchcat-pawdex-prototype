@@ -849,6 +849,8 @@ const els = {
   lastOutcomeCopy: $("#lastOutcomeCopy"),
   leaderboardRank: $("#leaderboardRank"),
   leaderboardList: $("#leaderboardList"),
+  seasonProgressFill: $("#seasonProgressFill"),
+  seasonProgressText: $("#seasonProgressText"),
   storeTitle: $("#storeTitle"),
   storeGoal: $("#storeGoal"),
   storeHeroTitle: $("#storeHeroTitle"),
@@ -858,6 +860,8 @@ const els = {
   economyShareStatus: $("#economyShareStatus"),
   economyResetStatus: $("#economyResetStatus"),
   economyLegendStatus: $("#economyLegendStatus"),
+  supplyShareButton: $("#supplyShareButton"),
+  supplyHuntButton: $("#supplyHuntButton"),
   founderList: $("#founderList"),
   paymentNote: $("#paymentNote"),
   simulateButton: $("#simulateButton"),
@@ -2435,7 +2439,19 @@ function renderLeaderboard() {
   const rows = [...leaderboardRivals.map((item) => ({ ...item, isPlayer: false })), player]
     .sort((a, b) => b.legendary - a.legendary || b.rarePlus - a.rarePlus || a.name.localeCompare(b.name));
   const rank = rows.findIndex((row) => row.isPlayer) + 1;
+  const previous = rows[Math.max(0, rank - 2)];
+  const top = rows[0] || player;
+  const topLegendary = Math.max(1, top.legendary);
+  const progress = Math.max(6, Math.min(100, Math.round((player.legendary / topLegendary) * 100)));
+  const gap = previous && !previous.isPlayer
+    ? Math.max(1, previous.legendary - player.legendary + 1)
+    : 0;
   els.leaderboardRank.textContent = `#${rank}`;
+  if (els.seasonProgressFill) els.seasonProgressFill.style.width = `${progress}%`;
+  if (els.seasonProgressText) {
+    els.seasonProgressText.textContent =
+      rank === 1 ? "本周暂列第一，继续守榜" : `距离前一名还差 ${gap} 传说`;
+  }
   els.leaderboardList.innerHTML = rows
     .map(
       (row, index) => `
@@ -2488,6 +2504,16 @@ function renderFounderStore() {
   if (els.economyLegendStatus) {
     els.economyLegendStatus.textContent =
       state.firstLegendaryDate === today ? "今日已领取" : "+5 待触发";
+  }
+  if (els.supplyShareButton) {
+    els.supplyShareButton.querySelector("strong").textContent = state.lastOutcome
+      ? `保存晒卡 +2（剩 ${shareLeft}）`
+      : "先抓一只再回粮";
+    els.supplyShareButton.classList.toggle("disabled", !state.lastOutcome);
+  }
+  if (els.supplyHuntButton) {
+    els.supplyHuntButton.querySelector("strong").textContent =
+      state.food > 0 ? "回到夜巡" : "明天补满再抓";
   }
   els.founderList.innerHTML = founderPacks
     .map((pack) => {
