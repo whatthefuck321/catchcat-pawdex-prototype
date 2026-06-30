@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v30 game menu rail prototype`
+Current published version: `v31 installable app shell prototype`
 
 ## What is included
 
@@ -35,6 +35,18 @@ Current published version: `v30 game menu rail prototype`
 - v28 app theater route lock: the outer marketing/game-loop panels are hidden so the phone app owns the first screen, while tapping cat spots now triggers route-scan animation, an AREA LOCK HUD, spot-themed scene tint, and stronger phone-device chrome.
 - v29 in-app city menus: dex, supply/economy, ranking, and share views now live as game subpages inside the phone shell. The supply page exposes live cat-food, share-refund, daily reset, and first-legendary state instead of leaving economy as an external explanation block.
 - v30 game menu rails: the dex page becomes a horizontal collection rail, the supply page gets actionable share-refund and field-run buttons, paid supply packs are compressed into shop rows, and the rank page now shows a live season progress bar.
+- v31 installable shell: the GitHub Pages build now includes a Web App Manifest, service worker cache, iOS/Android home-screen icons, and an in-app install prompt. This supports a phone home-screen app test without Apple signing or app-store distribution.
+
+## Installable phone test
+
+This is not a signed native iOS/Android package. It is an installable PWA shell for tomorrow's phone test:
+
+1. Open the GitHub Pages link on the phone.
+2. iPhone: use Safari, tap Share, then Add to Home Screen.
+3. Android/Chrome: use the install prompt or browser menu -> Install app.
+4. Open PAWDEX from the home-screen icon and test camera/upload/capture/share.
+
+Native TestFlight or store distribution still needs the real mobile toolchain, signing, and account setup.
 
 ## v15 Approval Route
 

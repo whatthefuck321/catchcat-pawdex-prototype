@@ -3,8 +3,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PAWDEX v30 - Game Menu Rail Prototype</title>
+    <title>PAWDEX v31 - Installable App Shell Prototype</title>
     <link rel="icon" href="data:," />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
+    <meta name="theme-color" content="#050609" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="PAWDEX" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
@@ -101,6 +107,16 @@
             <span id="eventCopy">普通捕捉概率，适合先存图鉴。</span>
           </div>
           <button id="toggleEventButton" type="button">开启</button>
+        </section>
+
+        <section class="install-strip" id="installStrip" hidden>
+          <div>
+            <span id="installStep">APP READY</span>
+            <strong id="installTitle">可安装到手机</strong>
+            <small id="installCopy">明天可以直接用这个链接做主屏幕 App 测试。</small>
+          </div>
+          <button id="installButton" type="button">安装</button>
+          <button class="install-dismiss" id="installDismissButton" type="button" aria-label="关闭安装提示">×</button>
         </section>
 
         <section class="screen active" id="catchScreen" data-screen="catch">

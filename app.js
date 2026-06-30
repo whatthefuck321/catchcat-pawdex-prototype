@@ -687,6 +687,7 @@ const founderPacks = [
 const names = ["麻薯", "豆腐", "奶盖", "团子", "玄米", "乌冬", "小虎", "年糕"];
 const titles = ["星灯守护者", "屋顶明星", "夜行冠军", "金瞳猎手", "传说候选猫", "巷口幻影"];
 const STORAGE_KEY = "pawdex-html-v7";
+const INSTALL_DISMISS_KEY = "pawdex-install-dismissed-v1";
 const shareRewardLimit = 3;
 const SPOT_REWARD_COOLDOWN_MS = 5 * 60 * 1000;
 const SHARE_URL =
@@ -767,6 +768,12 @@ const els = {
   fieldFoodText: $("#fieldFoodText"),
   foodMeter: $("#foodMeter"),
   fieldFoodMeter: $("#fieldFoodMeter"),
+  installStrip: $("#installStrip"),
+  installStep: $("#installStep"),
+  installTitle: $("#installTitle"),
+  installCopy: $("#installCopy"),
+  installButton: $("#installButton"),
+  installDismissButton: $("#installDismissButton"),
   economyToast: $("#economyToast"),
   eventStrip: $("#eventStrip"),
   eventTitle: $("#eventTitle"),
@@ -875,6 +882,7 @@ let settleTimer = null;
 let fieldTravelTimer = null;
 let cameraStream = null;
 let supabaseClient = null;
+let installPromptEvent = null;
 const CAPTURE_ANIMATION_MS = DEMO_CAPTURE_MODE ? 3200 : 1320;
 
 function supabaseConfigured() {
@@ -895,6 +903,85 @@ function initSupabaseClient() {
 }
 
 window.initSupabaseClient = initSupabaseClient;
+
+function isStandaloneApp() {
+  return window.matchMedia?.("(display-mode: standalone)")?.matches || window.navigator.standalone;
+}
+
+function isIosLike() {
+  const ua = window.navigator.userAgent || "";
+  return /iphone|ipad|ipod/i.test(ua) || (window.navigator.platform === "MacIntel" && window.navigator.maxTouchPoints > 1);
+}
+
+function installDismissed() {
+  return localStorage.getItem(INSTALL_DISMISS_KEY) === "1";
+}
+
+function renderInstallStrip() {
+  if (!els.installStrip) return;
+  const visible = !isStandaloneApp() && !installDismissed();
+  els.installStrip.hidden = !visible;
+  els.phone.classList.toggle("install-ready", visible);
+  if (!visible) return;
+
+  if (installPromptEvent) {
+    els.installStep.textContent = "APP READY";
+    els.installTitle.textContent = "可安装到手机";
+    els.installCopy.textContent = "Android/Chrome 可以直接安装；iPhone 用分享菜单添加到主屏幕。";
+    els.installButton.textContent = "安装";
+    return;
+  }
+
+  els.installStep.textContent = isIosLike() ? "IOS HOME SCREEN" : "APP SHELL";
+  els.installTitle.textContent = "主屏幕版本已准备";
+  els.installCopy.textContent = isIosLike()
+    ? "Safari 打开后点分享，再选“添加到主屏幕”。"
+    : "浏览器菜单里选择“安装应用”或“添加到主屏幕”。";
+  els.installButton.textContent = "步骤";
+}
+
+async function installPwa() {
+  if (installPromptEvent) {
+    const prompt = installPromptEvent;
+    installPromptEvent = null;
+    prompt.prompt();
+    await prompt.userChoice.catch(() => null);
+    renderInstallStrip();
+    return;
+  }
+  showEscapeLikeResult(
+    "安装到手机",
+    isIosLike()
+      ? "iPhone: 用 Safari 打开这个链接，点底部分享按钮，选择“添加到主屏幕”。"
+      : "Android/Chrome: 打开浏览器菜单，选择“安装应用”或“添加到主屏幕”。",
+  );
+}
+
+function dismissInstallStrip() {
+  localStorage.setItem(INSTALL_DISMISS_KEY, "1");
+  renderInstallStrip();
+}
+
+function registerServiceWorker() {
+  if (!("serviceWorker" in navigator)) return;
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(() => null);
+  });
+}
+
+function setupPwaInstall() {
+  window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    installPromptEvent = event;
+    renderInstallStrip();
+  });
+  window.addEventListener("appinstalled", () => {
+    installPromptEvent = null;
+    localStorage.setItem(INSTALL_DISMISS_KEY, "1");
+    renderInstallStrip();
+  });
+  renderInstallStrip();
+}
 
 function currentDateKey(date = new Date()) {
   const year = date.getFullYear();
@@ -2812,6 +2899,7 @@ function render() {
   renderLeaderboard();
   renderFounderStore();
   renderRevengeBanner(revenge, isRevengeActive);
+  renderInstallStrip();
 }
 
 function simulate() {
@@ -2899,6 +2987,8 @@ els.fieldEvent.addEventListener("click", () => {
   simulate();
   render();
 });
+els.installButton.addEventListener("click", installPwa);
+els.installDismissButton.addEventListener("click", dismissInstallStrip);
 els.clearDexButton.addEventListener("click", () => {
   if (state.phase !== "ready") return;
   state.cards = [];
@@ -2956,6 +3046,8 @@ applyImageFallback(els.fieldCatArt);
 applyImageFallback(els.storyCardArt);
 applyImageFallback(els.captureShadowCat);
 
+setupPwaInstall();
+registerServiceWorker();
 initSupabaseClient();
 hydrateState();
 applyDailyReset();
