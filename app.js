@@ -30,6 +30,7 @@ const I18N = {
     camera_blocked_copy: "浏览器拒绝了相机权限。v15 不再用系统猫替代卡面，请上传一张真猫照片继续测试。",
     camera_ready: "真实相机已启用",
     camera_fallback: "需要真猫照片",
+    demo_photo_ready: "DEMO 猫图已锁定",
     photo_upload: "上传猫图",
     photo_ready: "真猫照片已锁定",
     photo_required_title: "先拍真猫",
@@ -222,6 +223,7 @@ const I18N = {
     camera_blocked_copy: "The browser blocked camera access. v15 no longer swaps in system cat art; upload a real cat photo to continue testing.",
     camera_ready: "Real camera enabled",
     camera_fallback: "Need a real cat photo",
+    demo_photo_ready: "Demo cat photo locked",
     photo_upload: "Upload cat photo",
     photo_ready: "Real cat photo locked",
     photo_required_title: "Capture a real cat first",
@@ -691,6 +693,11 @@ const SHARE_URL =
   window.PAWDEX_SHARE_URL || "https://whatthefuck321.github.io/catchcat-pawdex-prototype/";
 const PAYMENT_LINKS = window.PAWDEX_PAYMENT_LINKS || {};
 const SUPABASE_CONFIG = window.PAWDEX_SUPABASE || { url: "", anonKey: "" };
+const QUERY_PARAMS = new URLSearchParams(window.location.search);
+const DEMO_CAPTURE_MODE = QUERY_PARAMS.get("demo") === "1";
+const DEMO_AUTOPLAY_CAPTURE = DEMO_CAPTURE_MODE && QUERY_PARAMS.get("autoplay") === "1";
+const DEMO_CAT_PHOTO =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 1200'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='28%25' r='78%25'%3E%3Cstop offset='0%25' stop-color='%23f7fbff'/%3E%3Cstop offset='50%25' stop-color='%238fa6c8'/%3E%3Cstop offset='100%25' stop-color='%23111826'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='900' height='1200' fill='url(%23g)'/%3E%3Cellipse cx='450' cy='760' rx='248' ry='300' fill='%23d8e1ee'/%3E%3Cpath d='M248 516 318 298l124 154c38-10 78-10 116 0l124-154 70 218c64 61 96 140 96 237 0 212-157 336-348 336S152 965 152 753c0-97 32-176 96-237Z' fill='%23eef3f8'/%3E%3Cpath d='M326 334 354 472 284 432Z M574 334 546 472 616 432Z' fill='%23aebdd2'/%3E%3Cellipse cx='352' cy='665' rx='34' ry='42' fill='%2316222f'/%3E%3Cellipse cx='548' cy='665' rx='34' ry='42' fill='%2316222f'/%3E%3Ccircle cx='340' cy='650' r='10' fill='%23fff'/%3E%3Ccircle cx='536' cy='650' r='10' fill='%23fff'/%3E%3Cpath d='M450 710 414 752h72Z' fill='%23ff9f8f'/%3E%3Cpath d='M376 804c46 44 102 44 148 0' fill='none' stroke='%2316222f' stroke-width='24' stroke-linecap='round'/%3E%3Cpath d='M244 706c-72-24-124-20-178 14M248 764c-86 0-142 22-194 68M656 706c72-24 124-20 178 14M652 764c86 0 142 22 194 68' stroke='%23f7fbff' stroke-width='16' stroke-linecap='round'/%3E%3Ctext x='450' y='1120' text-anchor='middle' fill='%23ffffff' font-size='44' font-family='Arial' font-weight='700'%3EPAWDEX DEMO CAT%3C/text%3E%3C/svg%3E";
 const BREED_API_CONFIG = {
   url: window.PAWDEX_BREED_API?.url || "",
   token: window.PAWDEX_BREED_API?.token || window.PAWDEX_SUPABASE?.anonKey || "",
@@ -850,7 +857,7 @@ const ctx = els.canvas.getContext("2d");
 let settleTimer = null;
 let cameraStream = null;
 let supabaseClient = null;
-const CAPTURE_ANIMATION_MS = 1320;
+const CAPTURE_ANIMATION_MS = DEMO_CAPTURE_MODE ? 3200 : 1320;
 
 function supabaseConfigured() {
   return Boolean(SUPABASE_CONFIG.url && SUPABASE_CONFIG.anonKey);
@@ -1259,7 +1266,7 @@ function hasLiveVideoSource() {
 }
 
 function hasTruePhotoSource() {
-  return Boolean(state.photoOverride || hasLiveVideoSource());
+  return Boolean(state.photoOverride || hasLiveVideoSource() || DEMO_CAPTURE_MODE);
 }
 
 function readFileAsDataUrl(file) {
@@ -1324,6 +1331,7 @@ async function handlePhotoUpload(event) {
 
 function capturePhotoFrame() {
   if (state.photoOverride) return state.photoOverride;
+  if (DEMO_CAPTURE_MODE) return DEMO_CAT_PHOTO;
   const video = els.cameraVideo;
   if (!hasLiveVideoSource()) return null;
 
@@ -2590,7 +2598,11 @@ function render() {
   els.riskHint.textContent = isRevengeActive ? "回归传说锁定：全心全意追猎" : mode.hint;
   els.cameraToggleButton.textContent = state.cameraEnabled ? t("camera_on") : t("camera_open");
   els.photoPickButton.textContent = t("photo_upload");
-  els.scanChip.textContent = hasTruePhotoSource() ? t("photo_ready") : t("camera_fallback");
+  els.scanChip.textContent = DEMO_CAPTURE_MODE
+    ? t("demo_photo_ready")
+    : hasTruePhotoSource()
+      ? t("photo_ready")
+      : t("camera_fallback");
   els.photoPreview.hidden = !state.photoOverride;
   if (state.photoOverride && els.photoPreview.src !== state.photoOverride) {
     els.photoPreview.src = state.photoOverride;
@@ -2854,3 +2866,9 @@ render();
 window.setInterval(() => {
   if (state.legendaryHour) render();
 }, 1000);
+
+if (DEMO_AUTOPLAY_CAPTURE) {
+  window.setTimeout(() => {
+    if (state.phase === "ready") catchCat();
+  }, 700);
+}
