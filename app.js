@@ -170,7 +170,7 @@ const I18N = {
     location_searching_copy: "读取当前位置，只保存在本机",
     location_ready_copy: "{habitat} · {claim}",
     location_denied_title: "使用演示猫点",
-    location_denied_copy: "浏览器没有给定位权限，已切到涩谷演示猫点",
+    location_denied_copy: "浏览器没有给定位权限，已切到星灯旧街演示猫点",
     location_button_m: "{distance}m",
     poi_claim_ready: "点击领取 +2 猫粮补给",
     poi_claim_done: "补给冷却中，先继续拍猫",
@@ -360,7 +360,7 @@ const I18N = {
     location_searching_copy: "Reading location locally on this device",
     location_ready_copy: "{habitat} · {claim}",
     location_denied_title: "Demo spot active",
-    location_denied_copy: "Location was blocked, using Shibuya demo area",
+    location_denied_copy: "Location was blocked, using the demo city area",
     location_button_m: "{distance}m",
     poi_claim_ready: "Tap to claim +2 treats",
     poi_claim_done: "Supply cooldown active. Keep catching.",
@@ -471,7 +471,7 @@ const scenes = [
   {
     name: "巷口橘猫",
     poiTitle: "便利店补给点",
-    place: "涩谷后巷猫点",
+    place: "星灯旧街猫点",
     habitat: "夜间补给点",
     benefit: "橘猫高频 · 点击猫点领取补给",
     art: "common",
@@ -481,7 +481,7 @@ const scenes = [
   {
     name: "屋顶黑猫",
     poiTitle: "屋顶稀有点",
-    place: "首尔弘大猫点",
+    place: "云桥天台猫点",
     habitat: "高处风口",
     benefit: "黑猫高频 · 史诗反应较强",
     art: "epic",
@@ -491,7 +491,7 @@ const scenes = [
   {
     name: "长椅白猫",
     poiTitle: "公园栖息点",
-    place: "台北大安猫点",
+    place: "雨廊公园猫点",
     habitat: "绿地长椅",
     benefit: "白猫高频 · 稀有反应稳定",
     art: "rare",
@@ -501,7 +501,7 @@ const scenes = [
   {
     name: "绿瞳猫",
     poiTitle: "自动贩卖机刷新点",
-    place: "大阪巷口猫点",
+    place: "月台灯巷猫点",
     habitat: "夜间灯源",
     benefit: "绿瞳猫高频 · 优秀卡更常见",
     art: "uncommon",
@@ -515,7 +515,7 @@ const locationSpots = [
     habitat: "通勤街角",
     benefit: "银白猫高频 · 稀有反应较强",
     name: "银白猫",
-    place: "附近车站猫点",
+    place: "月台风口猫点",
     art: "rare",
     bg1: "#24375b",
     bg2: "#0d1222",
@@ -525,7 +525,7 @@ const locationSpots = [
     habitat: "夜间补给点",
     benefit: "橘猫高频 · 点击猫点领取猫粮",
     name: "霓虹橘猫",
-    place: "附近便利店猫点",
+    place: "星灯便利屋猫点",
     art: "common",
     bg1: "#3a2d42",
     bg2: "#121019",
@@ -535,7 +535,7 @@ const locationSpots = [
     habitat: "绿地长椅",
     benefit: "白猫高频 · 适合稳定补图鉴",
     name: "树影白猫",
-    place: "附近公园猫点",
+    place: "雨廊公园猫点",
     art: "uncommon",
     bg1: "#1d4b3d",
     bg2: "#0d1713",
@@ -545,7 +545,7 @@ const locationSpots = [
     habitat: "高处风口",
     benefit: "黑猫高频 · 史诗反应较强",
     name: "天台黑猫",
-    place: "附近屋顶猫点",
+    place: "云桥天台猫点",
     art: "epic",
     bg1: "#372b58",
     bg2: "#0d0d18",
@@ -639,10 +639,10 @@ const weeklyLimitedCat = {
   label: "限定·已结束",
 };
 const leaderboardRivals = [
-  { name: "首尔夜猫", legendary: 7, rarePlus: 29 },
-  { name: "涩谷金手", legendary: 5, rarePlus: 24 },
-  { name: "大安金瞳", legendary: 3, rarePlus: 18 },
-  { name: "大阪巷口", legendary: 2, rarePlus: 15 },
+  { name: "星灯夜猫", legendary: 7, rarePlus: 29 },
+  { name: "云桥金手", legendary: 5, rarePlus: 24 },
+  { name: "雨廊金瞳", legendary: 3, rarePlus: 18 },
+  { name: "月台巷口", legendary: 2, rarePlus: 15 },
 ];
 const founderPacks = [
   {
@@ -2199,7 +2199,7 @@ function renderStory() {
     els.storyCardArt.classList.remove("is-photo");
     els.storyCardName.textContent = t("story_empty_name");
     els.storyCardNo.textContent = "#000";
-    els.storyCardScene.textContent = "涩谷后巷";
+    els.storyCardScene.textContent = "星灯旧街";
     els.storyCardDate.textContent = shareDateLabel();
     els.storyHeadline.textContent = t("story_empty_headline");
     els.storySub.textContent = t("story_empty_sub");
@@ -2220,7 +2220,7 @@ function renderStory() {
     els.storyCardArt.classList.toggle("is-photo", Boolean(card.photo));
     els.storyCardName.textContent = card.name;
     els.storyCardNo.textContent = "MISS";
-    els.storyCardScene.textContent = card.scene?.place || "涩谷后巷";
+    els.storyCardScene.textContent = card.scene?.place || "星灯旧街";
     els.storyCardDate.textContent = shareDateLabel();
     els.storyHeadline.textContent = t("story_fail_headline", { mode: modes[outcome.mode].label });
     els.storySub.textContent = t("story_fail_sub", {
@@ -2250,7 +2250,7 @@ function renderStory() {
   els.storyCardArt.classList.toggle("is-photo", Boolean(card.photo));
   els.storyCardName.textContent = card.name;
   els.storyCardNo.textContent = `#${String(card.no).padStart(3, "0")}`;
-  els.storyCardScene.textContent = card.scene?.place || "涩谷后巷";
+  els.storyCardScene.textContent = card.scene?.place || "星灯旧街";
   els.storyCardDate.textContent = shareDateLabel(card.capturedAt ? new Date(card.capturedAt) : new Date());
   els.storyHeadline.textContent =
     card.rarity === "legendary"
@@ -2600,7 +2600,7 @@ function render() {
   els.worldMainLabel.textContent = locationSpots[1].title;
   els.worldRareLabel.textContent = locationSpots[3].title;
   els.worldSupplyLabel.textContent = canClaimSpotReward() ? "电车口补给" : "补给冷却";
-  els.worldQuestStep.textContent = state.legendaryHour ? "伝説予兆" : "NEKO WALK";
+  els.worldQuestStep.textContent = state.legendaryHour ? "LEGEND SIGNAL" : "CITY WALK";
   els.worldQuestTitle.textContent = state.locationSpot
     ? `${state.locationSpot.title} · ${state.locationDistance || "--"}m`
     : "点击街区猫点开始夜巡";
