@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v23 anime city HUD prototype`
+Current published version: `v24 anime encounter prototype`
 
 ## What is included
 
@@ -28,6 +28,7 @@ Current published version: `v23 anime city HUD prototype`
 - v21 street map: the phone app now leads with a playable night-walk street map. Map nodes are real buttons: tapping encounter, rare, and supply spots changes the active cat point, distance, habitat, scene art, and supply reward state before capture.
 - v22 immersive HUD: the landing copy, map nodes, quest panel, capture dock, and bottom navigation are flattened into an app-first HUD. The first viewport now reads as a running mobile game screen instead of a card-based pitch page.
 - v23 anime city HUD: real-world district references were replaced with fictional anime-city locations such as 星灯旧街, 云桥天台, 雨廊公园, and 月台灯巷, while the visual skin adds stronger manga speed-line motion and purple/gold city glow.
+- v24 anime encounter: the cat art now lives inside the playable street scene, with layered anime skyline/bridge/street art, idle cat motion, capture burst lines, near-miss escape motion, and a less map-card-like phone view.
 
 ## v15 Approval Route
 

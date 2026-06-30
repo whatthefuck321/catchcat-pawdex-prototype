@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PAWDEX v23 - Anime City HUD Prototype</title>
+    <title>PAWDEX v24 - Anime Encounter Prototype</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -109,12 +109,6 @@
             <img class="photo-preview" id="photoPreview" alt="" />
             <input id="photoInput" class="photo-input" type="file" accept="image/*" capture="environment" />
             <canvas id="catCanvas" width="760" height="980"></canvas>
-            <img class="field-cat-art" id="fieldCatArt" src="./assets/cat-common.png" alt="" />
-            <div class="encounter-ring" aria-hidden="true">
-              <i></i>
-              <i></i>
-              <b></b>
-            </div>
             <div class="camera-ui">
               <div class="anime-aura" aria-hidden="true"><i></i><i></i><i></i></div>
               <div class="field-top">
@@ -138,6 +132,38 @@
               </div>
 
               <section class="world-map" id="worldMap" aria-label="街区猫点地图">
+                <div class="anime-city-scene" aria-hidden="true">
+                  <div class="anime-sky">
+                    <i class="anime-moon"></i>
+                    <i class="anime-cloud cloud-a"></i>
+                    <i class="anime-cloud cloud-b"></i>
+                  </div>
+                  <div class="anime-skyline">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                  </div>
+                  <div class="anime-bridge">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                  </div>
+                  <div class="anime-street">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                  </div>
+                  <div class="anime-sign sign-a">PAW</div>
+                  <div class="anime-sign sign-b">CAT</div>
+                </div>
+                <img class="field-cat-art" id="fieldCatArt" src="./assets/cat-common.png" alt="" />
+                <div class="encounter-ring" aria-hidden="true">
+                  <i></i>
+                  <i></i>
+                  <b></b>
+                </div>
                 <div class="world-river" aria-hidden="true"></div>
                 <div class="world-streets" aria-hidden="true">
                   <i></i>
@@ -152,7 +178,7 @@
                 </div>
                 <button class="world-node world-node-main" type="button" data-world-spot="main">
                   <span>遭遇</span>
-                  <strong id="worldMainLabel">便利店猫点</strong>
+                  <strong id="worldMainLabel">星灯猫点</strong>
                 </button>
                 <button class="world-node world-node-rare" type="button" data-world-spot="rare">
                   <span>稀有</span>
@@ -160,7 +186,7 @@
                 </button>
                 <button class="world-node world-node-supply" type="button" data-world-spot="supply">
                   <span>补给</span>
-                  <strong id="worldSupplyLabel">电车口</strong>
+                  <strong id="worldSupplyLabel">月台口</strong>
                 </button>
                 <div class="world-avatar" aria-hidden="true">
                   <i></i>
@@ -172,6 +198,12 @@
                   <small id="worldQuestCopy">猫点会改变出没地、猫种和补给状态</small>
                 </div>
               </section>
+              <div class="anime-action-burst" aria-hidden="true">
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+              </div>
 
               <div class="field-map" id="fieldMap" aria-label="附近猫点雷达">
                 <div class="map-grid" aria-hidden="true"></div>
@@ -223,7 +255,7 @@
 
               <div class="cat-readout">
                 <span id="catIntelPlace">星灯旧街猫点</span>
-                <strong id="catIntelName">便利店补给点</strong>
+                <strong id="catIntelName">星灯补给点</strong>
                 <small id="catIntelBenefit">橘猫高频 · 点击猫点领取补给</small>
               </div>
 
@@ -415,7 +447,7 @@
           <article>
             <span>01</span>
             <strong>街头发现</strong>
-            <p>用定位和猫点把“便利店/后巷/公园”变成出没区域，而不是普通信息卡。</p>
+            <p>用定位和猫点把“补给点/天台/雨廊”变成出没区域，而不是普通信息卡。</p>
           </article>
           <article>
             <span>02</span>

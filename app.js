@@ -29,7 +29,7 @@ const I18N = {
     camera_blocked_title: "相机没打开",
     camera_blocked_copy: "浏览器拒绝了相机权限。v15 不再用系统猫替代卡面，请上传一张真猫照片继续测试。",
     camera_ready: "真实相机已启用",
-    camera_fallback: "先开相机或上传真猫照片",
+    camera_fallback: "需要真猫照片",
     photo_upload: "上传猫图",
     photo_ready: "真猫照片已锁定",
     photo_required_title: "先拍真猫",
@@ -219,7 +219,7 @@ const I18N = {
     camera_blocked_title: "Camera is not available",
     camera_blocked_copy: "The browser blocked camera access. v15 no longer swaps in system cat art; upload a real cat photo to continue testing.",
     camera_ready: "Real camera enabled",
-    camera_fallback: "Open camera or upload a real cat photo",
+    camera_fallback: "Need a real cat photo",
     photo_upload: "Upload cat photo",
     photo_ready: "Real cat photo locked",
     photo_required_title: "Capture a real cat first",
@@ -470,7 +470,7 @@ const rarityRewards = {
 const scenes = [
   {
     name: "巷口橘猫",
-    poiTitle: "便利店补给点",
+    poiTitle: "星灯补给点",
     place: "星灯旧街猫点",
     habitat: "夜间补给点",
     benefit: "橘猫高频 · 点击猫点领取补给",
@@ -500,7 +500,7 @@ const scenes = [
   },
   {
     name: "绿瞳猫",
-    poiTitle: "自动贩卖机刷新点",
+    poiTitle: "灯源刷新点",
     place: "月台灯巷猫点",
     habitat: "夜间灯源",
     benefit: "绿瞳猫高频 · 优秀卡更常见",
@@ -511,8 +511,8 @@ const scenes = [
 ];
 const locationSpots = [
   {
-    title: "电车口刷新点",
-    habitat: "通勤街角",
+    title: "月台风口刷新点",
+    habitat: "高架风口",
     benefit: "银白猫高频 · 稀有反应较强",
     name: "银白猫",
     place: "月台风口猫点",
@@ -521,11 +521,11 @@ const locationSpots = [
     bg2: "#0d1222",
   },
   {
-    title: "便利店补给点",
+    title: "星灯补给点",
     habitat: "夜间补给点",
     benefit: "橘猫高频 · 点击猫点领取猫粮",
     name: "霓虹橘猫",
-    place: "星灯便利屋猫点",
+    place: "星灯补给猫点",
     art: "common",
     bg1: "#3a2d42",
     bg2: "#121019",
@@ -679,7 +679,7 @@ const founderPacks = [
 ];
 
 const names = ["麻薯", "豆腐", "奶盖", "团子", "玄米", "乌冬", "小虎", "年糕"];
-const titles = ["便利店守护者", "屋顶明星", "夜行冠军", "金瞳猎手", "传说候选猫", "巷口幻影"];
+const titles = ["星灯守护者", "屋顶明星", "夜行冠军", "金瞳猎手", "传说候选猫", "巷口幻影"];
 const STORAGE_KEY = "pawdex-html-v7";
 const shareRewardLimit = 3;
 const SPOT_REWARD_COOLDOWN_MS = 5 * 60 * 1000;
@@ -1722,6 +1722,7 @@ function rewardForCapture(rarity) {
 }
 
 function startCaptureAnimation(mode, rarity) {
+  els.phone.dataset.rollRarity = rarity;
   setRarityVars(els.rollOverlay, rarity);
   renderRarityReel(rarity);
   showCutIn(t("cutin_lock"), rarity === "legendary" ? t("roll_legendary") : t("cutin_rare"), "lock");
@@ -1774,6 +1775,7 @@ function revealDramaCopy(card) {
 
 function showCardResult(card) {
   const cfg = rarities[card.rarity];
+  els.phone.dataset.rollRarity = card.rarity;
   const headline = card.revengeAttempt ? t("chase_success") : t("caught_title");
   const drama = revealDramaCopy(card);
   const rewardCopy = card.reward?.total
@@ -1857,6 +1859,7 @@ function showCardResult(card) {
 
 function showEscapeResult(outcome) {
   const cfg = rarities[outcome.rarity];
+  els.phone.dataset.rollRarity = outcome.rarity;
   const revengeCopy =
     outcome.rarity === "legendary"
       ? t("fail_revenge")
@@ -2599,7 +2602,7 @@ function render() {
   els.worldMap.classList.toggle("claimable", canClaimSpotReward());
   els.worldMainLabel.textContent = locationSpots[1].title;
   els.worldRareLabel.textContent = locationSpots[3].title;
-  els.worldSupplyLabel.textContent = canClaimSpotReward() ? "电车口补给" : "补给冷却";
+  els.worldSupplyLabel.textContent = canClaimSpotReward() ? "月台补给" : "补给冷却";
   els.worldQuestStep.textContent = state.legendaryHour ? "LEGEND SIGNAL" : "CITY WALK";
   els.worldQuestTitle.textContent = state.locationSpot
     ? `${state.locationSpot.title} · ${state.locationDistance || "--"}m`
