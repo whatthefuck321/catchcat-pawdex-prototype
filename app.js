@@ -60,6 +60,8 @@ const I18N = {
     mission_roll_step: "ROLLING",
     mission_roll_title: "稀有度正在跳动",
     mission_roll_copy: "逃跑、升档、回粮正在结算",
+    capture_stage_step: "SHUTTER SYNC",
+    capture_stage_title: "{rarity}反应锁定",
     mission_miss_step: "NEAR MISS",
     mission_miss_title: "猫进框又挣脱",
     mission_miss_copy: "可以晒差一点，或再拍一只",
@@ -250,6 +252,8 @@ const I18N = {
     mission_roll_step: "ROLLING",
     mission_roll_title: "Rarity is spinning",
     mission_roll_copy: "Escape, upgrade, and refund are resolving",
+    capture_stage_step: "SHUTTER SYNC",
+    capture_stage_title: "{rarity} signal locked",
     mission_miss_step: "NEAR MISS",
     mission_miss_title: "It broke out of frame",
     mission_miss_copy: "Share the close call or catch again",
@@ -781,6 +785,10 @@ const els = {
   rollTitle: $("#rollTitle"),
   rollCopy: $("#rollCopy"),
   rarityReel: $("#rarityReel"),
+  captureShadowCat: $("#captureShadowCat"),
+  captureStageRarity: $("#captureStageRarity"),
+  captureStageStep: $("#captureStageStep"),
+  captureStageTitle: $("#captureStageTitle"),
   captureFlash: $("#captureFlash"),
   particleField: $("#particleField"),
   animeCutIn: $("#animeCutIn"),
@@ -842,6 +850,7 @@ const ctx = els.canvas.getContext("2d");
 let settleTimer = null;
 let cameraStream = null;
 let supabaseClient = null;
+const CAPTURE_ANIMATION_MS = 1320;
 
 function supabaseConfigured() {
   return Boolean(SUPABASE_CONFIG.url && SUPABASE_CONFIG.anonKey);
@@ -1630,7 +1639,7 @@ function catchCat() {
       render();
       showEscapeLikeResult(t("save_failed_title"), t("save_failed_copy"));
     });
-  }, 950);
+  }, CAPTURE_ANIMATION_MS);
 }
 
 async function settleCatch(result) {
@@ -1724,6 +1733,21 @@ function rewardForCapture(rarity) {
 function startCaptureAnimation(mode, rarity) {
   els.phone.dataset.rollRarity = rarity;
   setRarityVars(els.rollOverlay, rarity);
+  if (els.captureShadowCat) {
+    els.captureShadowCat.src = catAsset(rarity);
+    els.captureShadowCat.alt = "";
+  }
+  if (els.captureStageRarity) {
+    els.captureStageRarity.textContent = `${rarities[rarity].label} SIGNAL`;
+  }
+  if (els.captureStageStep) {
+    els.captureStageStep.textContent = t("capture_stage_step");
+  }
+  if (els.captureStageTitle) {
+    els.captureStageTitle.textContent = t("capture_stage_title", {
+      rarity: rarities[rarity].label,
+    });
+  }
   renderRarityReel(rarity);
   showCutIn(t("cutin_lock"), rarity === "legendary" ? t("roll_legendary") : t("cutin_rare"), "lock");
   els.rollTitle.textContent = t("roll_title", { mode: mode.label });
@@ -2819,6 +2843,7 @@ els.resultModal.addEventListener("click", (event) => {
 
 applyImageFallback(els.fieldCatArt);
 applyImageFallback(els.storyCardArt);
+applyImageFallback(els.captureShadowCat);
 
 initSupabaseClient();
 hydrateState();
