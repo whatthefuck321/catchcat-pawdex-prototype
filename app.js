@@ -142,19 +142,19 @@ const I18N = {
     share_opened_title: "分享已打开",
     share_opened_copy: "已打开分享窗口，今日分享回粮会按上限结算。",
     share_native_unavailable: "系统分享不可用，已改为下载图片。",
-    store_page_title: "Founder 预留",
-    store_goal: "有流量后开启",
-    store_hero_title: "先跑通真猫晒卡，再收钱",
-    store_hero_copy: "当前主线是 iOS beta 和真实猫卡传播；Founder 入口只作为落地页预留。",
+    store_page_title: "猫粮补给站",
+    store_goal: "DAY1",
+    store_hero_title: "猫粮是唯一闸门",
+    store_hero_copy: "免费流量先靠分享回粮；需要立刻续命时，才把付费补给挂到这里。",
     founder_upgrade: "升级 Founder",
     founder_checkout: "立即支持",
     founder_missing_title: "收款链接未配置",
     founder_missing_copy: "先创建 Stripe Payment Link，再配置 window.PAWDEX_PAYMENT_LINKS。现在不会打开假收款页。",
     founder_opened_title: "收款页面已打开",
     founder_opened_copy: "付款确认需要 Stripe webhook 或 Supabase 记录；当前静态原型只负责打开收款入口。",
-    founder_note: "审批路线已调整：先验证 100 个陌生人拍真猫晒卡，再正式开启 Founder 收款和权益发放。",
+    founder_note: "当前静态原型只打开你配置过的真实收款链接；没有链接时不会伪造付款成功。",
     founder_popular: "推荐",
-    founder_revenue_math: "GTM 验收线：真猫上卡 + iOS beta + 晒卡传播；收入是结果，不是前提。",
+    founder_revenue_math: "Day1 收入线：10 个 Early = $90，先覆盖识别/云成本，再继续加功能。",
     revenge_ready: "它回来了",
     revenge_armed: "追猎已锁定",
     revenge_armed_copy: "下一次全心全意必遇到传说，失败会重新记仇。",
@@ -188,7 +188,7 @@ const I18N = {
     sim_result: "每粮 Rare+ {rare} · 每粮传说 {legendary} · 跑 {escape}%",
     nav_catch: "抓猫",
     nav_dex: "图鉴",
-    nav_store: "预留",
+    nav_store: "补给",
     nav_rank: "榜单",
     nav_share: "分享",
     share_text: "我在 PAWDEX 抓到一只稀有猫！你也来试试",
@@ -335,19 +335,19 @@ const I18N = {
     share_opened_title: "Share opened",
     share_opened_copy: "The share window is open. Treat refunds follow the daily cap.",
     share_native_unavailable: "Native share is unavailable, so the image was downloaded instead.",
-    store_page_title: "Founder Reserve",
-    store_goal: "Open after traction",
-    store_hero_title: "Ship real cat cards before charging",
-    store_hero_copy: "The main line is iOS beta plus real-cat share cards. Founder checkout stays as a landing-page reserve.",
+    store_page_title: "Supply Station",
+    store_goal: "DAY1",
+    store_hero_title: "Treats are the gate",
+    store_hero_copy: "Free growth comes from share refunds. Paid supply belongs here when players want to continue now.",
     founder_upgrade: "Upgrade Founder",
     founder_checkout: "Support now",
     founder_missing_title: "Payment link is not configured",
     founder_missing_copy: "Create Stripe Payment Links, then configure window.PAWDEX_PAYMENT_LINKS. This prototype will not open a fake checkout.",
     founder_opened_title: "Checkout opened",
     founder_opened_copy: "Payment confirmation needs Stripe webhooks or Supabase records. This static prototype only opens checkout.",
-    founder_note: "Route adjusted: prove 100 strangers will capture and share real cat cards before opening Founder checkout and entitlements.",
+    founder_note: "This static prototype only opens configured real payment links. Without links, it will not fake a paid state.",
     founder_popular: "Recommended",
-    founder_revenue_math: "GTM gate: real cat on card + iOS beta + share-card spread. Revenue is the result, not the prerequisite.",
+    founder_revenue_math: "Day-1 revenue line: 10 Early supporters = $90, covering ID/cloud cost before adding more features.",
     revenge_ready: "It came back",
     revenge_armed: "Chase locked",
     revenge_armed_copy: "The next All Heart attempt will meet a legendary. A miss will mark it again.",
@@ -381,7 +381,7 @@ const I18N = {
     sim_result: "Rare+ per treat {rare} · Legendary per treat {legendary} · Escape {escape}%",
     nav_catch: "Catch",
     nav_dex: "Dex",
-    nav_store: "Reserve",
+    nav_store: "Supply",
     nav_rank: "Rank",
     nav_share: "Share",
     share_text: "I just caught a rare cat on PAWDEX! Come try",
@@ -708,7 +708,7 @@ const BREED_API_CONFIG = {
 const pageMeta = {
   catch: { label: "PAWDEX FIELD", title: "今晚抓猫" },
   dex: { label: "CAT DEX", title: "猫卡图鉴" },
-  store: { label: "FOUNDER RESERVE", title: "Founder 预留" },
+  store: { label: "SUPPLY STATION", title: "猫粮补给站" },
   rank: { label: "WEEKLY RANK", title: "本周榜单" },
   share: { label: "STORY SHARE", title: "晒卡分享" },
   debug: { label: "DEV PANEL", title: "调试面板" },
@@ -823,6 +823,11 @@ const els = {
   catIntelPlace: $("#catIntelPlace"),
   catIntelBenefit: $("#catIntelBenefit"),
   dexTitle: $("#dexTitle"),
+  dexProgressText: $("#dexProgressText"),
+  dexProgressFill: $("#dexProgressFill"),
+  dexRareCount: $("#dexRareCount"),
+  dexLegendCount: $("#dexLegendCount"),
+  dexLimitedStatus: $("#dexLimitedStatus"),
   dexGrid: $("#dexGrid"),
   clearDexButton: $("#clearDexButton"),
   storyPreview: $("#storyPreview"),
@@ -849,6 +854,10 @@ const els = {
   storeHeroTitle: $("#storeHeroTitle"),
   storeHeroCopy: $("#storeHeroCopy"),
   storeMath: $("#storeMath"),
+  economyFoodStatus: $("#economyFoodStatus"),
+  economyShareStatus: $("#economyShareStatus"),
+  economyResetStatus: $("#economyResetStatus"),
+  economyLegendStatus: $("#economyLegendStatus"),
   founderList: $("#founderList"),
   paymentNote: $("#paymentNote"),
   simulateButton: $("#simulateButton"),
@@ -1536,7 +1545,13 @@ function breedSourceLabel(profile) {
 }
 
 function switchTab(tab) {
+  if (!pageMeta[tab] || state.tab === tab) return;
   state.tab = tab;
+  if (els.phone) {
+    els.phone.classList.remove("tab-switching");
+    void els.phone.offsetWidth;
+    els.phone.classList.add("tab-switching");
+  }
   render();
 }
 
@@ -2332,6 +2347,19 @@ function renderStory() {
 
 function renderDex() {
   els.dexTitle.textContent = `已收集 ${state.cards.length} 张`;
+  const rarePlusCount = state.cards.filter((card) => ["rare", "epic", "legendary"].includes(card.rarity)).length;
+  const legendaryCount = state.cards.filter((card) => card.rarity === "legendary").length;
+  const litSlots = state.cards.length + (state.limitedCatCaught ? 1 : 0);
+  const totalSlots = Math.max(12, litSlots);
+  if (els.dexProgressText) {
+    els.dexProgressText.textContent = `${litSlots} / ${totalSlots} 格已点亮`;
+  }
+  if (els.dexProgressFill) {
+    els.dexProgressFill.style.width = `${Math.min(100, Math.round((litSlots / totalSlots) * 100))}%`;
+  }
+  if (els.dexRareCount) els.dexRareCount.textContent = rarePlusCount;
+  if (els.dexLegendCount) els.dexLegendCount.textContent = legendaryCount;
+  if (els.dexLimitedStatus) els.dexLimitedStatus.textContent = state.limitedCatCaught ? "已得" : "未得";
   const limitedSlot = state.limitedCatCaught
     ? `
       ${renderCatCard(
@@ -2444,12 +2472,23 @@ function isSafePaymentLink(url) {
 
 function renderFounderStore() {
   if (!els.founderList) return;
+  const shareLeft = Math.max(shareRewardLimit - state.shareRewardCount, 0);
+  const today = currentDateKey();
   els.storeTitle.textContent = t("store_page_title");
   els.storeGoal.textContent = t("store_goal");
   els.storeHeroTitle.textContent = t("store_hero_title");
   els.storeHeroCopy.textContent = t("store_hero_copy");
   els.storeMath.textContent = t("founder_revenue_math");
   els.paymentNote.textContent = t("founder_note");
+  if (els.economyFoodStatus) els.economyFoodStatus.textContent = `${state.food}/${state.maxFood}`;
+  if (els.economyShareStatus) els.economyShareStatus.textContent = `今日剩 ${shareLeft} 次`;
+  if (els.economyResetStatus) {
+    els.economyResetStatus.textContent = state.food >= state.maxFood ? "已满仓" : "明天补满";
+  }
+  if (els.economyLegendStatus) {
+    els.economyLegendStatus.textContent =
+      state.firstLegendaryDate === today ? "今日已领取" : "+5 待触发";
+  }
   els.founderList.innerHTML = founderPacks
     .map((pack) => {
       const hasLink = isSafePaymentLink(paymentLinkForPack(pack.id));

@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v28 app theater route lock prototype`
+Current published version: `v29 in-app city menus prototype`
 
 ## What is included
 
@@ -33,6 +33,7 @@ Current published version: `v28 app theater route lock prototype`
 - v26 demo capture verification: `?demo=1` unlocks a local generated demo cat photo, and `?demo=1&autoplay=1` automatically starts one capture so the full cut-in, rolling state, result modal, and share-card path can be browser-tested without camera or file-upload tooling. Normal URLs still require a real camera/uploaded cat photo.
 - v27 field live anime HUD: the catch screen is pushed further away from cards with a full-screen FIELD LIVE scene, manga edge masks, GPS-style location rail, poster-like cat readout, tactical risk controls, and a floating mobile nav treatment.
 - v28 app theater route lock: the outer marketing/game-loop panels are hidden so the phone app owns the first screen, while tapping cat spots now triggers route-scan animation, an AREA LOCK HUD, spot-themed scene tint, and stronger phone-device chrome.
+- v29 in-app city menus: dex, supply/economy, ranking, and share views now live as game subpages inside the phone shell. The supply page exposes live cat-food, share-refund, daily reset, and first-legendary state instead of leaving economy as an external explanation block.
 
 ## v15 Approval Route
 

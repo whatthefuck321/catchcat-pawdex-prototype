@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PAWDEX v28 - App Theater Route Lock Prototype</title>
+    <title>PAWDEX v29 - In-App City Menus Prototype</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -332,7 +332,7 @@
           </div>
         </section>
 
-        <section class="screen" id="dexScreen" data-screen="dex" hidden>
+        <section class="screen app-sub-screen dex-page" id="dexScreen" data-screen="dex" hidden>
           <div class="section-head dex-head">
             <div>
               <p class="app-label">CAT DEX</p>
@@ -340,10 +340,26 @@
             </div>
             <button class="small-button" id="clearDexButton" type="button">清空</button>
           </div>
+          <section class="dex-orbit" aria-label="图鉴进度">
+            <div class="dex-orbit-art" aria-hidden="true">
+              <img src="./assets/cat-legendary.png" alt="" />
+            </div>
+            <div class="dex-orbit-copy">
+              <span>COLLECTION FILE</span>
+              <strong>夜巡图鉴册</strong>
+              <small id="dexProgressText">0 / 12 格已点亮</small>
+            </div>
+            <div class="dex-progress-bar" aria-hidden="true"><i id="dexProgressFill"></i></div>
+            <div class="dex-rarity-row" aria-label="图鉴稀有度统计">
+              <span><b id="dexRareCount">0</b> Rare+</span>
+              <span><b id="dexLegendCount">0</b> 传说</span>
+              <span><b id="dexLimitedStatus">未得</b> 限定</span>
+            </div>
+          </section>
           <div class="dex-grid" id="dexGrid"></div>
         </section>
 
-        <section class="screen" id="shareScreen" data-screen="share" hidden>
+        <section class="screen app-sub-screen share-page" id="shareScreen" data-screen="share" hidden>
           <div class="story-preview" id="storyPreview">
             <div class="story-brand">
               <span class="brand-logo">PAWDEX</span>
@@ -408,11 +424,11 @@
           <button class="small-button dev-entry" type="button" data-tab="debug">开发面板</button>
         </section>
 
-        <section class="screen" id="storeScreen" data-screen="store" hidden>
+        <section class="screen app-sub-screen supply-page" id="storeScreen" data-screen="store" hidden>
           <div class="section-head dex-head">
             <div>
-              <p class="app-label">FOUNDER RESERVE</p>
-              <h3 id="storeTitle">Founder 预留</h3>
+              <p class="app-label">SUPPLY STATION</p>
+              <h3 id="storeTitle">猫粮补给站</h3>
             </div>
             <span class="rank-pill" id="storeGoal">$90</span>
           </div>
@@ -420,12 +436,32 @@
             <strong id="storeHeroTitle">先卖身份，不先烧钱</strong>
             <span id="storeHeroCopy">Founder 收入先覆盖云、识别和后续开发成本。</span>
           </div>
+          <section class="economy-console" aria-label="猫粮经济状态">
+            <div class="economy-core">
+              <span id="economyFoodStatus">10/10</span>
+              <small>猫粮闸门</small>
+            </div>
+            <div class="economy-lines">
+              <div>
+                <span>分享回粮</span>
+                <strong id="economyShareStatus">今日剩 3 次</strong>
+              </div>
+              <div>
+                <span>每日重置</span>
+                <strong id="economyResetStatus">明天补满</strong>
+              </div>
+              <div>
+                <span>首只传说</span>
+                <strong id="economyLegendStatus">+5 待触发</strong>
+              </div>
+            </div>
+          </section>
           <div class="store-math" id="storeMath">10 个 Early = $90</div>
           <div class="founder-list" id="founderList"></div>
           <div class="payment-note" id="paymentNote"></div>
         </section>
 
-        <section class="screen" id="rankScreen" data-screen="rank" hidden>
+        <section class="screen app-sub-screen rank-page" id="rankScreen" data-screen="rank" hidden>
           <div class="section-head dex-head">
             <div>
               <p class="app-label">WEEKLY RANK</p>
@@ -433,14 +469,15 @@
             </div>
             <span class="rank-pill" id="leaderboardRank">#5</span>
           </div>
-          <div class="rank-hero">
+          <div class="rank-hero season-broadcast">
+            <div class="season-medal" aria-hidden="true">01</div>
             <strong>本周限定·金瞳夜巡</strong>
-            <span>传说数优先，Rare+ 数作为同分排序。</span>
+            <span>传说数优先，Rare+ 数作为同分排序。榜单只放在 App 内，不再占网页下半屏。</span>
           </div>
           <div class="leaderboard-list app-leaderboard" id="leaderboardList"></div>
         </section>
 
-        <section class="screen" id="debugScreen" data-screen="debug" hidden>
+        <section class="screen app-sub-screen debug-page" id="debugScreen" data-screen="debug" hidden>
           <section class="metric-card">
             <p class="kicker">玩法反馈</p>
             <h2 id="lastOutcomeTitle">还没捕捉</h2>
