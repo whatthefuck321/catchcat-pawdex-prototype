@@ -729,6 +729,7 @@ const state = {
   locationStatus: "idle",
   locationSpot: null,
   locationDistance: null,
+  worldSpotKey: "main",
   spotRewardAt: null,
   checkoutStartedPack: null,
 };
@@ -762,6 +763,13 @@ const els = {
   fieldEvent: $("#fieldEvent"),
   fieldEventTitle: $("#fieldEventTitle"),
   fieldEventCopy: $("#fieldEventCopy"),
+  worldMap: $("#worldMap"),
+  worldQuestStep: $("#worldQuestStep"),
+  worldQuestTitle: $("#worldQuestTitle"),
+  worldQuestCopy: $("#worldQuestCopy"),
+  worldMainLabel: $("#worldMainLabel"),
+  worldRareLabel: $("#worldRareLabel"),
+  worldSupplyLabel: $("#worldSupplyLabel"),
   fieldMap: $("#fieldMap"),
   mapSpotTitle: $("#mapSpotTitle"),
   mapSpotMeta: $("#mapSpotMeta"),
@@ -878,6 +886,7 @@ function hydrateState() {
     state.legendaryHourEndsAt = saved.legendaryHourEndsAt || null;
     state.revengeCat = saved.revengeCat || null;
     state.revengeActive = Boolean(saved.revengeActive);
+    state.worldSpotKey = saved.worldSpotKey || state.worldSpotKey;
     state.spotRewardAt = Number.isFinite(saved.spotRewardAt) ? saved.spotRewardAt : null;
     state.checkoutStartedPack = saved.checkoutStartedPack || null;
   } catch {
@@ -918,6 +927,7 @@ function persistState() {
     legendaryHourEndsAt: state.legendaryHourEndsAt,
     revengeCat: state.revengeCat,
     revengeActive: state.revengeActive,
+    worldSpotKey: state.worldSpotKey,
     spotRewardAt: state.spotRewardAt,
     checkoutStartedPack: state.checkoutStartedPack,
   };
@@ -1043,6 +1053,45 @@ function applyLocationSpot(spot, status = "ready") {
   state.locationDistance = spot.distance;
   state.scene = sceneFromSpot(spot);
   drawCamera();
+  render();
+}
+
+function worldSpotByKey(key) {
+  const indexByKey = {
+    main: 1,
+    rare: 3,
+    supply: 0,
+  };
+  const distanceByKey = {
+    main: 96,
+    rare: 248,
+    supply: 54,
+  };
+  const index = indexByKey[key] ?? 1;
+  return {
+    ...locationSpots[index],
+    distance: distanceByKey[key] || 120,
+    worldKey: key,
+  };
+}
+
+function selectWorldSpot(key) {
+  if (state.phase !== "ready") return;
+  const spot = worldSpotByKey(key);
+  state.worldSpotKey = key;
+  state.locationStatus = "ready";
+  state.locationSpot = spot;
+  state.locationDistance = spot.distance;
+  state.scene = sceneFromSpot(spot);
+
+  if (key === "supply" && canClaimSpotReward()) {
+    state.food = Math.min(state.food + 2, state.maxFood + 10);
+    state.spotRewardAt = Date.now();
+    showEconomyToast(t("poi_claim_toast"), "gain");
+  }
+
+  drawCamera();
+  persistState();
   render();
 }
 
@@ -2545,6 +2594,22 @@ function render() {
   els.fieldEventTitle.textContent = state.legendaryHour ? t("event_on") : t("event_field_normal");
   els.fieldEventCopy.textContent = legendaryCountdownText();
   els.toggleEventButton.textContent = state.legendaryHour ? t("event_close") : t("event_open");
+  els.worldMap.classList.toggle("located", Boolean(state.locationSpot));
+  els.worldMap.classList.toggle("event-active", state.legendaryHour);
+  els.worldMap.classList.toggle("claimable", canClaimSpotReward());
+  els.worldMainLabel.textContent = locationSpots[1].title;
+  els.worldRareLabel.textContent = locationSpots[3].title;
+  els.worldSupplyLabel.textContent = canClaimSpotReward() ? "电车口补给" : "补给冷却";
+  els.worldQuestStep.textContent = state.legendaryHour ? "伝説予兆" : "NEKO WALK";
+  els.worldQuestTitle.textContent = state.locationSpot
+    ? `${state.locationSpot.title} · ${state.locationDistance || "--"}m`
+    : "点击街区猫点开始夜巡";
+  els.worldQuestCopy.textContent = state.locationSpot
+    ? state.scene.benefit || state.locationSpot.benefit
+    : "猫点会改变出没地、猫种和补给状态";
+  $$("[data-world-spot]").forEach((item) => {
+    item.classList.toggle("active", item.dataset.worldSpot === state.worldSpotKey);
+  });
   els.fieldMap.classList.toggle("located", Boolean(state.locationSpot));
   els.fieldMap.classList.toggle("claimable", Boolean(state.locationSpot) && canClaimSpotReward());
   els.mapSpotTitle.textContent = state.locationSpot
@@ -2669,6 +2734,9 @@ els.catchButton.addEventListener("click", catchCat);
 els.cameraToggleButton.addEventListener("click", startCamera);
 els.photoPickButton.addEventListener("click", () => els.photoInput.click());
 els.photoInput.addEventListener("change", handlePhotoUpload);
+$$("[data-world-spot]").forEach((button) => {
+  button.addEventListener("click", () => selectWorldSpot(button.dataset.worldSpot));
+});
 els.locationButton.addEventListener("click", claimSpotReward);
 els.authButton.addEventListener("click", openAuthPanel);
 els.fieldAuthButton.addEventListener("click", openAuthPanel);

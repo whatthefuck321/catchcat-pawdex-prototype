@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v20 game mission prototype`
+Current published version: `v21 street map prototype`
 
 ## What is included
 
@@ -25,6 +25,7 @@ Current published version: `v20 game mission prototype`
 - v18 card reveal ceremony: successful captures now get rarity-specific anime opening copy, summon rings, a charging gate, stronger card-back flip timing, legendary gold burst styling, and near-miss failure warning feedback.
 - v19 share trophy: story exports now read like game loot posts, with a rarity signal header, trophy stamp, cost/reward/rarity stat strip, stronger card sweep, QR-style CTA, and a distinct near-miss poster state.
 - v20 game mission: the hero and in-phone capture view now lead with a task chain: locate a nearby cat spot, shoot/upload a real cat, choose risk, then reveal and share. The capture dock uses a live mission HUD instead of another explanatory card.
+- v21 street map: the phone app now leads with a playable night-walk street map. Map nodes are real buttons: tapping encounter, rare, and supply spots changes the active cat point, distance, habitat, scene art, and supply reward state before capture.
 
 ## v15 Approval Route
 

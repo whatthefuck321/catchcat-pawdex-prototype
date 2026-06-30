@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PAWDEX v20 - Game Mission Prototype</title>
+    <title>PAWDEX v21 - Street Map Prototype</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -31,10 +31,10 @@
         </div>
 
         <section class="hero-copy" id="hunt" aria-label="游戏介绍">
-          <p class="hero-kicker">REAL CAT HUNT / PHOTO CARD</p>
-          <h1><span>今晚任务:</span><span>拍真猫开卡。</span></h1>
+          <p class="hero-kicker">NEKO NIGHT WALK / STREET ENCOUNTER</p>
+          <h1><span>涩谷夜巡，</span><span>遇猫开卡。</span></h1>
           <p class="hero-lead">
-            不先看说明，不先翻卡片。打开就是找猫点、拍真猫、选风险、开卡，10 秒内知道这只猫有没有传说命。
+            第一屏先玩，不先读。点街区猫点、切换出没地、领补给、拍真猫，再进入捕捉结算。
           </p>
           <div class="hero-mission" aria-label="今日抓猫任务">
             <div class="mission-badge">
@@ -48,8 +48,8 @@
             </ol>
           </div>
           <div class="hero-actions">
-            <a class="hero-primary" href="#prototype">试玩原型</a>
-            <a class="hero-secondary" href="#loop">看经济循环</a>
+            <a class="hero-primary" href="#prototype">进入夜巡</a>
+            <a class="hero-secondary" href="#loop">看循环</a>
           </div>
           <div class="hero-stats" aria-label="核心玩法">
             <div>
@@ -69,8 +69,8 @@
 
         <div class="hero-phone-wrap" id="prototype">
           <div class="phone-callout top">
-            <span>LIVE</span>
-            <strong>上传真猫后才能捕捉</strong>
+            <span>MAP</span>
+            <strong>猫点可以直接点击</strong>
           </div>
           <div class="phone-callout bottom">
             <span>LEGENDARY</span>
@@ -136,6 +136,42 @@
                 <strong id="fieldEventTitle">普通时段</strong>
                 <span id="fieldEventCopy">传说概率未加成</span>
               </div>
+
+              <section class="world-map" id="worldMap" aria-label="街区猫点地图">
+                <div class="world-river" aria-hidden="true"></div>
+                <div class="world-streets" aria-hidden="true">
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                </div>
+                <div class="world-train" aria-hidden="true">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <button class="world-node world-node-main" type="button" data-world-spot="main">
+                  <span>遭遇</span>
+                  <strong id="worldMainLabel">便利店猫点</strong>
+                </button>
+                <button class="world-node world-node-rare" type="button" data-world-spot="rare">
+                  <span>稀有</span>
+                  <strong id="worldRareLabel">屋顶风口</strong>
+                </button>
+                <button class="world-node world-node-supply" type="button" data-world-spot="supply">
+                  <span>补给</span>
+                  <strong id="worldSupplyLabel">电车口</strong>
+                </button>
+                <div class="world-avatar" aria-hidden="true">
+                  <i></i>
+                </div>
+                <div class="world-compass" aria-hidden="true">N</div>
+                <div class="world-quest">
+                  <span id="worldQuestStep">NEKO WALK</span>
+                  <strong id="worldQuestTitle">点击街区猫点开始夜巡</strong>
+                  <small id="worldQuestCopy">猫点会改变出没地、猫种和补给状态</small>
+                </div>
+              </section>
 
               <div class="field-map" id="fieldMap" aria-label="附近猫点雷达">
                 <div class="map-grid" aria-hidden="true"></div>
