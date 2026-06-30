@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v26 demo capture verification prototype`
+Current published version: `v27 field live anime HUD prototype`
 
 ## What is included
 
@@ -31,6 +31,7 @@ Current published version: `v26 demo capture verification prototype`
 - v24 anime encounter: the cat art now lives inside the playable street scene, with layered anime skyline/bridge/street art, idle cat motion, capture burst lines, near-miss escape motion, and a less map-card-like phone view.
 - v25 capture cut-in: pressing the shutter now runs a full capture prelude with speed lines, a cat-shadow dash, rarity-colored seal card flip, lock ring, and staged status copy before the result modal appears.
 - v26 demo capture verification: `?demo=1` unlocks a local generated demo cat photo, and `?demo=1&autoplay=1` automatically starts one capture so the full cut-in, rolling state, result modal, and share-card path can be browser-tested without camera or file-upload tooling. Normal URLs still require a real camera/uploaded cat photo.
+- v27 field live anime HUD: the catch screen is pushed further away from cards with a full-screen FIELD LIVE scene, manga edge masks, GPS-style location rail, poster-like cat readout, tactical risk controls, and a floating mobile nav treatment.
 
 ## v15 Approval Route
 

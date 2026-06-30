@@ -8255,3 +8255,613 @@ body {
     font-size: 21px;
   }
 }
+
+/* v27 field-live anime HUD: push the catch screen further away from stacked cards. */
+.phone.catch-mode #catchScreen {
+  inset: 38px 8px 8px;
+}
+
+.phone.catch-mode .field-camera {
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 68% 36%, rgba(255, 214, 10, 0.22), transparent 18%),
+    radial-gradient(circle at 28% 24%, rgba(90, 200, 250, 0.18), transparent 20%),
+    linear-gradient(180deg, #101b36 0%, #15182f 48%, #07070d 100%);
+}
+
+.phone.catch-mode .field-camera::after {
+  z-index: 15;
+  background:
+    linear-gradient(to bottom, rgba(4, 5, 10, 0.74), rgba(4, 5, 10, 0.12) 21%, transparent 42%),
+    linear-gradient(to top, rgba(2, 3, 7, 0.98), rgba(2, 3, 7, 0.76) 18%, transparent 48%),
+    radial-gradient(ellipse at 50% 50%, transparent 56%, rgba(0, 0, 0, 0.38) 100%);
+}
+
+.phone.catch-mode .camera-ui::before,
+.phone.catch-mode .camera-ui::after {
+  content: "";
+  position: absolute;
+  z-index: 17;
+  left: 16px;
+  right: 16px;
+  pointer-events: none;
+}
+
+.phone.catch-mode .camera-ui::before {
+  top: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 214, 10, 0.62), transparent);
+  box-shadow:
+    0 128px 0 rgba(255, 255, 255, 0.06),
+    0 386px 0 rgba(255, 255, 255, 0.05);
+}
+
+.phone.catch-mode .camera-ui::after {
+  top: 72px;
+  bottom: 154px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-left-color: rgba(255, 214, 10, 0.2);
+  border-right-color: rgba(90, 200, 250, 0.16);
+  border-radius: 22px;
+  background:
+    linear-gradient(90deg, rgba(255, 214, 10, 0.28) 0 2px, transparent 2px calc(100% - 2px), rgba(90, 200, 250, 0.22) calc(100% - 2px)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0 2px, transparent 2px calc(100% - 2px), rgba(255, 255, 255, 0.04) calc(100% - 2px));
+  opacity: 0.88;
+}
+
+.phone.catch-mode .field-top {
+  z-index: 22;
+  top: 12px;
+  left: 18px;
+  right: 18px;
+}
+
+.phone.catch-mode .field-top h2 {
+  font-size: 25px;
+  letter-spacing: 0;
+}
+
+.phone.catch-mode .field-top .app-label {
+  color: rgba(255, 214, 10, 0.86);
+}
+
+.phone.catch-mode .auth-pill,
+.phone.catch-mode .food-pill.floating {
+  border: 0;
+  background: rgba(2, 3, 7, 0.48);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 22px rgba(0, 0, 0, 0.28);
+}
+
+.phone.catch-mode .field-event {
+  z-index: 22;
+  top: 72px;
+  left: 20px;
+  min-width: 0;
+  max-width: 188px;
+}
+
+.phone.catch-mode .field-event::before {
+  content: "FIELD LIVE";
+  display: inline-grid;
+  place-items: center;
+  min-height: 18px;
+  margin: 0 0 4px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: rgba(255, 214, 10, 0.16);
+  color: #ffe47a;
+  font-size: 9px;
+  line-height: 1;
+  font-weight: 1000;
+  box-shadow: 0 0 16px rgba(255, 214, 10, 0.18);
+}
+
+.phone.catch-mode .world-map {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 74% 22%, rgba(255, 214, 10, 0.28), transparent 11%),
+    radial-gradient(circle at 18% 32%, rgba(90, 200, 250, 0.18), transparent 14%),
+    linear-gradient(180deg, #121d38 0%, #14172d 45%, #1a1228 66%, #07070c 100%);
+  box-shadow: none;
+}
+
+.phone.catch-mode .world-map::before {
+  opacity: 0.22;
+  background:
+    repeating-linear-gradient(106deg, transparent 0 18px, rgba(255, 255, 255, 0.1) 19px 20px, transparent 21px 72px),
+    repeating-linear-gradient(18deg, transparent 0 42px, rgba(90, 200, 250, 0.08) 43px 44px, transparent 45px 96px);
+  animation: fieldScanDrift 6.8s linear infinite;
+}
+
+.phone.catch-mode .world-map::after {
+  background:
+    radial-gradient(ellipse at 62% 68%, rgba(255, 214, 10, 0.24), transparent 31%),
+    linear-gradient(to top, rgba(3, 4, 8, 0.92), transparent 42%),
+    linear-gradient(to bottom, rgba(3, 4, 8, 0.64), transparent 22%);
+}
+
+.phone.catch-mode .anime-sky {
+  inset: 0 0 46%;
+}
+
+.phone.catch-mode .anime-skyline {
+  bottom: 34%;
+  height: 38%;
+}
+
+.phone.catch-mode .anime-bridge {
+  top: 36%;
+}
+
+.phone.catch-mode .anime-street {
+  bottom: -4%;
+  height: 47%;
+}
+
+.phone.catch-mode .field-cat-art {
+  z-index: 10;
+  left: 61%;
+  top: 58%;
+  width: min(52%, 220px);
+  max-height: 54%;
+  filter:
+    drop-shadow(0 24px 22px rgba(0, 0, 0, 0.56))
+    drop-shadow(0 0 30px rgba(255, 214, 10, 0.18));
+}
+
+.phone.catch-mode .encounter-ring {
+  z-index: 9;
+  left: 61%;
+  top: 63%;
+  width: min(64%, 260px);
+}
+
+.phone.catch-mode .target-box {
+  z-index: 18;
+  left: 13%;
+  top: 26%;
+  width: 74%;
+  height: 38%;
+  border-width: 1px;
+  border-radius: 28px;
+  border-color: rgba(255, 232, 122, 0.42);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    inset 0 0 38px rgba(255, 214, 10, 0.05),
+    0 0 34px rgba(255, 214, 10, 0.14);
+}
+
+.phone.catch-mode .target-box::before,
+.phone.catch-mode .target-box::after {
+  width: 42px;
+  height: 42px;
+  border-color: #ffe47a;
+}
+
+.phone.catch-mode .world-node {
+  z-index: 20;
+  width: 76px;
+  height: 64px;
+}
+
+.phone.catch-mode .world-node-main {
+  left: 54%;
+  top: 24%;
+}
+
+.phone.catch-mode .world-node-rare {
+  left: 12%;
+  top: 24%;
+}
+
+.phone.catch-mode .world-node-supply {
+  left: 15%;
+  top: 57%;
+}
+
+.phone.catch-mode .world-node span {
+  bottom: 53px;
+  padding: 2px 6px;
+  background: rgba(2, 3, 7, 0.54);
+  font-size: 8px;
+}
+
+.phone.catch-mode .world-node strong {
+  bottom: 38px;
+  max-width: 116px;
+  font-size: 10px;
+}
+
+.phone.catch-mode .world-avatar {
+  z-index: 19;
+  left: 44%;
+  top: 60%;
+}
+
+.phone.catch-mode .world-compass {
+  z-index: 22;
+  top: 74px;
+  right: 20px;
+  border: 0;
+  background: rgba(2, 3, 7, 0.5);
+  box-shadow: 0 0 18px rgba(255, 214, 10, 0.12);
+}
+
+.phone.catch-mode .location-panel {
+  z-index: 22;
+  left: 20px;
+  right: 20px;
+  bottom: auto;
+  top: 104px;
+  min-height: 34px;
+  display: flex;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  pointer-events: auto;
+}
+
+.phone.catch-mode .location-panel span {
+  min-width: 0;
+}
+
+.phone.catch-mode .location-panel strong {
+  display: block;
+  max-width: 246px;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.92);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+}
+
+.phone.catch-mode .location-panel small {
+  display: block;
+  max-width: 238px;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.58);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 9px;
+}
+
+.phone.catch-mode .location-panel em {
+  min-width: 48px;
+  height: 28px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(90, 200, 250, 0.16);
+  color: #bfe8ff;
+  font-size: 10px;
+  line-height: 1;
+  box-shadow: 0 0 18px rgba(90, 200, 250, 0.14);
+}
+
+.phone.catch-mode .scan-chip,
+.phone.catch-mode .camera-toggle,
+.phone.catch-mode .photo-pick {
+  z-index: 23;
+  top: 148px;
+  min-height: 30px;
+  padding: 6px 9px;
+  font-size: 10px;
+  backdrop-filter: blur(12px);
+}
+
+.phone.catch-mode .scan-chip {
+  left: 20px;
+  background: linear-gradient(135deg, rgba(95, 255, 150, 0.92), rgba(255, 232, 122, 0.88));
+}
+
+.phone.catch-mode .camera-toggle {
+  right: 20px;
+}
+
+.phone.catch-mode .photo-pick {
+  right: 108px;
+}
+
+.phone.catch-mode .cat-readout {
+  z-index: 21;
+  left: 20px;
+  right: auto;
+  bottom: 262px;
+  width: min(245px, calc(100% - 40px));
+  display: block;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.phone.catch-mode .cat-readout span {
+  width: fit-content;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(255, 214, 10, 0.14);
+  color: #ffe47a;
+  font-size: 9px;
+}
+
+.phone.catch-mode .cat-readout strong {
+  margin-top: 8px;
+  color: #fff8dc;
+  font-size: 27px;
+  line-height: 0.96;
+  text-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.92),
+    0 0 28px rgba(255, 214, 10, 0.2);
+}
+
+.phone.catch-mode .cat-readout small {
+  max-width: 224px;
+  margin-top: 7px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 11px;
+  line-height: 1.24;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.86);
+}
+
+.phone.catch-mode .capture-dock {
+  z-index: 24;
+  left: 0;
+  right: 0;
+  bottom: 58px;
+  padding: 0 18px 13px;
+  background:
+    linear-gradient(to top, rgba(1, 2, 6, 0.99), rgba(5, 7, 14, 0.84) 66%, transparent),
+    radial-gradient(80% 90% at 72% 100%, rgba(255, 214, 10, 0.12), transparent 64%);
+}
+
+.phone.catch-mode .field-mission {
+  min-height: 38px;
+  margin-bottom: 6px;
+  padding-left: 42px;
+}
+
+.phone.catch-mode .field-mission::before {
+  width: 28px;
+  height: 28px;
+}
+
+.phone.catch-mode .field-mission span {
+  color: rgba(255, 214, 10, 0.82);
+  font-size: 9px;
+}
+
+.phone.catch-mode .field-mission strong {
+  font-size: 16px;
+}
+
+.phone.catch-mode .field-mission small {
+  display: none;
+}
+
+.phone.catch-mode .capture-dock .dock-head {
+  min-height: 24px;
+}
+
+.phone.catch-mode .dock-head #riskHint {
+  font-size: 11px;
+}
+
+.phone.catch-mode .dock-head .reroll-scene {
+  min-height: 28px;
+  padding: 0 9px;
+  font-size: 10px;
+}
+
+.phone.catch-mode .capture-dock .mode-list {
+  height: 40px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 7px;
+}
+
+.phone.catch-mode .capture-dock .mode {
+  min-height: 0;
+  height: 40px;
+  padding: 6px 5px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top-color: rgba(255, 255, 255, 0.16);
+  border-radius: 16px 16px 6px 6px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.015)),
+    rgba(255, 255, 255, 0.055);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.phone.catch-mode .capture-dock .mode.active {
+  border-color: rgba(255, 214, 10, 0.34);
+  background:
+    linear-gradient(180deg, rgba(255, 214, 10, 0.28), rgba(255, 214, 10, 0.06)),
+    rgba(255, 214, 10, 0.08);
+}
+
+.phone.catch-mode .capture-dock .mode.danger.active {
+  border-color: rgba(255, 45, 85, 0.38);
+  background:
+    linear-gradient(180deg, rgba(255, 45, 85, 0.24), rgba(255, 45, 85, 0.055)),
+    rgba(255, 45, 85, 0.08);
+}
+
+.phone.catch-mode .capture-dock .mode-name {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 11px;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.72);
+}
+
+.phone.catch-mode .capture-dock .mode-meta {
+  color: rgba(255, 255, 255, 0.56);
+  font-size: 8px;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.72);
+}
+
+.phone.catch-mode .capture-dock .mode.active .mode-name,
+.phone.catch-mode .capture-dock .mode.active .mode-meta {
+  color: #fff8d8;
+}
+
+.phone.catch-mode .capture-dock .shutter-row {
+  min-height: 58px;
+  grid-template-columns: 62px minmax(0, 1fr);
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.phone.catch-mode .capture-dock .capture-shutter {
+  width: 56px;
+  height: 56px;
+}
+
+.phone.catch-mode .capture-copy strong {
+  font-size: 19px;
+}
+
+.phone.catch-mode .capture-copy span {
+  font-size: 11px;
+}
+
+.phone.catch-mode .bottom-nav {
+  z-index: 25;
+  left: 12px;
+  right: 12px;
+  bottom: 8px;
+  height: 48px;
+  padding: 0;
+  border-radius: 24px;
+  background: rgba(2, 3, 7, 0.48);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 0 28px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(12px);
+}
+
+.phone.catch-mode .nav {
+  height: 42px;
+  border-radius: 999px;
+  font-size: 16px;
+}
+
+.phone.catch-mode .nav span {
+  margin-top: 0;
+  font-size: 9px;
+}
+
+.phone.catch-mode .nav.active {
+  background: rgba(255, 214, 10, 0.13);
+}
+
+.phone.catch-mode .nav.active::after {
+  display: none;
+}
+
+.phone[data-phase="rolling"] .phone.catch-mode .capture-dock,
+.phone.catch-mode[data-phase="rolling"] .capture-dock {
+  opacity: 0.62;
+  transform: translateY(6px);
+}
+
+@keyframes fieldScanDrift {
+  from {
+    transform: translateX(-54px) skewY(-3deg);
+  }
+
+  to {
+    transform: translateX(54px) skewY(-3deg);
+  }
+}
+
+@media (max-width: 760px) {
+  .phone.catch-mode .field-top h2 {
+    font-size: 23px;
+  }
+
+  .phone.catch-mode .world-node-main {
+    left: 54%;
+    top: 24%;
+  }
+
+  .phone.catch-mode .world-node-rare {
+    left: 10%;
+    top: 23%;
+  }
+
+  .phone.catch-mode .world-node-supply {
+    left: 12%;
+    top: 56%;
+  }
+
+  .phone.catch-mode .field-cat-art {
+    left: 63%;
+    top: 58%;
+    width: min(54%, 206px);
+  }
+
+  .phone.catch-mode .encounter-ring {
+    left: 63%;
+    top: 63%;
+  }
+
+  .phone.catch-mode .cat-readout {
+    bottom: 252px;
+    width: min(232px, calc(100% - 36px));
+  }
+
+  .phone.catch-mode .cat-readout strong {
+    font-size: 24px;
+  }
+
+  .phone.catch-mode .capture-dock {
+    bottom: 56px;
+    padding: 0 14px 12px;
+  }
+
+  .phone.catch-mode .capture-dock .mode-list {
+    gap: 5px;
+  }
+}
+
+@media (max-height: 820px) {
+  .phone.catch-mode .location-panel {
+    top: 98px;
+  }
+
+  .phone.catch-mode .scan-chip,
+  .phone.catch-mode .camera-toggle,
+  .phone.catch-mode .photo-pick {
+    top: 136px;
+  }
+
+  .phone.catch-mode .cat-readout {
+    bottom: 232px;
+  }
+
+  .phone.catch-mode .capture-dock .mode-list {
+    height: 39px;
+  }
+
+  .phone.catch-mode .capture-dock .mode {
+    height: 39px;
+  }
+
+  .phone.catch-mode .capture-dock .shutter-row {
+    min-height: 56px;
+  }
+
+  .phone.catch-mode .capture-dock .capture-shutter {
+    width: 54px;
+    height: 54px;
+  }
+}

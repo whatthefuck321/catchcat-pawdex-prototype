@@ -864,7 +864,7 @@ function supabaseConfigured() {
 }
 
 function initSupabaseClient() {
-  if (!supabaseConfigured() || !window.supabase?.createClient) return;
+  if (supabaseClient || !supabaseConfigured() || !window.supabase?.createClient) return;
   supabaseClient = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
   supabaseClient.auth.getUser().then(({ data }) => {
     state.authUser = data?.user ? { email: data.user.email || data.user.id } : null;
@@ -875,6 +875,8 @@ function initSupabaseClient() {
     render();
   });
 }
+
+window.initSupabaseClient = initSupabaseClient;
 
 function currentDateKey(date = new Date()) {
   const year = date.getFullYear();
