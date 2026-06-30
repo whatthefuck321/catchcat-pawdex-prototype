@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PAWDEX v19 - Share Trophy Prototype</title>
+    <title>PAWDEX v20 - Game Mission Prototype</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -32,11 +32,21 @@
 
         <section class="hero-copy" id="hunt" aria-label="游戏介绍">
           <p class="hero-kicker">REAL CAT HUNT / PHOTO CARD</p>
-          <h1><span>拍真猫，</span><span>开传说卡。</span></h1>
+          <h1><span>今晚任务:</span><span>拍真猫开卡。</span></h1>
           <p class="hero-lead">
-            拍真猫、选风险、开卡、晒稀有。PAWDEX 不是图鉴工具，核心是一次 10 秒的开卡紧张感:
-            今天这只猫，会不会出传说?
+            不先看说明，不先翻卡片。打开就是找猫点、拍真猫、选风险、开卡，10 秒内知道这只猫有没有传说命。
           </p>
+          <div class="hero-mission" aria-label="今日抓猫任务">
+            <div class="mission-badge">
+              <span>TODAY</span>
+              <strong>FIELD MISSION</strong>
+            </div>
+            <ol>
+              <li><span>01</span><strong>锁定附近猫点</strong></li>
+              <li><span>02</span><strong>拍一只真猫</strong></li>
+              <li><span>03</span><strong>押风险开卡</strong></li>
+            </ol>
+          </div>
           <div class="hero-actions">
             <a class="hero-primary" href="#prototype">试玩原型</a>
             <a class="hero-secondary" href="#loop">看经济循环</a>
@@ -182,6 +192,11 @@
               </div>
 
               <section class="capture-dock">
+                <div class="field-mission" id="fieldMission">
+                  <span id="missionStep">MISSION 01</span>
+                  <strong id="missionTitle">先锁定附近猫点</strong>
+                  <small id="missionCopy">定位 → 拍猫 → 开卡 → 晒图</small>
+                </div>
                 <div class="dock-head">
                   <span id="riskHint">轻轻靠近最稳妥</span>
                   <button class="reroll-scene" id="scanButton" data-testid="scan" type="button">换一只</button>

@@ -36,6 +36,33 @@ const I18N = {
     photo_required_copy: "这版不再用系统猫替代卡面。请打开相机，或上传一张真猫照片，再进行捕捉。",
     photo_loaded_title: "真猫照片已载入",
     photo_loaded_copy: "下一次捕捉会把这张照片裁进卡框；AI 只负责边框、光效和趣味品种文案。",
+    mission_locate_step: "MISSION 01",
+    mission_locate_title: "先锁定附近猫点",
+    mission_locate_copy: "点击定位，刷新附近猫点和补给",
+    mission_search_step: "SCANNING",
+    mission_search_title: "正在搜索猫点",
+    mission_search_copy: "读取位置只用于生成附近出没点",
+    mission_photo_step: "MISSION 02",
+    mission_photo_title: "拍一只真猫",
+    mission_photo_copy: "打开相机或上传猫图后才能捕捉",
+    mission_food_step: "MISSION 03",
+    mission_food_title: "猫粮不足",
+    mission_food_copy: "先保存分享图回粮，或明天补满",
+    mission_revenge_step: "CHASE",
+    mission_revenge_title: "回归传说已锁定",
+    mission_revenge_copy: "下一次全心全意会遇到它",
+    mission_event_step: "LIMITED TIME",
+    mission_event_title: "传说时段开卡",
+    mission_event_copy: "传说率 ×20，现在拍真猫最值",
+    mission_ready_step: "MISSION 03",
+    mission_ready_title: "选择风险开卡",
+    mission_ready_copy: "{mode} · {cost} 猫粮 · 成功后可晒卡",
+    mission_roll_step: "ROLLING",
+    mission_roll_title: "稀有度正在跳动",
+    mission_roll_copy: "逃跑、升档、回粮正在结算",
+    mission_miss_step: "NEAR MISS",
+    mission_miss_title: "猫进框又挣脱",
+    mission_miss_copy: "可以晒差一点，或再拍一只",
     catching: "结算中",
     catching_meta: "正在锁定这次捕捉",
     startled: "被惊扰",
@@ -199,6 +226,33 @@ const I18N = {
     photo_required_copy: "This build no longer replaces the cat with system art. Open the camera or upload a real cat photo before capturing.",
     photo_loaded_title: "Real cat photo loaded",
     photo_loaded_copy: "The next capture will crop this photo into the card frame. AI only adds frames, effects, and fun breed copy.",
+    mission_locate_step: "MISSION 01",
+    mission_locate_title: "Lock a nearby cat spot",
+    mission_locate_copy: "Tap location to refresh nearby spots and supplies",
+    mission_search_step: "SCANNING",
+    mission_search_title: "Searching cat spots",
+    mission_search_copy: "Location only creates nearby spawn points",
+    mission_photo_step: "MISSION 02",
+    mission_photo_title: "Photograph a real cat",
+    mission_photo_copy: "Open camera or upload a cat photo to capture",
+    mission_food_step: "MISSION 03",
+    mission_food_title: "Not enough treats",
+    mission_food_copy: "Save a share card for treats, or come back tomorrow",
+    mission_revenge_step: "CHASE",
+    mission_revenge_title: "Returning legendary locked",
+    mission_revenge_copy: "The next All Heart attempt will meet it",
+    mission_event_step: "LIMITED TIME",
+    mission_event_title: "Legendary hour capture",
+    mission_event_copy: "×20 legendary rate. Capture now",
+    mission_ready_step: "MISSION 03",
+    mission_ready_title: "Choose risk and reveal",
+    mission_ready_copy: "{mode} · {cost} treats · Share if it hits",
+    mission_roll_step: "ROLLING",
+    mission_roll_title: "Rarity is spinning",
+    mission_roll_copy: "Escape, upgrade, and refund are resolving",
+    mission_miss_step: "NEAR MISS",
+    mission_miss_title: "It broke out of frame",
+    mission_miss_copy: "Share the close call or catch again",
     catching: "Resolving",
     catching_meta: "Locking this capture",
     startled: "Startled",
@@ -730,6 +784,9 @@ const els = {
   revengeCopy: $("#revengeCopy"),
   toggleEventButton: $("#toggleEventButton"),
   modeList: $("#modeList"),
+  missionStep: $("#missionStep"),
+  missionTitle: $("#missionTitle"),
+  missionCopy: $("#missionCopy"),
   riskHint: $("#riskHint"),
   catchButton: $("#catchButton"),
   catchLabel: $("#catchLabel"),
@@ -1385,6 +1442,70 @@ function breedSourceLabel(profile) {
 function switchTab(tab) {
   state.tab = tab;
   render();
+}
+
+function currentMission(mode, isRolling, isRevengeActive) {
+  if (isRolling) {
+    return {
+      step: t("mission_roll_step"),
+      title: t("mission_roll_title"),
+      copy: t("mission_roll_copy"),
+    };
+  }
+  if (state.phase === "nearMiss") {
+    return {
+      step: t("mission_miss_step"),
+      title: t("mission_miss_title"),
+      copy: t("mission_miss_copy"),
+    };
+  }
+  if (state.locationStatus === "searching") {
+    return {
+      step: t("mission_search_step"),
+      title: t("mission_search_title"),
+      copy: t("mission_search_copy"),
+    };
+  }
+  if (!state.locationSpot) {
+    return {
+      step: t("mission_locate_step"),
+      title: t("mission_locate_title"),
+      copy: t("mission_locate_copy"),
+    };
+  }
+  if (!hasTruePhotoSource()) {
+    return {
+      step: t("mission_photo_step"),
+      title: t("mission_photo_title"),
+      copy: t("mission_photo_copy"),
+    };
+  }
+  if (state.food < mode.cost) {
+    return {
+      step: t("mission_food_step"),
+      title: t("mission_food_title"),
+      copy: t("mission_food_copy"),
+    };
+  }
+  if (isRevengeActive) {
+    return {
+      step: t("mission_revenge_step"),
+      title: t("mission_revenge_title"),
+      copy: t("mission_revenge_copy"),
+    };
+  }
+  if (state.legendaryHour) {
+    return {
+      step: t("mission_event_step"),
+      title: t("mission_event_title"),
+      copy: t("mission_event_copy"),
+    };
+  }
+  return {
+    step: t("mission_ready_step"),
+    title: t("mission_ready_title"),
+    copy: t("mission_ready_copy", { mode: mode.label, cost: mode.cost }),
+  };
 }
 
 function updateCatchCopy(mode, isRolling, isRevengeActive) {
@@ -2398,6 +2519,10 @@ function render() {
   if (state.photoOverride && els.photoPreview.src !== state.photoOverride) {
     els.photoPreview.src = state.photoOverride;
   }
+  const mission = currentMission(mode, isRolling, isRevengeActive);
+  els.missionStep.textContent = mission.step;
+  els.missionTitle.textContent = mission.title;
+  els.missionCopy.textContent = mission.copy;
   updateCatchCopy(mode, isRolling, isRevengeActive);
   els.catchButton.disabled = isBusy;
   els.scanButton.disabled = isBusy || isRevengeActive;
