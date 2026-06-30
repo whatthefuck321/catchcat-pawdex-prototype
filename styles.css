@@ -8865,3 +8865,360 @@ body {
     height: 54px;
   }
 }
+
+/* v28 app theater + route lock: make the prototype feel like an app running now. */
+.site-shell {
+  min-height: 100svh;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 214, 10, 0.16), transparent 24%),
+    radial-gradient(circle at 28% 72%, rgba(90, 200, 250, 0.14), transparent 26%),
+    linear-gradient(150deg, #04050a 0%, #0c1322 52%, #04050a 100%);
+}
+
+.game-hero {
+  min-height: 100svh;
+  padding: 62px 12px 12px;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.game-hero::before {
+  opacity: 0.38;
+  background:
+    radial-gradient(ellipse at 50% 54%, rgba(255, 214, 10, 0.12), transparent 42%),
+    repeating-linear-gradient(112deg, transparent 0 30px, rgba(255, 255, 255, 0.04) 31px 32px, transparent 33px 92px);
+}
+
+.game-hero::after {
+  opacity: 0.22;
+  background:
+    linear-gradient(90deg, transparent 0 48%, rgba(255, 214, 10, 0.12) 49%, transparent 51%),
+    radial-gradient(circle at 50% 10%, rgba(90, 200, 250, 0.13), transparent 26%);
+}
+
+.hero-copy,
+.phone-callout,
+.game-loop-band {
+  display: none;
+}
+
+.hero-phone-wrap {
+  flex: 0 0 min(438px, calc(100svw - 24px));
+  width: min(438px, calc(100svw - 24px));
+}
+
+.hero-bg-cat-a {
+  left: 2%;
+  top: 10%;
+  opacity: 0.055;
+}
+
+.hero-bg-cat-b {
+  right: 0;
+  bottom: 10%;
+  opacity: 0.075;
+}
+
+.phone {
+  height: min(884px, calc(100svh - 82px));
+  min-height: 730px;
+  border-radius: 42px;
+  box-shadow:
+    0 42px 110px rgba(0, 0, 0, 0.72),
+    0 0 0 1px rgba(255, 214, 10, 0.12),
+    0 0 86px rgba(90, 200, 250, 0.1),
+    inset 0 0 0 8px #030408;
+}
+
+.phone::before,
+.phone::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  z-index: 60;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.phone::before {
+  top: 10px;
+  width: 112px;
+  height: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0 0 18px 18px;
+  background: #020307;
+  box-shadow:
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+    0 10px 18px rgba(0, 0, 0, 0.24);
+}
+
+.phone::after {
+  bottom: 11px;
+  width: 128px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.38);
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.18);
+}
+
+.phone.catch-mode .status-bar {
+  padding-top: 2px;
+}
+
+.phone.catch-mode .world-map[data-world-spot="rare"] {
+  background:
+    radial-gradient(circle at 26% 24%, rgba(191, 90, 242, 0.28), transparent 14%),
+    radial-gradient(circle at 76% 28%, rgba(90, 200, 250, 0.18), transparent 14%),
+    linear-gradient(180deg, #171836 0%, #1c1534 46%, #13091d 72%, #07070c 100%);
+}
+
+.phone.catch-mode .world-map[data-world-spot="supply"] {
+  background:
+    radial-gradient(circle at 20% 58%, rgba(52, 199, 89, 0.26), transparent 16%),
+    radial-gradient(circle at 72% 24%, rgba(255, 214, 10, 0.2), transparent 13%),
+    linear-gradient(180deg, #102334 0%, #10251f 52%, #07120d 100%);
+}
+
+.phone.catch-mode .world-map[data-world-spot="main"] {
+  background:
+    radial-gradient(circle at 74% 22%, rgba(255, 214, 10, 0.28), transparent 11%),
+    radial-gradient(circle at 18% 32%, rgba(90, 200, 250, 0.18), transparent 14%),
+    linear-gradient(180deg, #121d38 0%, #14172d 45%, #1a1228 66%, #07070c 100%);
+}
+
+.field-route-arc {
+  position: absolute;
+  z-index: 18;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0.62;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.field-route-arc i {
+  position: absolute;
+  left: 12%;
+  top: 42%;
+  width: 76%;
+  height: 36%;
+  border: 1px solid rgba(255, 214, 10, 0.18);
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  border-radius: 999px;
+  transform: rotate(-13deg) scale(0.94);
+}
+
+.field-route-arc i:nth-child(2) {
+  left: 22%;
+  top: 27%;
+  width: 58%;
+  height: 44%;
+  border-color: rgba(90, 200, 250, 0.14);
+  border-right-color: transparent;
+  transform: rotate(22deg) scale(1);
+}
+
+.field-route-arc i:nth-child(3) {
+  left: 7%;
+  top: 58%;
+  width: 46%;
+  height: 24%;
+  border-color: rgba(52, 199, 89, 0.12);
+  border-top-color: transparent;
+  transform: rotate(10deg) scale(1);
+}
+
+.phone.spot-switching .field-route-arc i {
+  animation: routeArcLock 1.45s cubic-bezier(0.16, 0.84, 0.18, 1) both;
+}
+
+.phone.spot-switching .field-route-arc i:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.phone.spot-switching .field-route-arc i:nth-child(3) {
+  animation-delay: 0.14s;
+}
+
+.field-lock-toast {
+  position: absolute;
+  z-index: 24;
+  right: 20px;
+  top: 184px;
+  width: min(166px, calc(100% - 40px));
+  display: grid;
+  gap: 4px;
+  padding: 9px 11px;
+  border-left: 2px solid rgba(255, 214, 10, 0.72);
+  background:
+    linear-gradient(90deg, rgba(255, 214, 10, 0.14), rgba(2, 3, 7, 0.5) 62%, transparent);
+  opacity: 0.88;
+  pointer-events: none;
+  transform: translateX(0);
+}
+
+.field-lock-toast span,
+.field-lock-toast strong {
+  display: block;
+  overflow: hidden;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.field-lock-toast span {
+  color: #ffe47a;
+  font-size: 9px;
+  line-height: 1;
+  font-weight: 1000;
+}
+
+.field-lock-toast strong {
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.05;
+  font-weight: 1000;
+}
+
+.phone.spot-switching .field-lock-toast {
+  animation: fieldLockToast 1.5s cubic-bezier(0.16, 0.84, 0.18, 1) both;
+}
+
+.phone.spot-switching .world-map {
+  animation: mapRouteFocus 1.42s cubic-bezier(0.16, 0.84, 0.18, 1) both;
+}
+
+.phone.spot-switching .field-cat-art {
+  animation: catSpotWarp 1.42s cubic-bezier(0.16, 0.84, 0.18, 1) both;
+}
+
+.phone.catch-mode .world-node.active::after {
+  width: 34px;
+  height: 10px;
+  background: rgba(255, 214, 10, 0.42);
+  filter: blur(4px);
+}
+
+.phone.catch-mode .world-node.active span {
+  background: rgba(255, 214, 10, 0.18);
+  color: #fff4bd;
+}
+
+.phone.catch-mode .world-node.active strong {
+  color: #fff;
+}
+
+.phone.catch-mode[data-world-spot="rare"] .cat-readout span,
+.phone.catch-mode[data-world-spot="rare"] .field-event::before {
+  background: rgba(191, 90, 242, 0.18);
+  color: #efd4ff;
+}
+
+.phone.catch-mode[data-world-spot="supply"] .cat-readout span,
+.phone.catch-mode[data-world-spot="supply"] .field-event::before {
+  background: rgba(52, 199, 89, 0.18);
+  color: #d7ffdf;
+}
+
+.phone.catch-mode[data-world-spot="rare"] .target-box {
+  border-color: rgba(191, 90, 242, 0.5);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    inset 0 0 38px rgba(191, 90, 242, 0.08),
+    0 0 34px rgba(191, 90, 242, 0.18);
+}
+
+.phone.catch-mode[data-world-spot="supply"] .target-box {
+  border-color: rgba(52, 199, 89, 0.5);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    inset 0 0 38px rgba(52, 199, 89, 0.08),
+    0 0 34px rgba(52, 199, 89, 0.18);
+}
+
+@keyframes routeArcLock {
+  0% {
+    opacity: 0;
+    transform: rotate(-13deg) scale(0.72);
+  }
+
+  36%,
+  76% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.2;
+    transform: rotate(-13deg) scale(1.08);
+  }
+}
+
+@keyframes fieldLockToast {
+  0% {
+    opacity: 0.2;
+    transform: translateX(18px);
+  }
+
+  22%,
+  78% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  100% {
+    opacity: 0.88;
+    transform: translateX(0);
+  }
+}
+
+@keyframes mapRouteFocus {
+  0% {
+    filter: brightness(1) saturate(1);
+  }
+
+  44% {
+    filter: brightness(1.24) saturate(1.2);
+  }
+
+  100% {
+    filter: brightness(1) saturate(1);
+  }
+}
+
+@keyframes catSpotWarp {
+  0% {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(0.92) rotate(-3deg);
+  }
+
+  54% {
+    opacity: 1;
+    transform: translate(-50%, -54%) scale(1.06) rotate(2deg);
+  }
+
+  100% {
+    opacity: 0.96;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+}
+
+@media (max-width: 760px) {
+  .game-hero {
+    padding: 58px 12px 10px;
+  }
+
+  .phone {
+    width: min(390px, calc(100svw - 24px));
+    height: calc(100svh - 76px);
+    min-height: 748px;
+  }
+
+  .field-lock-toast {
+    top: 180px;
+    right: 18px;
+    width: 150px;
+  }
+}

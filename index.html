@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PAWDEX v27 - Field Live Anime HUD Prototype</title>
+    <title>PAWDEX v28 - App Theater Route Lock Prototype</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -176,6 +176,11 @@
                   <span></span>
                   <span></span>
                 </div>
+                <div class="field-route-arc" id="fieldRouteArc" aria-hidden="true">
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                </div>
                 <button class="world-node world-node-main" type="button" data-world-spot="main">
                   <span>遭遇</span>
                   <strong id="worldMainLabel">星灯猫点</strong>
@@ -226,6 +231,10 @@
                 </span>
                 <em id="locationDistance">--m</em>
               </button>
+              <div class="field-lock-toast" id="fieldLockToast" aria-hidden="true">
+                <span id="fieldLockStep">AREA LOCK</span>
+                <strong id="fieldLockTitle">星灯补给点</strong>
+              </div>
 
               <button class="revenge-banner" id="revengeBanner" type="button" hidden>
                 <strong id="revengeTitle">它回来了</strong>

@@ -782,6 +782,10 @@ const els = {
   worldRareLabel: $("#worldRareLabel"),
   worldSupplyLabel: $("#worldSupplyLabel"),
   fieldMap: $("#fieldMap"),
+  fieldRouteArc: $("#fieldRouteArc"),
+  fieldLockToast: $("#fieldLockToast"),
+  fieldLockStep: $("#fieldLockStep"),
+  fieldLockTitle: $("#fieldLockTitle"),
   mapSpotTitle: $("#mapSpotTitle"),
   mapSpotMeta: $("#mapSpotMeta"),
   locationButton: $("#locationButton"),
@@ -855,6 +859,7 @@ const els = {
 
 const ctx = els.canvas.getContext("2d");
 let settleTimer = null;
+let fieldTravelTimer = null;
 let cameraStream = null;
 let supabaseClient = null;
 const CAPTURE_ANIMATION_MS = DEMO_CAPTURE_MODE ? 3200 : 1320;
@@ -905,6 +910,13 @@ function hydrateState() {
     state.revengeCat = saved.revengeCat || null;
     state.revengeActive = Boolean(saved.revengeActive);
     state.worldSpotKey = saved.worldSpotKey || state.worldSpotKey;
+    if (saved.worldSpotKey) {
+      const savedSpot = worldSpotByKey(state.worldSpotKey);
+      state.locationStatus = "ready";
+      state.locationSpot = savedSpot;
+      state.locationDistance = savedSpot.distance;
+      state.scene = sceneFromSpot(savedSpot);
+    }
     state.spotRewardAt = Number.isFinite(saved.spotRewardAt) ? saved.spotRewardAt : null;
     state.checkoutStartedPack = saved.checkoutStartedPack || null;
   } catch {
@@ -1111,6 +1123,22 @@ function selectWorldSpot(key) {
   drawCamera();
   persistState();
   render();
+  triggerFieldTravel(key);
+}
+
+function triggerFieldTravel(key) {
+  if (!els.phone || !els.worldMap) return;
+  window.clearTimeout(fieldTravelTimer);
+  els.phone.classList.remove("spot-switching");
+  els.worldMap.classList.remove("spot-switching");
+  void els.phone.offsetWidth;
+  els.phone.classList.add("spot-switching");
+  els.worldMap.classList.add("spot-switching");
+  els.phone.dataset.travelSpot = key;
+  fieldTravelTimer = window.setTimeout(() => {
+    els.phone.classList.remove("spot-switching");
+    els.worldMap.classList.remove("spot-switching");
+  }, 1600);
 }
 
 function canClaimSpotReward() {
@@ -2638,9 +2666,13 @@ function render() {
   els.worldMap.classList.toggle("located", Boolean(state.locationSpot));
   els.worldMap.classList.toggle("event-active", state.legendaryHour);
   els.worldMap.classList.toggle("claimable", canClaimSpotReward());
+  els.phone.dataset.worldSpot = state.worldSpotKey;
+  els.worldMap.dataset.worldSpot = state.worldSpotKey;
   els.worldMainLabel.textContent = locationSpots[1].title;
   els.worldRareLabel.textContent = locationSpots[3].title;
   els.worldSupplyLabel.textContent = canClaimSpotReward() ? "月台补给" : "补给冷却";
+  els.fieldLockStep.textContent = state.worldSpotKey === "rare" ? "RARE ROUTE" : state.worldSpotKey === "supply" ? "SUPPLY ROUTE" : "AREA LOCK";
+  els.fieldLockTitle.textContent = state.locationSpot?.title || state.scene.poiTitle || state.scene.place;
   els.worldQuestStep.textContent = state.legendaryHour ? "LEGEND SIGNAL" : "CITY WALK";
   els.worldQuestTitle.textContent = state.locationSpot
     ? `${state.locationSpot.title} · ${state.locationDistance || "--"}m`

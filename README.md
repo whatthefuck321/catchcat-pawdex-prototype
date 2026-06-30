@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v27 field live anime HUD prototype`
+Current published version: `v28 app theater route lock prototype`
 
 ## What is included
 
@@ -32,6 +32,7 @@ Current published version: `v27 field live anime HUD prototype`
 - v25 capture cut-in: pressing the shutter now runs a full capture prelude with speed lines, a cat-shadow dash, rarity-colored seal card flip, lock ring, and staged status copy before the result modal appears.
 - v26 demo capture verification: `?demo=1` unlocks a local generated demo cat photo, and `?demo=1&autoplay=1` automatically starts one capture so the full cut-in, rolling state, result modal, and share-card path can be browser-tested without camera or file-upload tooling. Normal URLs still require a real camera/uploaded cat photo.
 - v27 field live anime HUD: the catch screen is pushed further away from cards with a full-screen FIELD LIVE scene, manga edge masks, GPS-style location rail, poster-like cat readout, tactical risk controls, and a floating mobile nav treatment.
+- v28 app theater route lock: the outer marketing/game-loop panels are hidden so the phone app owns the first screen, while tapping cat spots now triggers route-scan animation, an AREA LOCK HUD, spot-themed scene tint, and stronger phone-device chrome.
 
 ## v15 Approval Route
 
