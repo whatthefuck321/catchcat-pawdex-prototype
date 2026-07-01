@@ -227,6 +227,16 @@ const I18N = {
     invite_copy_link: "复制邀请链接",
     invite_copy_post: "复制发布文案",
     invite_start: "开始抓猫",
+    invite_claim: "领取入场猫粮 +2",
+    invite_claimed: "入场猫粮已领取",
+    invite_claim_toast: "入场补给 +2 猫粮",
+    invite_claim_unavailable: "只有从邀请链接进入时才能领取。",
+    invite_step_accept: "接受邀请",
+    invite_step_accept_copy: "好友战报已载入",
+    invite_step_capture: "拍第一张猫",
+    invite_step_capture_copy: "完成一次捕捉结算",
+    invite_step_return: "回传你的链接",
+    invite_step_return_copy: "复制邀请或发布文案",
     invite_copied: "邀请链接已复制",
     invite_post_copied: "发布文案已复制",
     invite_copy_failed: "复制失败，请手动复制链接。",
@@ -467,6 +477,16 @@ const I18N = {
     invite_copy_link: "Copy invite link",
     invite_copy_post: "Copy launch post",
     invite_start: "Start catching",
+    invite_claim: "Claim +2 entry treats",
+    invite_claimed: "Entry treats claimed",
+    invite_claim_toast: "Entry supply +2 treats",
+    invite_claim_unavailable: "Only invite-link visitors can claim this.",
+    invite_step_accept: "Accept invite",
+    invite_step_accept_copy: "Friend story loaded",
+    invite_step_capture: "Capture first cat",
+    invite_step_capture_copy: "Finish one capture result",
+    invite_step_return: "Send your link back",
+    invite_step_return_copy: "Copy invite or launch post",
     invite_copied: "Invite link copied",
     invite_post_copied: "Launch post copied",
     invite_copy_failed: "Copy failed. Copy the link manually.",
@@ -971,6 +991,8 @@ const state = {
   referralCode: createReferralCode(),
   referredBy: "",
   referralVisits: 0,
+  referralGiftClaims: {},
+  referralResponseCreated: false,
   inviteCopies: 0,
   shareIntentCount: 0,
   launchPostCopies: 0,
@@ -1089,6 +1111,8 @@ const els = {
   inviteLandingStep: $("#inviteLandingStep"),
   inviteLandingTitle: $("#inviteLandingTitle"),
   inviteLandingCopy: $("#inviteLandingCopy"),
+  inviteQuestList: $("#inviteQuestList"),
+  landingClaimButton: $("#landingClaimButton"),
   landingStartButton: $("#landingStartButton"),
   landingCopyButton: $("#landingCopyButton"),
   inviteCodeText: $("#inviteCodeText"),
@@ -1313,6 +1337,11 @@ function hydrateState() {
     state.referralCode = normalizeReferralCode(saved.referralCode) || state.referralCode;
     state.referredBy = normalizeReferralCode(saved.referredBy) || state.referredBy;
     state.referralVisits = Number.isFinite(saved.referralVisits) ? saved.referralVisits : 0;
+    state.referralGiftClaims =
+      saved.referralGiftClaims && typeof saved.referralGiftClaims === "object"
+        ? saved.referralGiftClaims
+        : {};
+    state.referralResponseCreated = Boolean(saved.referralResponseCreated);
     state.inviteCopies = Number.isFinite(saved.inviteCopies) ? saved.inviteCopies : 0;
     state.shareIntentCount = Number.isFinite(saved.shareIntentCount) ? saved.shareIntentCount : 0;
     state.launchPostCopies = Number.isFinite(saved.launchPostCopies) ? saved.launchPostCopies : 0;
@@ -1327,6 +1356,9 @@ function applyInboundReferral() {
   if (inbound !== state.referralCode && inbound !== state.referredBy) {
     state.referredBy = inbound;
     state.referralVisits += 1;
+  }
+  if (state.inboundStory) {
+    state.referralResponseCreated = false;
   }
   state.tab = "share";
   persistState();
@@ -1405,6 +1437,8 @@ function persistState() {
     referralCode: state.referralCode,
     referredBy: state.referredBy,
     referralVisits: state.referralVisits,
+    referralGiftClaims: state.referralGiftClaims,
+    referralResponseCreated: state.referralResponseCreated,
     inviteCopies: state.inviteCopies,
     shareIntentCount: state.shareIntentCount,
     launchPostCopies: state.launchPostCopies,
@@ -2137,6 +2171,9 @@ function catchCat() {
 async function settleCatch(result) {
   const { escaped, baseRarity, rate, mode, modeKey, scene, revengeAttempt, photo } = result;
   recordDailyCaptureResult();
+  if (state.inboundReferralCode || state.inboundStory) {
+    state.referralResponseCreated = true;
+  }
   if (escaped) {
     state.lastOutcome = {
       type: "escape",
@@ -2853,6 +2890,79 @@ async function copyLaunchPost() {
   }
 }
 
+function inboundReferralKey() {
+  const inbound = normalizeReferralCode(state.inboundReferralCode);
+  return inbound && inbound !== state.referralCode ? inbound : "";
+}
+
+function referralGiftClaimed(code = inboundReferralKey()) {
+  return Boolean(code && state.referralGiftClaims?.[code]);
+}
+
+function claimReferralStarterGift() {
+  const code = inboundReferralKey();
+  if (!code) {
+    showEscapeLikeResult(t("invite_landing_title"), t("invite_claim_unavailable"));
+    return;
+  }
+  if (referralGiftClaimed(code)) {
+    showEconomyToast(t("invite_claimed"), "gain");
+    render();
+    return;
+  }
+  if (!state.referralGiftClaims || typeof state.referralGiftClaims !== "object") {
+    state.referralGiftClaims = {};
+  }
+  state.referralGiftClaims[code] = true;
+  state.food = Math.min(state.food + 2, state.maxFood + 10);
+  persistState();
+  showEconomyToast(t("invite_claim_toast"), "gain");
+  render();
+}
+
+function inviteQuestStatuses() {
+  const accepted = Boolean(state.inboundReferralCode || state.inboundStory);
+  const captured = Boolean(state.cards.length || (state.dailyStats?.captures || 0) > 0);
+  const returned = Boolean(state.inviteCopies || state.launchPostCopies || state.shareIntentCount);
+  return [
+    {
+      id: "accept",
+      done: accepted,
+      title: t("invite_step_accept"),
+      copy: t("invite_step_accept_copy"),
+    },
+    {
+      id: "capture",
+      done: captured,
+      title: t("invite_step_capture"),
+      copy: t("invite_step_capture_copy"),
+    },
+    {
+      id: "return",
+      done: returned,
+      title: t("invite_step_return"),
+      copy: t("invite_step_return_copy"),
+    },
+  ];
+}
+
+function renderInviteQuests() {
+  if (!els.inviteQuestList) return;
+  els.inviteQuestList.innerHTML = inviteQuestStatuses()
+    .map(
+      (quest, index) => `
+        <div class="invite-quest ${quest.done ? "done" : ""}">
+          <span>${quest.done ? "✓" : String(index + 1).padStart(2, "0")}</span>
+          <div>
+            <strong>${quest.title}</strong>
+            <small>${quest.copy}</small>
+          </div>
+        </div>
+      `,
+    )
+    .join("");
+}
+
 function setStoryTheme(rarity, isFail) {
   const cfg = rarities[rarity] || rarities.common;
   els.storyPreview.classList.toggle("is-fail", isFail);
@@ -2880,11 +2990,19 @@ function renderInvitePanel() {
   if (els.inviteProofText) els.inviteProofText.textContent = t("invite_proof");
   if (els.landingStartButton) els.landingStartButton.textContent = t("invite_start");
   if (els.landingCopyButton) els.landingCopyButton.textContent = t("invite_copy_link");
+  renderInviteQuests();
 
   const hasInbound = Boolean(state.inboundReferralCode || state.inboundStory);
   if (!els.inviteLanding) return;
   els.inviteLanding.hidden = !hasInbound;
   if (!hasInbound) return;
+  const claimableCode = inboundReferralKey();
+  const claimed = referralGiftClaimed(claimableCode);
+  if (els.landingClaimButton) {
+    els.landingClaimButton.textContent = claimed ? t("invite_claimed") : t("invite_claim");
+    els.landingClaimButton.disabled = !claimableCode || claimed;
+    els.landingClaimButton.classList.toggle("disabled", !claimableCode || claimed);
+  }
   els.inviteLandingStep.textContent = t("invite_landing_step");
   els.inviteLandingTitle.textContent = state.inboundReferralCode
     ? `${t("invite_landing_title")} · ${state.inboundReferralCode}`
@@ -2903,6 +3021,31 @@ function renderInvitePanel() {
 function renderStory() {
   renderInvitePanel();
   const outcome = state.lastOutcome;
+  if (state.inboundStory && !state.referralResponseCreated) {
+    const story = state.inboundStory;
+    const cfg = rarities[story.rarity] || rarities.common;
+    const isFail = story.type === "escape";
+    setStoryTheme(story.rarity, isFail);
+    els.storyRarityBadge.textContent = isFail ? t("story_fail_badge") : `${cfg.label} ${story.rarity.toUpperCase()}`;
+    els.storyStamp.textContent = isFail ? "FRIEND NEAR MISS" : "FRIEND TROPHY";
+    setStorySignal("INVITE SIGNAL", isFail ? `${cfg.label}猫差一点` : `${cfg.label}猫已上卡`);
+    els.storyCardArt.src = catAsset(story.rarity);
+    els.storyCardArt.classList.remove("is-photo");
+    els.storyCardName.textContent = story.name;
+    els.storyCardNo.textContent = story.no ? `#${String(story.no).padStart(3, "0")}` : "INVITE";
+    els.storyCardScene.textContent = story.place;
+    els.storyCardDate.textContent = shareDateLabel();
+    els.storyHeadline.textContent = isFail
+      ? `朋友在${story.place}差一点抓到${cfg.label}猫`
+      : `朋友在${story.place}抓到${cfg.label}猫`;
+    els.storySub.textContent = isFail
+      ? "它已经发来挑战，轮到你拍一只真猫。"
+      : "这张战报来自邀请链接，拍第一只猫把结果回传。";
+    els.storyLootRarity.textContent = cfg.label;
+    els.storyLootCost.textContent = story.cost ? `-${story.cost} 猫粮` : "--";
+    els.storyLootReward.textContent = story.reward ? `+${story.reward} 猫粮` : "好友战报";
+    return;
+  }
   if (!outcome) {
     setStoryTheme("common", false);
     els.storyRarityBadge.textContent = "READY";
@@ -3706,6 +3849,7 @@ $$("[data-share]").forEach((button) => {
 });
 els.copyInviteButton.addEventListener("click", copyInviteLink);
 els.copyLaunchPostButton.addEventListener("click", copyLaunchPost);
+els.landingClaimButton.addEventListener("click", claimReferralStarterGift);
 els.landingStartButton.addEventListener("click", () => switchTab("catch"));
 els.landingCopyButton.addEventListener("click", copyInviteLink);
 els.proCheckoutButton.addEventListener("click", () => buyFounderPack("pro"));

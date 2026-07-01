@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v34 growth economy loop prototype`
+Current published version: `v35 referral onboarding loop prototype`
 
 ## What is included
 
@@ -39,6 +39,7 @@ Current published version: `v34 growth economy loop prototype`
 - v32 functional daily loop: the supply page now has claimable daily missions tied to today's capture, Rare+ card, and share-save actions. Mission rewards persist locally, reset by local date, and feed back into the cat-food economy. The service worker cache was also bumped and JS/CSS now carry v32 cache-busting URLs so feature updates do not get stuck behind the old app shell. The install prompt is hidden by default for this function pass and can be shown with `?install=1`.
 - v33 functional season loop: the weekly rank page now has a local Monday-to-Monday season window, live player score, season countdown, and claimable weekly rewards for Rare+ and legendary collection targets. Reward claims persist locally by season and feed cat food back into the economy.
 - v34 growth economy loop: the share page now generates a stable invite code, copies referral/story URLs, opens referral landing state from `?ref=`, tracks local share/invite/checkout intent signals, and the supply page exposes Pro pass plus a capped week-one pool concept without faking payment confirmation or cross-device rewards.
+- v35 referral onboarding loop: referral links now render the friend's story as the share poster, expose a three-step invite quest, and grant a one-time local +2 cat-food entry supply to referred visitors. This is a first-session activation loop only; inviter-side rewards still need backend confirmation.
 
 ## Installable phone test
 

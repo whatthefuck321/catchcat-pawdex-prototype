@@ -1,9 +1,9 @@
-const CACHE_NAME = "pawdex-v34-growth-economy-loop";
+const CACHE_NAME = "pawdex-v35-referral-onboarding-loop";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=34",
-  "./app.js?v=34",
+  "./styles.css?v=35",
+  "./app.js?v=35",
   "./manifest.webmanifest",
   "./assets/apple-touch-icon.png",
   "./assets/pwa-icon-192.png",

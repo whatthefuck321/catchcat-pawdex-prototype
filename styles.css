@@ -3545,6 +3545,78 @@ body {
   font-weight: 820;
 }
 
+.invite-quest-list {
+  display: grid;
+  gap: 7px;
+  margin-top: 11px;
+}
+
+.invite-quest {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+  border-radius: 13px;
+  background: rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.invite-quest > span {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 10px;
+  font-weight: 1000;
+}
+
+.invite-quest.done {
+  border-color: rgba(52, 199, 89, 0.26);
+  background:
+    linear-gradient(90deg, rgba(52, 199, 89, 0.12), rgba(255, 214, 10, 0.04)),
+    rgba(0, 0, 0, 0.14);
+}
+
+.invite-quest.done > span {
+  background: linear-gradient(135deg, #34c759, #ffd60a);
+  color: #081006;
+  box-shadow: 0 0 16px rgba(52, 199, 89, 0.24);
+}
+
+.invite-quest div {
+  min-width: 0;
+}
+
+.invite-quest strong,
+.invite-quest small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.invite-quest strong {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 1000;
+}
+
+.invite-quest small {
+  margin-top: 2px;
+  color: rgba(255, 255, 255, 0.56);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.invite-claim {
+  width: 100%;
+  margin-top: 10px;
+}
+
 .invite-landing-actions,
 .invite-actions {
   display: grid;
@@ -3581,6 +3653,13 @@ body {
 .mini-primary.disabled,
 .mini-ghost.disabled {
   opacity: 0.56;
+  cursor: default;
+}
+
+.mini-primary:disabled,
+.mini-ghost:disabled {
+  opacity: 0.56;
+  cursor: default;
 }
 
 .invite-panel {

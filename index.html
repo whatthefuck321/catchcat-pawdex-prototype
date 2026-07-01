@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PAWDEX v34 - Growth Economy Loop Prototype</title>
+    <title>PAWDEX v35 - Referral Onboarding Loop Prototype</title>
     <link rel="icon" href="data:," />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="PAWDEX" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <link rel="stylesheet" href="./styles.css?v=34" />
+    <link rel="stylesheet" href="./styles.css?v=35" />
   </head>
   <body>
     <main class="site-shell">
@@ -382,6 +382,8 @@
             <span id="inviteLandingStep">INVITE DROP</span>
             <strong id="inviteLandingTitle">朋友邀请你来夜巡</strong>
             <small id="inviteLandingCopy">点一次拍摄，把你的第一张猫卡也发回去。</small>
+            <div class="invite-quest-list" id="inviteQuestList"></div>
+            <button class="mini-primary invite-claim" id="landingClaimButton" type="button">领取入场猫粮 +2</button>
             <div class="invite-landing-actions">
               <button class="mini-primary" id="landingStartButton" type="button">开始抓猫</button>
               <button class="mini-ghost" id="landingCopyButton" type="button">复制我的邀请</button>
@@ -658,7 +660,7 @@
       <div class="modal-card" id="modalCard"></div>
     </div>
 
-    <script src="./app.js?v=34"></script>
+    <script src="./app.js?v=35"></script>
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onload="window.initSupabaseClient?.()"></script>
   </body>
