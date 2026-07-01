@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v35 referral onboarding loop prototype`
+Current published version: `v36 anime game skin prototype`
 
 ## What is included
 
@@ -40,6 +40,7 @@ Current published version: `v35 referral onboarding loop prototype`
 - v33 functional season loop: the weekly rank page now has a local Monday-to-Monday season window, live player score, season countdown, and claimable weekly rewards for Rare+ and legendary collection targets. Reward claims persist locally by season and feed cat food back into the economy.
 - v34 growth economy loop: the share page now generates a stable invite code, copies referral/story URLs, opens referral landing state from `?ref=`, tracks local share/invite/checkout intent signals, and the supply page exposes Pro pass plus a capped week-one pool concept without faking payment confirmation or cross-device rewards.
 - v35 referral onboarding loop: referral links now render the friend's story as the share poster, expose a three-step invite quest, and grant a one-time local +2 cat-food entry supply to referred visitors. This is a first-session activation loop only; inviter-side rewards still need backend confirmation.
+- v36 anime game skin: the web navigation is hidden, the phone shell owns the whole first viewport, and the catch/share/menu views get a stronger anime-game HUD layer, moving rays, spark effects, manga-style scene treatment, a more tactile shutter, and clipped game-menu panels. This pass is visual only and does not change the economy or capture settlement logic.
 
 ## Installable phone test
 

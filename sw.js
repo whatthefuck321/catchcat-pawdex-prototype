@@ -1,9 +1,9 @@
-const CACHE_NAME = "pawdex-v35-referral-onboarding-loop";
+const CACHE_NAME = "pawdex-v36-anime-game-skin";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=35",
-  "./app.js?v=35",
+  "./styles.css?v=36",
+  "./app.js?v=36",
   "./manifest.webmanifest",
   "./assets/apple-touch-icon.png",
   "./assets/pwa-icon-192.png",

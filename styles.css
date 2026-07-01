@@ -10439,11 +10439,83 @@ body {
 }
 
 .phone:not(.catch-mode) .story-preview {
-  width: min(282px, 100%);
+  width: min(246px, 100%);
   border-radius: 26px;
   box-shadow:
     0 22px 46px rgba(0, 0, 0, 0.32),
     0 0 46px rgba(255, 214, 10, 0.08);
+}
+
+.phone:not(.catch-mode) .story-card {
+  flex: 0 0 132px;
+  min-height: 132px;
+  margin: 8px 0;
+}
+
+.phone:not(.catch-mode) .story-card-art {
+  position: absolute;
+  left: 50%;
+  top: 7px;
+  width: 82%;
+  height: 100px;
+  max-height: none;
+  margin: 0;
+  object-fit: contain;
+  transform: translateX(-50%);
+}
+
+.phone:not(.catch-mode) .story-card-info {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 18px 10px 8px;
+}
+
+.phone:not(.catch-mode) .story-card-name {
+  font-size: 15px;
+}
+
+.phone:not(.catch-mode) .story-card-meta {
+  gap: 3px;
+  font-size: 8px;
+}
+
+.phone:not(.catch-mode) .story-card-meta span {
+  padding: 2px 5px;
+}
+
+.phone:not(.catch-mode) .story-headline {
+  font-size: 16px;
+  line-height: 1.08;
+}
+
+.phone:not(.catch-mode) .story-sub {
+  min-height: 22px;
+  margin-top: 4px;
+  font-size: 10px;
+}
+
+.phone:not(.catch-mode) .story-loot {
+  margin-top: 6px;
+}
+
+.phone:not(.catch-mode) .story-loot div {
+  padding: 5px;
+}
+
+.phone:not(.catch-mode) .story-preview .story-footer {
+  margin-top: 6px;
+}
+
+.phone:not(.catch-mode) .story-cta {
+  min-height: 42px;
+  padding: 7px 8px;
+}
+
+.phone:not(.catch-mode) .story-qr {
+  width: 36px;
+  height: 36px;
 }
 
 .phone:not(.catch-mode) .copy-share-btn {
@@ -10849,5 +10921,918 @@ body {
     grid-template-columns: minmax(0, 1fr) 54px 26px;
     margin-right: 13px;
     margin-left: 13px;
+  }
+}
+
+/* v36 anime game skin: first visual pass to remove the web/card prototype feel. */
+:root {
+  --anime-ink: #fff7df;
+  --anime-line: rgba(255, 247, 223, 0.16);
+  --anime-gold: #ffd66b;
+  --anime-cyan: #6ee7ff;
+  --anime-pink: #ff5fa2;
+  --anime-violet: #8a68ff;
+  --anime-night: #050710;
+}
+
+body {
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255, 214, 107, 0.22), transparent 18%),
+    radial-gradient(circle at 18% 82%, rgba(110, 231, 255, 0.18), transparent 25%),
+    radial-gradient(circle at 88% 72%, rgba(255, 95, 162, 0.16), transparent 25%),
+    linear-gradient(160deg, #140c24 0%, #07111f 43%, #05060c 100%);
+}
+
+.site-nav {
+  display: none;
+}
+
+.site-shell {
+  position: relative;
+}
+
+.site-shell::before,
+.site-shell::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.site-shell::before {
+  opacity: 0.38;
+  background:
+    repeating-linear-gradient(112deg, transparent 0 26px, rgba(255, 255, 255, 0.045) 27px 28px, transparent 29px 96px),
+    radial-gradient(ellipse at 50% 102%, rgba(255, 214, 107, 0.18), transparent 44%);
+  animation: skinBackdropPan 18s linear infinite;
+}
+
+.site-shell::after {
+  opacity: 0.36;
+  background:
+    linear-gradient(90deg, transparent 0 10%, rgba(110, 231, 255, 0.08) 10.4%, transparent 11%),
+    linear-gradient(90deg, transparent 0 88%, rgba(255, 95, 162, 0.08) 88.4%, transparent 89%),
+    radial-gradient(circle at 50% 46%, transparent 0 28%, rgba(0, 0, 0, 0.38) 72%);
+}
+
+.game-hero {
+  min-height: 100svh;
+  padding: 10px;
+}
+
+.game-hero::before,
+.game-hero::after {
+  inset: 0;
+}
+
+.hero-phone-wrap {
+  position: relative;
+  z-index: 1;
+  flex-basis: min(448px, calc(100svw - 20px));
+  width: min(448px, calc(100svw - 20px));
+  filter: drop-shadow(0 34px 80px rgba(0, 0, 0, 0.64));
+}
+
+.hero-phone-wrap::before {
+  content: "PAWDEX FIELD UNIT";
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: -3px;
+  min-width: 186px;
+  min-height: 25px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 214, 107, 0.28);
+  border-radius: 0 0 16px 16px;
+  background:
+    linear-gradient(180deg, rgba(255, 214, 107, 0.2), rgba(5, 7, 16, 0.9)),
+    rgba(5, 7, 16, 0.92);
+  color: rgba(255, 247, 223, 0.78);
+  font-size: 9px;
+  font-weight: 1000;
+  letter-spacing: 0.14em;
+  transform: translateX(-50%);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.32);
+}
+
+.phone {
+  overflow: hidden;
+  width: min(424px, calc(100svw - 20px));
+  height: min(908px, calc(100svh - 20px));
+  min-height: 704px;
+  border: 1px solid rgba(255, 247, 223, 0.16);
+  border-radius: 44px;
+  background:
+    radial-gradient(circle at 50% 4%, rgba(255, 214, 107, 0.16), transparent 19%),
+    linear-gradient(180deg, #10152a 0%, #060811 100%);
+  box-shadow:
+    inset 0 0 0 7px rgba(2, 3, 8, 0.95),
+    inset 0 0 0 8px rgba(255, 255, 255, 0.035),
+    0 0 0 1px rgba(110, 231, 255, 0.14),
+    0 0 72px rgba(110, 231, 255, 0.1),
+    0 44px 120px rgba(0, 0, 0, 0.72);
+}
+
+.phone::before {
+  width: 118px;
+  height: 24px;
+  border-color: rgba(255, 247, 223, 0.09);
+  background:
+    radial-gradient(circle at 28% 50%, rgba(110, 231, 255, 0.18), transparent 16%),
+    #020307;
+}
+
+.phone::after {
+  background: linear-gradient(90deg, transparent, rgba(255, 247, 223, 0.58), transparent);
+}
+
+.anime-skin-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.anime-skin-layer::before,
+.anime-skin-layer::after,
+.skin-ray,
+.skin-spark {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.anime-skin-layer::before {
+  inset: 34px 12px 14px;
+  border: 1px solid rgba(255, 247, 223, 0.055);
+  border-radius: 34px;
+  background:
+    linear-gradient(90deg, rgba(255, 214, 107, 0.2), transparent 14% 86%, rgba(110, 231, 255, 0.16)),
+    linear-gradient(180deg, rgba(255, 247, 223, 0.05), transparent 18% 82%, rgba(255, 247, 223, 0.04));
+  opacity: 0.72;
+}
+
+.anime-skin-layer::after {
+  inset: 0;
+  opacity: 0.42;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.045) 0 1px, transparent 1px 6px),
+    radial-gradient(ellipse at 50% 50%, transparent 0 58%, rgba(0, 0, 0, 0.42) 100%);
+  mix-blend-mode: screen;
+}
+
+.skin-ray {
+  height: 1px;
+  opacity: 0.54;
+  background: linear-gradient(90deg, transparent, rgba(255, 247, 223, 0.74), transparent);
+  transform-origin: left center;
+  animation: skinRaySlide 3.8s ease-in-out infinite;
+}
+
+.ray-a {
+  left: -12%;
+  right: -12%;
+  top: 28%;
+  transform: rotate(-9deg);
+}
+
+.ray-b {
+  left: -18%;
+  right: -18%;
+  top: 61%;
+  animation-delay: -1.4s;
+  transform: rotate(7deg);
+}
+
+.skin-spark {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fff7df;
+  box-shadow:
+    0 0 16px rgba(255, 214, 107, 0.78),
+    0 0 28px rgba(110, 231, 255, 0.32);
+  animation: skinSpark 3.2s ease-in-out infinite;
+}
+
+.spark-a {
+  left: 14%;
+  top: 21%;
+}
+
+.spark-b {
+  right: 13%;
+  top: 38%;
+  animation-delay: -1.1s;
+}
+
+.spark-c {
+  left: 22%;
+  bottom: 24%;
+  animation-delay: -2s;
+}
+
+.phone.catch-mode #catchScreen {
+  inset: 34px 6px 6px;
+}
+
+.phone.catch-mode .field-camera {
+  border-radius: 36px;
+  background:
+    radial-gradient(circle at 58% 42%, rgba(255, 214, 107, 0.17), transparent 18%),
+    radial-gradient(circle at 12% 14%, rgba(110, 231, 255, 0.13), transparent 23%),
+    linear-gradient(180deg, #172447 0%, #18152f 48%, #070810 100%);
+}
+
+.phone.catch-mode .field-camera::before {
+  z-index: 6;
+  opacity: 0.34;
+  background:
+    repeating-linear-gradient(112deg, transparent 0 19px, rgba(255, 247, 223, 0.12) 20px 21px, transparent 22px 76px),
+    linear-gradient(90deg, rgba(255, 95, 162, 0.06), transparent 30% 70%, rgba(110, 231, 255, 0.06));
+  animation: fieldMangaPan 10s linear infinite;
+}
+
+.phone.catch-mode .field-camera::after {
+  z-index: 15;
+  background:
+    linear-gradient(to bottom, rgba(4, 6, 14, 0.78), rgba(4, 6, 14, 0.08) 21%, transparent 43%),
+    linear-gradient(to top, rgba(2, 3, 8, 0.99), rgba(2, 3, 8, 0.72) 22%, transparent 52%),
+    radial-gradient(ellipse at 50% 46%, transparent 0 48%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+.phone.catch-mode .world-map {
+  border-radius: 36px;
+  background:
+    radial-gradient(circle at 70% 20%, rgba(255, 214, 107, 0.36), transparent 12%),
+    radial-gradient(circle at 20% 36%, rgba(110, 231, 255, 0.22), transparent 17%),
+    radial-gradient(circle at 52% 70%, rgba(255, 95, 162, 0.18), transparent 22%),
+    linear-gradient(180deg, #17264d 0%, #171932 44%, #210f2e 70%, #070810 100%);
+}
+
+.phone.catch-mode .world-map::before {
+  opacity: 0.28;
+  background:
+    radial-gradient(circle at 50% 66%, transparent 0 18%, rgba(255, 247, 223, 0.08) 18.5% 19%, transparent 19.5%),
+    repeating-linear-gradient(108deg, transparent 0 20px, rgba(255, 247, 223, 0.1) 21px 22px, transparent 23px 86px),
+    repeating-linear-gradient(18deg, transparent 0 44px, rgba(110, 231, 255, 0.085) 45px 46px, transparent 47px 104px);
+}
+
+.phone.catch-mode .world-map::after {
+  background:
+    radial-gradient(ellipse at 60% 62%, rgba(255, 214, 107, 0.25), transparent 29%),
+    radial-gradient(ellipse at 42% 84%, rgba(255, 95, 162, 0.13), transparent 32%),
+    linear-gradient(to top, rgba(3, 4, 9, 0.94), transparent 42%),
+    linear-gradient(to bottom, rgba(3, 4, 9, 0.65), transparent 21%);
+}
+
+.phone.catch-mode .anime-skyline i {
+  border-top: 1px solid rgba(255, 247, 223, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 247, 223, 0.06),
+    0 0 24px rgba(110, 231, 255, 0.08);
+}
+
+.phone.catch-mode .anime-sign {
+  border: 1px solid rgba(255, 214, 107, 0.2);
+  background: rgba(255, 214, 107, 0.09);
+  color: rgba(255, 247, 223, 0.6);
+  text-shadow: 0 0 12px rgba(255, 214, 107, 0.32);
+}
+
+.phone.catch-mode .field-top {
+  top: 14px;
+  left: 20px;
+  right: 20px;
+}
+
+.phone.catch-mode .field-top h2 {
+  font-size: 24px;
+  line-height: 0.98;
+  color: var(--anime-ink);
+  text-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.86),
+    0 0 24px rgba(255, 214, 107, 0.22);
+}
+
+.phone.catch-mode .field-event {
+  top: 76px;
+  left: 20px;
+  padding-left: 9px;
+  border-left: 2px solid rgba(255, 214, 107, 0.82);
+  background: linear-gradient(90deg, rgba(255, 214, 107, 0.15), transparent);
+}
+
+.phone.catch-mode .field-event::before {
+  min-height: 16px;
+  margin-bottom: 5px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.phone.catch-mode .location-panel {
+  top: 112px;
+  min-height: 32px;
+  padding-left: 9px;
+  border-left: 2px solid rgba(110, 231, 255, 0.58);
+  background: linear-gradient(90deg, rgba(110, 231, 255, 0.11), transparent 72%);
+}
+
+.phone.catch-mode .scan-chip,
+.phone.catch-mode .camera-toggle,
+.phone.catch-mode .photo-pick {
+  top: 154px;
+  border: 1px solid rgba(255, 247, 223, 0.12);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(255, 247, 223, 0.14), rgba(255, 247, 223, 0.035)),
+    rgba(3, 5, 12, 0.42);
+  color: rgba(255, 247, 223, 0.88);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 24px rgba(0, 0, 0, 0.26);
+}
+
+.phone.catch-mode .scan-chip {
+  color: #10131c;
+  background: linear-gradient(135deg, #8effc4, #ffe77a);
+}
+
+.phone.catch-mode .target-box {
+  left: 11%;
+  top: 24%;
+  width: 78%;
+  height: 39%;
+  border-color: rgba(255, 247, 223, 0.34);
+  border-radius: 34px;
+  box-shadow:
+    inset 0 0 48px rgba(110, 231, 255, 0.045),
+    0 0 0 1px rgba(255, 247, 223, 0.07),
+    0 0 44px rgba(255, 214, 107, 0.16);
+}
+
+.phone.catch-mode .target-box::before,
+.phone.catch-mode .target-box::after {
+  width: 50px;
+  height: 50px;
+  border-color: #fff0a4;
+  filter: drop-shadow(0 0 12px rgba(255, 214, 107, 0.38));
+}
+
+.phone.catch-mode .field-cat-art {
+  left: 62%;
+  top: 55%;
+  width: min(58%, 232px);
+  max-height: 57%;
+  transform-origin: 50% 82%;
+  animation: fieldCatBreath 2.8s ease-in-out infinite;
+  filter:
+    drop-shadow(0 30px 22px rgba(0, 0, 0, 0.58))
+    drop-shadow(0 0 34px rgba(255, 214, 107, 0.2));
+}
+
+.phone.catch-mode .encounter-ring {
+  left: 62%;
+  top: 61%;
+  width: min(70%, 280px);
+}
+
+.phone.catch-mode .encounter-ring::before,
+.phone.catch-mode .encounter-ring::after {
+  border-color: rgba(255, 214, 107, 0.34);
+  box-shadow: 0 0 24px rgba(255, 214, 107, 0.18);
+}
+
+.phone.catch-mode .world-node {
+  border: 1px solid rgba(255, 247, 223, 0.12);
+  background:
+    radial-gradient(circle, rgba(255, 214, 107, 0.3), rgba(255, 214, 107, 0.04) 52%, rgba(255, 255, 255, 0.04) 53%),
+    rgba(2, 3, 8, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 0 22px rgba(255, 214, 107, 0.16);
+}
+
+.phone.catch-mode .world-node::before {
+  animation: nodePulse 2.2s ease-in-out infinite;
+}
+
+.phone.catch-mode .world-node strong {
+  color: rgba(255, 247, 223, 0.92);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.86);
+}
+
+.phone.catch-mode .cat-readout {
+  bottom: 250px;
+  width: min(268px, calc(100% - 38px));
+}
+
+.phone.catch-mode .cat-readout span {
+  border-radius: 0;
+  background: transparent;
+  color: #ffe77a;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.phone.catch-mode .cat-readout strong {
+  position: relative;
+  margin-top: 6px;
+  padding-left: 10px;
+  color: var(--anime-ink);
+  font-size: 30px;
+}
+
+.phone.catch-mode .cat-readout strong::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  bottom: 2px;
+  width: 3px;
+  background: linear-gradient(#ffe77a, #ff5fa2);
+  box-shadow: 0 0 18px rgba(255, 214, 107, 0.38);
+}
+
+.phone.catch-mode .cat-readout small {
+  max-width: 256px;
+  padding-left: 10px;
+  font-size: 11px;
+}
+
+.phone.catch-mode .capture-dock {
+  bottom: 56px;
+  padding: 0 14px 12px;
+  border: 0;
+  border-radius: 30px 30px 0 0;
+  background:
+    radial-gradient(90% 90% at 76% 100%, rgba(255, 214, 107, 0.16), transparent 62%),
+    linear-gradient(to top, rgba(1, 2, 7, 0.99), rgba(7, 9, 19, 0.86) 64%, rgba(7, 9, 19, 0.14) 100%);
+  clip-path: polygon(0 16px, 9% 0, 91% 0, 100% 16px, 100% 100%, 0 100%);
+}
+
+.phone.catch-mode .field-mission {
+  min-height: 34px;
+  margin-bottom: 7px;
+  padding-left: 0;
+  border-left: 3px solid rgba(255, 214, 107, 0.72);
+  padding-inline-start: 10px;
+}
+
+.phone.catch-mode .field-mission::before {
+  display: none;
+}
+
+.phone.catch-mode .field-mission strong {
+  font-size: 17px;
+  letter-spacing: 0;
+}
+
+.phone.catch-mode .dock-head {
+  padding-inline: 2px;
+}
+
+.phone.catch-mode .dock-head .reroll-scene {
+  border: 1px solid rgba(255, 247, 223, 0.12);
+  background: rgba(255, 255, 255, 0.055);
+  color: rgba(255, 247, 223, 0.78);
+  box-shadow: none;
+}
+
+.phone.catch-mode .capture-dock .mode-list {
+  height: 44px;
+  gap: 7px;
+}
+
+.phone.catch-mode .capture-dock .mode {
+  height: 44px;
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02)),
+    rgba(255, 255, 255, 0.045);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.13);
+}
+
+.phone.catch-mode .capture-dock .mode.active {
+  border-color: rgba(255, 214, 107, 0.5);
+  background:
+    radial-gradient(circle at 80% 20%, rgba(255, 247, 223, 0.22), transparent 40%),
+    linear-gradient(135deg, rgba(255, 214, 107, 0.32), rgba(255, 95, 162, 0.08));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 0 24px rgba(255, 214, 107, 0.16);
+}
+
+.phone.catch-mode .capture-dock .mode-name {
+  font-size: 11px;
+}
+
+.phone.catch-mode .capture-dock .mode-meta {
+  font-size: 8px;
+}
+
+.phone.catch-mode .capture-dock .shutter-row {
+  grid-template-columns: 70px minmax(0, 1fr);
+  min-height: 62px;
+}
+
+.phone.catch-mode .capture-dock .capture-shutter {
+  width: 64px;
+  height: 64px;
+  border: 2px solid rgba(255, 247, 223, 0.76);
+  background:
+    radial-gradient(circle, #fff7df 0 27%, #ff5fa2 28% 42%, #ffd66b 43% 58%, rgba(255, 214, 107, 0.13) 59%);
+  box-shadow:
+    0 0 0 7px rgba(255, 247, 223, 0.055),
+    0 0 32px rgba(255, 214, 107, 0.42),
+    0 18px 28px rgba(0, 0, 0, 0.28);
+}
+
+.phone.catch-mode .capture-dock .capture-shutter::before {
+  border-color: rgba(255, 247, 223, 0.32);
+  animation: shutterHalo 1.7s ease-in-out infinite;
+}
+
+.phone.catch-mode .capture-dock .shutter-core {
+  background: radial-gradient(circle, #fff 0 28%, #ffe77a 29% 100%);
+}
+
+.phone.catch-mode .capture-copy strong {
+  color: var(--anime-ink);
+  font-size: 20px;
+}
+
+.phone.catch-mode .bottom-nav,
+.phone:not(.catch-mode) .bottom-nav {
+  left: 12px;
+  right: 12px;
+  bottom: 8px;
+  height: 52px;
+  padding: 3px 8px 7px;
+  border: 1px solid rgba(255, 247, 223, 0.08);
+  border-radius: 26px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.025)),
+    rgba(1, 2, 7, 0.62);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 32px rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(18px);
+}
+
+.phone.catch-mode .nav,
+.phone:not(.catch-mode) .nav {
+  min-width: 0;
+  height: 42px;
+  border-radius: 22px;
+  color: rgba(255, 247, 223, 0.64);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+.phone.catch-mode .nav.active,
+.phone:not(.catch-mode) .nav.active {
+  background:
+    radial-gradient(circle at 50% 16%, rgba(255, 247, 223, 0.18), transparent 48%),
+    linear-gradient(135deg, rgba(255, 214, 107, 0.22), rgba(110, 231, 255, 0.08));
+  color: #fff7df;
+  box-shadow: 0 0 24px rgba(255, 214, 107, 0.14);
+}
+
+.phone:not(.catch-mode) {
+  background:
+    radial-gradient(circle at 72% 12%, rgba(255, 214, 107, 0.2), transparent 24%),
+    radial-gradient(circle at 5% 56%, rgba(110, 231, 255, 0.15), transparent 30%),
+    linear-gradient(180deg, #121a32 0%, #090b16 58%, #05060c 100%);
+}
+
+.phone:not(.catch-mode) .app-top {
+  padding: 14px 20px 8px;
+}
+
+.phone:not(.catch-mode) .app-top h2 {
+  color: var(--anime-ink);
+  font-size: 29px;
+}
+
+.phone:not(.catch-mode) .event-strip {
+  margin-inline: 18px;
+  border-left: 3px solid rgba(255, 214, 107, 0.74);
+  background:
+    linear-gradient(90deg, rgba(255, 214, 107, 0.18), rgba(110, 231, 255, 0.045) 58%, transparent);
+}
+
+.phone:not(.catch-mode) .app-sub-screen.active {
+  max-height: calc(100% - 212px);
+  padding: 0 18px 94px;
+}
+
+.phone:not(.catch-mode) .app-sub-screen::before {
+  inset: 112px 8px 64px;
+  opacity: 0.8;
+  background:
+    radial-gradient(circle at 78% 18%, rgba(255, 214, 107, 0.13), transparent 28%),
+    repeating-linear-gradient(112deg, transparent 0 22px, rgba(255, 247, 223, 0.048) 23px 24px, transparent 25px 78px);
+}
+
+.dex-orbit,
+.economy-console,
+.season-broadcast,
+.daily-missions,
+.pro-pass-panel,
+.pool-panel,
+.invite-landing,
+.invite-panel {
+  border: 0;
+  border-radius: 0;
+  background:
+    linear-gradient(90deg, rgba(255, 214, 107, 0.14), transparent 58%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018));
+  box-shadow:
+    inset 3px 0 0 rgba(255, 214, 107, 0.72),
+    0 18px 46px rgba(0, 0, 0, 0.18);
+}
+
+.dex-orbit,
+.season-broadcast {
+  clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 26px, 100% 100%, 0 100%);
+}
+
+.dex-book-rail::before {
+  background: linear-gradient(90deg, #090b16, transparent);
+}
+
+.dex-book-rail::after {
+  background: linear-gradient(270deg, #090b16, transparent);
+}
+
+.phone:not(.catch-mode) .dex-book-rail .cat-card,
+.phone:not(.catch-mode) .dex-book-rail .limited-slot,
+.phone:not(.catch-mode) .dex-book-rail .empty-dex {
+  border-radius: 12px;
+  box-shadow:
+    0 16px 38px rgba(0, 0, 0, 0.22),
+    0 0 28px rgba(255, 214, 107, 0.06);
+}
+
+.story-preview {
+  border: 0;
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 50% 26%, var(--glow, rgba(255, 214, 107, 0.26)), transparent 34%),
+    radial-gradient(circle at 14% 72%, rgba(110, 231, 255, 0.16), transparent 28%),
+    linear-gradient(180deg, #18264c 0%, #17142f 52%, #070810 100%);
+}
+
+.story-preview::before {
+  opacity: 0.52;
+}
+
+.story-card {
+  border-radius: 22px;
+  transform: perspective(680px) rotateX(3deg);
+}
+
+.story-headline {
+  text-shadow:
+    0 2px 16px rgba(0, 0, 0, 0.86),
+    0 0 24px var(--glow, rgba(255, 214, 107, 0.28));
+}
+
+.phone:not(.catch-mode) .share-page.active {
+  padding-bottom: 132px;
+}
+
+.phone:not(.catch-mode) .share-actions {
+  margin-bottom: 80px;
+}
+
+.copy-share-btn,
+.mini-primary,
+.supply-action.primary,
+.daily-claim:not(:disabled),
+.buy-button {
+  background:
+    radial-gradient(circle at 82% 20%, rgba(255, 255, 255, 0.34), transparent 36%),
+    linear-gradient(135deg, #ffe77a, #ff9f2f 56%, #ff5fa2);
+  color: #160b10;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.48),
+    0 14px 30px rgba(255, 95, 162, 0.18),
+    0 0 24px rgba(255, 214, 107, 0.16);
+}
+
+.share-actions button,
+.mini-ghost,
+.small-button {
+  border: 1px solid rgba(255, 247, 223, 0.12);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.018)),
+    rgba(255, 255, 255, 0.045);
+  color: rgba(255, 247, 223, 0.82);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.leader-row,
+.daily-mission,
+.founder-pack,
+.season-reward,
+.supply-action {
+  border-radius: 0;
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+}
+
+.modal.show {
+  background:
+    radial-gradient(circle at 50% 48%, rgba(255, 214, 107, 0.2), transparent 28%),
+    rgba(0, 0, 0, 0.74);
+}
+
+.modal-card {
+  max-height: calc(100svh - 32px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 247, 223, 0.12);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 72% 14%, rgba(255, 214, 107, 0.18), transparent 24%),
+    linear-gradient(180deg, rgba(18, 25, 50, 0.98), rgba(5, 7, 16, 0.98));
+  box-shadow:
+    0 30px 90px rgba(0, 0, 0, 0.58),
+    0 0 62px rgba(255, 214, 107, 0.12);
+  scrollbar-width: none;
+}
+
+.modal-card::-webkit-scrollbar {
+  display: none;
+}
+
+.modal-card.reveal-card,
+.modal-card.reveal-card.wow,
+.modal-card.reveal-card.failed,
+.modal-card.auth-card {
+  max-height: calc(100svh - 32px);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+@keyframes skinBackdropPan {
+  from {
+    transform: translateX(-36px);
+  }
+
+  to {
+    transform: translateX(36px);
+  }
+}
+
+@keyframes skinRaySlide {
+  0%,
+  100% {
+    opacity: 0.22;
+    translate: -22px 0;
+  }
+
+  50% {
+    opacity: 0.62;
+    translate: 22px 0;
+  }
+}
+
+@keyframes skinSpark {
+  0%,
+  100% {
+    opacity: 0.18;
+    transform: scale(0.7);
+  }
+
+  50% {
+    opacity: 0.82;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes fieldMangaPan {
+  from {
+    transform: translateX(-64px);
+  }
+
+  to {
+    transform: translateX(64px);
+  }
+}
+
+@keyframes fieldCatBreath {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    transform: translate(-50%, -53%) scale(1.025);
+  }
+}
+
+@keyframes nodePulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: scale(1.18);
+    opacity: 1;
+  }
+}
+
+@keyframes shutterHalo {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.45;
+  }
+
+  50% {
+    transform: scale(1.18);
+    opacity: 0.8;
+  }
+}
+
+@media (max-width: 520px) {
+  .game-hero {
+    padding: 0;
+  }
+
+  .hero-phone-wrap,
+  .phone {
+    width: 100svw;
+    max-width: none;
+  }
+
+  .hero-phone-wrap {
+    flex-basis: 100svw;
+  }
+
+  .hero-phone-wrap::before {
+    display: none;
+  }
+
+  .phone {
+    height: 100svh;
+    min-height: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .phone::before {
+    top: 8px;
+  }
+
+  .phone::after {
+    bottom: 7px;
+  }
+
+  .phone.catch-mode #catchScreen {
+    inset: 30px 0 0;
+  }
+
+  .phone.catch-mode .field-camera,
+  .phone.catch-mode .world-map {
+    border-radius: 0;
+  }
+
+  .anime-skin-layer,
+  .anime-skin-layer::before {
+    border-radius: 0;
+  }
+}
+
+@media (max-height: 760px) {
+  .phone.catch-mode .scan-chip,
+  .phone.catch-mode .camera-toggle,
+  .phone.catch-mode .photo-pick {
+    top: 142px;
+  }
+
+  .phone.catch-mode .cat-readout {
+    bottom: 224px;
+  }
+
+  .phone.catch-mode .capture-dock .mode-list {
+    height: 40px;
+  }
+
+  .phone.catch-mode .capture-dock .mode {
+    height: 40px;
+  }
+
+  .phone.catch-mode .capture-dock .capture-shutter {
+    width: 58px;
+    height: 58px;
   }
 }
