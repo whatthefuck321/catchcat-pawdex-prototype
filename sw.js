@@ -1,9 +1,9 @@
-const CACHE_NAME = "pawdex-v33-functional-season-loop";
+const CACHE_NAME = "pawdex-v34-growth-economy-loop";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=33",
-  "./app.js?v=33",
+  "./styles.css?v=34",
+  "./app.js?v=34",
   "./manifest.webmanifest",
   "./assets/apple-touch-icon.png",
   "./assets/pwa-icon-192.png",

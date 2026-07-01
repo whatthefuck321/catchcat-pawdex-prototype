@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PAWDEX v33 - Functional Season Loop Prototype</title>
+    <title>PAWDEX v34 - Growth Economy Loop Prototype</title>
     <link rel="icon" href="data:," />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="PAWDEX" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <link rel="stylesheet" href="./styles.css?v=33" />
+    <link rel="stylesheet" href="./styles.css?v=34" />
   </head>
   <body>
     <main class="site-shell">
@@ -378,6 +378,16 @@
         </section>
 
         <section class="screen app-sub-screen share-page" id="shareScreen" data-screen="share" hidden>
+          <section class="invite-landing" id="inviteLanding" hidden>
+            <span id="inviteLandingStep">INVITE DROP</span>
+            <strong id="inviteLandingTitle">朋友邀请你来夜巡</strong>
+            <small id="inviteLandingCopy">点一次拍摄，把你的第一张猫卡也发回去。</small>
+            <div class="invite-landing-actions">
+              <button class="mini-primary" id="landingStartButton" type="button">开始抓猫</button>
+              <button class="mini-ghost" id="landingCopyButton" type="button">复制我的邀请</button>
+            </div>
+          </section>
+
           <div class="story-preview" id="storyPreview">
             <div class="story-brand">
               <span class="brand-logo">PAWDEX</span>
@@ -424,7 +434,7 @@
               <div class="story-cta">
                 <div class="cta-text">
                   <span class="cta-line1">下载 PAWDEX</span>
-                  <span class="cta-line2">@pawdex_app</span>
+                  <span class="cta-line2" id="storyInviteCode">@pawdex_app</span>
                 </div>
                 <div class="story-qr" id="storyQr" aria-hidden="true"></div>
               </div>
@@ -439,6 +449,18 @@
             <button type="button" data-share="fb">Facebook</button>
             <button type="button" data-share="native">系统分享</button>
           </div>
+          <section class="invite-panel" aria-label="邀请增长">
+            <div class="invite-panel-head">
+              <span>INVITE CODE</span>
+              <strong id="inviteCodeText">PX000</strong>
+            </div>
+            <div class="invite-url" id="inviteUrlText">生成邀请链接中</div>
+            <div class="invite-actions">
+              <button class="mini-primary" id="copyInviteButton" type="button">复制邀请链接</button>
+              <button class="mini-ghost" id="copyLaunchPostButton" type="button">复制发布文案</button>
+            </div>
+            <p id="inviteProofText">静态版先验证点击和分享链路，真实跨设备奖励后续接 Supabase。</p>
+          </section>
           <button class="small-button dev-entry" type="button" data-tab="debug">开发面板</button>
         </section>
 
@@ -454,6 +476,35 @@
             <strong id="storeHeroTitle">先卖身份，不先烧钱</strong>
             <span id="storeHeroCopy">Founder 收入先覆盖云、识别和后续开发成本。</span>
           </div>
+          <section class="pro-pass-panel" aria-label="Pro 转化入口">
+            <div>
+              <span>PRO LOOP</span>
+              <strong id="proPassTitle">Pro 夜巡票</strong>
+              <small id="proPassCopy">缺猫粮、传说时段和周榜冲刺时出现，是第一周最自然的付费入口。</small>
+            </div>
+            <button class="mini-primary" id="proCheckoutButton" type="button" data-buy="pro">$4.99/wk</button>
+          </section>
+          <section class="pool-panel" aria-label="首周奖池">
+            <div class="pool-main">
+              <span>WEEK 1 POOL</span>
+              <strong id="poolValueText">$25</strong>
+              <small id="poolCopyText">用 Pro/Founder 收入的一部分做周榜奖池；静态版不伪造到账。</small>
+            </div>
+            <div class="pool-lines">
+              <div>
+                <span>分享意图</span>
+                <strong id="poolShareSignal">0</strong>
+              </div>
+              <div>
+                <span>邀请复制</span>
+                <strong id="poolInviteSignal">0</strong>
+              </div>
+              <div>
+                <span>支付点击</span>
+                <strong id="poolCheckoutSignal">0</strong>
+              </div>
+            </div>
+          </section>
           <section class="daily-missions" aria-label="每日目标">
             <div class="daily-mission-head">
               <div>
@@ -607,7 +658,7 @@
       <div class="modal-card" id="modalCard"></div>
     </div>
 
-    <script src="./app.js?v=33"></script>
+    <script src="./app.js?v=34"></script>
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onload="window.initSupabaseClient?.()"></script>
   </body>

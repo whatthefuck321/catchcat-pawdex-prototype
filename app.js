@@ -144,8 +144,8 @@ const I18N = {
     share_native_unavailable: "系统分享不可用，已改为下载图片。",
     store_page_title: "猫粮补给站",
     store_goal: "DAY1",
-    store_hero_title: "猫粮是唯一闸门",
-    store_hero_copy: "免费流量先靠分享回粮；需要立刻续命时，才把付费补给挂到这里。",
+    store_hero_title: "先验证续命付费",
+    store_hero_copy: "免费流量靠分享回粮；需要立刻继续时，用 Pro/Founder 承接。",
     founder_upgrade: "升级 Founder",
     founder_checkout: "立即支持",
     founder_missing_title: "收款链接未配置",
@@ -154,7 +154,7 @@ const I18N = {
     founder_opened_copy: "付款确认需要 Stripe webhook 或 Supabase 记录；当前静态原型只负责打开收款入口。",
     founder_note: "当前静态原型只打开你配置过的真实收款链接；没有链接时不会伪造付款成功。",
     founder_popular: "推荐",
-    founder_revenue_math: "Day1 收入线：10 个 Early = $90，先覆盖识别/云成本，再继续加功能。",
+    founder_revenue_math: "Day1 收入线：20 个 Pro 周票约 $100，先覆盖识别/云成本，再加后端奖励。",
     daily_done: "已完成",
     daily_claim: "领取",
     daily_claimed: "已领取",
@@ -217,7 +217,28 @@ const I18N = {
     nav_store: "补给",
     nav_rank: "榜单",
     nav_share: "分享",
-    share_text: "我在 PAWDEX 抓到一只稀有猫！你也来试试",
+    share_text: "我在 PAWDEX 抓到一只稀有猫！点我的邀请链接来夜巡",
+    invite_landing_step: "INVITE DROP",
+    invite_landing_title: "朋友邀请你来夜巡",
+    invite_landing_copy: "点一次拍摄，把你的第一张猫卡也发回去。",
+    invite_landing_story: "{name} · {rarity} · {place}",
+    invite_code_label: "邀请码 {code}",
+    invite_url_ready: "你的回流链接已生成",
+    invite_copy_link: "复制邀请链接",
+    invite_copy_post: "复制发布文案",
+    invite_start: "开始抓猫",
+    invite_copied: "邀请链接已复制",
+    invite_post_copied: "发布文案已复制",
+    invite_copy_failed: "复制失败，请手动复制链接。",
+    invite_proof: "静态版先验证点击和分享链路，真实跨设备奖励后续接 Supabase。",
+    launch_post: "我在 PAWDEX 夜巡抓猫：拍真猫、开猫卡、晒战报。我的邀请链接：{url}",
+    pro_pass_title: "Pro 夜巡票",
+    pro_pass_copy: "缺猫粮、传说时段和周榜冲刺时出现，是第一周最自然的付费入口。",
+    pool_value: "${amount}",
+    pool_copy: "用 Pro/Founder 收入的一部分做周榜奖池；静态版不伪造到账。",
+    pool_share_signal: "{count} 次",
+    pool_invite_signal: "{count} 次",
+    pool_checkout_signal: "{count} 次",
   },
   en: {
     mode_gentle: "Gentle",
@@ -363,8 +384,8 @@ const I18N = {
     share_native_unavailable: "Native share is unavailable, so the image was downloaded instead.",
     store_page_title: "Supply Station",
     store_goal: "DAY1",
-    store_hero_title: "Treats are the gate",
-    store_hero_copy: "Free growth comes from share refunds. Paid supply belongs here when players want to continue now.",
+    store_hero_title: "Validate continue-now payment first",
+    store_hero_copy: "Free growth comes from share refunds. Pro/Founder catches the moment players want to continue.",
     founder_upgrade: "Upgrade Founder",
     founder_checkout: "Support now",
     founder_missing_title: "Payment link is not configured",
@@ -373,7 +394,7 @@ const I18N = {
     founder_opened_copy: "Payment confirmation needs Stripe webhooks or Supabase records. This static prototype only opens checkout.",
     founder_note: "This static prototype only opens configured real payment links. Without links, it will not fake a paid state.",
     founder_popular: "Recommended",
-    founder_revenue_math: "Day-1 revenue line: 10 Early supporters = $90, covering ID/cloud cost before adding more features.",
+    founder_revenue_math: "Day-1 revenue line: 20 Pro passes is about $100, covering ID/cloud cost before backend rewards.",
     daily_done: "Done",
     daily_claim: "Claim",
     daily_claimed: "Claimed",
@@ -436,7 +457,28 @@ const I18N = {
     nav_store: "Supply",
     nav_rank: "Rank",
     nav_share: "Share",
-    share_text: "I just caught a rare cat on PAWDEX! Come try",
+    share_text: "I just caught a rare cat on PAWDEX. Use my invite link for a night run",
+    invite_landing_step: "INVITE DROP",
+    invite_landing_title: "A friend invited you to a night run",
+    invite_landing_copy: "Capture once and send your first cat card back.",
+    invite_landing_story: "{name} · {rarity} · {place}",
+    invite_code_label: "Invite {code}",
+    invite_url_ready: "Your return link is ready",
+    invite_copy_link: "Copy invite link",
+    invite_copy_post: "Copy launch post",
+    invite_start: "Start catching",
+    invite_copied: "Invite link copied",
+    invite_post_copied: "Launch post copied",
+    invite_copy_failed: "Copy failed. Copy the link manually.",
+    invite_proof: "Static build validates clicks and shares first. Cross-device rewards need Supabase.",
+    launch_post: "I am catching real cats on PAWDEX: photo, reveal, story card. My invite link: {url}",
+    pro_pass_title: "Pro Night Pass",
+    pro_pass_copy: "Appears when treats are low, events are live, or the weekly board is close.",
+    pool_value: "${amount}",
+    pool_copy: "Use part of Pro/Founder revenue for the weekly board pool. Static build does not fake payment.",
+    pool_share_signal: "{count} times",
+    pool_invite_signal: "{count} times",
+    pool_checkout_signal: "{count} times",
   },
 };
 
@@ -733,6 +775,17 @@ const seasonRewardConfigs = [
 ];
 const founderPacks = [
   {
+    id: "pro",
+    price: "$4.99/wk",
+    nameZh: "Pro 夜巡票",
+    nameEn: "Pro Night Pass",
+    badgeZh: "续命周票",
+    badgeEn: "Weekly pass",
+    perksZh: ["猫粮恢复更快", "传说时段额外机会", "周榜奖励加速", "高清晒卡图"],
+    perksEn: ["Faster treat recharge", "Extra event chances", "Season reward boost", "HD story exports"],
+    featured: true,
+  },
+  {
     id: "early",
     price: "$9",
     nameZh: "Early Cat Hunter",
@@ -751,7 +804,6 @@ const founderPacks = [
     badgeEn: "Recommended",
     perksZh: ["永久 Founder 标记", "专属卡背", "限定猫任务优先", "高清分享图"],
     perksEn: ["Permanent Founder mark", "Exclusive card back", "Limited-cat priority", "HD share exports"],
-    featured: true,
   },
   {
     id: "sponsor",
@@ -814,6 +866,12 @@ const BREED_API_CONFIG = {
     ? window.PAWDEX_BREED_API.timeoutMs
     : 3600,
 };
+const REVENUE_CONFIG = window.PAWDEX_REVENUE_CONFIG || {};
+const WEEKLY_POOL_TARGET = Number.isFinite(Number(REVENUE_CONFIG.weeklyPoolTarget))
+  ? Math.max(0, Math.round(Number(REVENUE_CONFIG.weeklyPoolTarget)))
+  : 25;
+const INBOUND_REFERRAL_CODE = normalizeReferralCode(QUERY_PARAMS.get("ref"));
+const INBOUND_STORY = parseSharedStory(QUERY_PARAMS.get("story"));
 const pageMeta = {
   catch: { label: "PAWDEX FIELD", title: "今晚抓猫" },
   dex: { label: "CAT DEX", title: "猫卡图鉴" },
@@ -822,6 +880,57 @@ const pageMeta = {
   share: { label: "STORY SHARE", title: "晒卡分享" },
   debug: { label: "DEV PANEL", title: "调试面板" },
 };
+
+function normalizeReferralCode(value) {
+  const cleaned = String(value || "")
+    .trim()
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, "");
+  return cleaned.length >= 4 && cleaned.length <= 12 ? cleaned : "";
+}
+
+function createReferralCode() {
+  const bytes = new Uint8Array(4);
+  if (window.crypto?.getRandomValues) {
+    window.crypto.getRandomValues(bytes);
+  } else {
+    for (let index = 0; index < bytes.length; index += 1) {
+      bytes[index] = Math.floor(Math.random() * 255);
+    }
+  }
+  return `PX${Array.from(bytes, (byte) => (byte % 36).toString(36).toUpperCase()).join("")}`;
+}
+
+function encodeSharedStory(payload) {
+  try {
+    const json = JSON.stringify(payload);
+    const base64 = btoa(unescape(encodeURIComponent(json)));
+    return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+  } catch {
+    return "";
+  }
+}
+
+function parseSharedStory(raw) {
+  if (!raw) return null;
+  try {
+    const base64 = String(raw).replace(/-/g, "+").replace(/_/g, "/");
+    const padded = base64.padEnd(Math.ceil(base64.length / 4) * 4, "=");
+    const parsed = JSON.parse(decodeURIComponent(escape(atob(padded))));
+    if (!parsed || typeof parsed !== "object") return null;
+    return {
+      type: parsed.type === "escape" ? "escape" : "card",
+      name: String(parsed.name || "PAWDEX").slice(0, 42),
+      rarity: rarities[parsed.rarity] ? parsed.rarity : "common",
+      place: String(parsed.place || "星灯旧街").slice(0, 42),
+      reward: Number.isFinite(parsed.reward) ? parsed.reward : 0,
+      cost: Number.isFinite(parsed.cost) ? parsed.cost : 0,
+      no: Number.isFinite(parsed.no) ? parsed.no : null,
+    };
+  } catch {
+    return null;
+  }
+}
 
 const state = {
   food: 10,
@@ -858,6 +967,15 @@ const state = {
   worldSpotKey: "main",
   spotRewardAt: null,
   checkoutStartedPack: null,
+  checkoutIntentCount: 0,
+  referralCode: createReferralCode(),
+  referredBy: "",
+  referralVisits: 0,
+  inviteCopies: 0,
+  shareIntentCount: 0,
+  launchPostCopies: 0,
+  inboundReferralCode: INBOUND_REFERRAL_CODE,
+  inboundStory: INBOUND_STORY,
 };
 
 const $ = (selector) => document.querySelector(selector);
@@ -965,7 +1083,19 @@ const els = {
   storyLootRarity: $("#storyLootRarity"),
   storyLootCost: $("#storyLootCost"),
   storyLootReward: $("#storyLootReward"),
+  storyInviteCode: $("#storyInviteCode"),
   copyShareButton: $("#copyShareButton"),
+  inviteLanding: $("#inviteLanding"),
+  inviteLandingStep: $("#inviteLandingStep"),
+  inviteLandingTitle: $("#inviteLandingTitle"),
+  inviteLandingCopy: $("#inviteLandingCopy"),
+  landingStartButton: $("#landingStartButton"),
+  landingCopyButton: $("#landingCopyButton"),
+  inviteCodeText: $("#inviteCodeText"),
+  inviteUrlText: $("#inviteUrlText"),
+  copyInviteButton: $("#copyInviteButton"),
+  copyLaunchPostButton: $("#copyLaunchPostButton"),
+  inviteProofText: $("#inviteProofText"),
   lastOutcomeTitle: $("#lastOutcomeTitle"),
   lastOutcomeCopy: $("#lastOutcomeCopy"),
   leaderboardRank: $("#leaderboardRank"),
@@ -980,6 +1110,14 @@ const els = {
   storeHeroTitle: $("#storeHeroTitle"),
   storeHeroCopy: $("#storeHeroCopy"),
   storeMath: $("#storeMath"),
+  proPassTitle: $("#proPassTitle"),
+  proPassCopy: $("#proPassCopy"),
+  proCheckoutButton: $("#proCheckoutButton"),
+  poolValueText: $("#poolValueText"),
+  poolCopyText: $("#poolCopyText"),
+  poolShareSignal: $("#poolShareSignal"),
+  poolInviteSignal: $("#poolInviteSignal"),
+  poolCheckoutSignal: $("#poolCheckoutSignal"),
   economyFoodStatus: $("#economyFoodStatus"),
   economyShareStatus: $("#economyShareStatus"),
   economyResetStatus: $("#economyResetStatus"),
@@ -1171,9 +1309,27 @@ function hydrateState() {
     }
     state.spotRewardAt = Number.isFinite(saved.spotRewardAt) ? saved.spotRewardAt : null;
     state.checkoutStartedPack = saved.checkoutStartedPack || null;
+    state.checkoutIntentCount = Number.isFinite(saved.checkoutIntentCount) ? saved.checkoutIntentCount : 0;
+    state.referralCode = normalizeReferralCode(saved.referralCode) || state.referralCode;
+    state.referredBy = normalizeReferralCode(saved.referredBy) || state.referredBy;
+    state.referralVisits = Number.isFinite(saved.referralVisits) ? saved.referralVisits : 0;
+    state.inviteCopies = Number.isFinite(saved.inviteCopies) ? saved.inviteCopies : 0;
+    state.shareIntentCount = Number.isFinite(saved.shareIntentCount) ? saved.shareIntentCount : 0;
+    state.launchPostCopies = Number.isFinite(saved.launchPostCopies) ? saved.launchPostCopies : 0;
   } catch {
     localStorage.removeItem(STORAGE_KEY);
   }
+}
+
+function applyInboundReferral() {
+  const inbound = normalizeReferralCode(state.inboundReferralCode);
+  if (!inbound) return;
+  if (inbound !== state.referralCode && inbound !== state.referredBy) {
+    state.referredBy = inbound;
+    state.referralVisits += 1;
+  }
+  state.tab = "share";
+  persistState();
 }
 
 function applyDailyReset() {
@@ -1245,6 +1401,13 @@ function persistState() {
     worldSpotKey: state.worldSpotKey,
     spotRewardAt: state.spotRewardAt,
     checkoutStartedPack: state.checkoutStartedPack,
+    checkoutIntentCount: state.checkoutIntentCount,
+    referralCode: state.referralCode,
+    referredBy: state.referredBy,
+    referralVisits: state.referralVisits,
+    inviteCopies: state.inviteCopies,
+    shareIntentCount: state.shareIntentCount,
+    launchPostCopies: state.launchPostCopies,
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
 }
@@ -2607,6 +2770,89 @@ function escapeShareCard(outcome) {
   };
 }
 
+function sharedStoryPayload() {
+  const outcome = state.lastOutcome;
+  if (!outcome) return null;
+  if (outcome.type === "escape") {
+    return {
+      type: "escape",
+      name: t("story_fail_name", { rarity: rarities[outcome.rarity].label }),
+      rarity: outcome.rarity,
+      place: outcome.scene?.place || "星灯旧街",
+      cost: outcome.cost || 0,
+      reward: 0,
+    };
+  }
+  const card = outcome.card;
+  return {
+    type: "card",
+    name: card.name,
+    rarity: card.rarity,
+    place: card.scene?.place || "星灯旧街",
+    cost: modes[card.mode]?.cost || 0,
+    reward: card.reward?.total || 0,
+    no: card.no || null,
+  };
+}
+
+function referralUrl({ withStory = true } = {}) {
+  const url = new URL(SHARE_URL, window.location.href);
+  url.search = "";
+  url.hash = "";
+  url.searchParams.set("ref", state.referralCode);
+  const payload = withStory ? sharedStoryPayload() : null;
+  if (payload) url.searchParams.set("story", encodeSharedStory(payload));
+  return url.toString();
+}
+
+async function writeClipboardText(text) {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(text);
+    return true;
+  }
+  const area = document.createElement("textarea");
+  area.value = text;
+  area.setAttribute("readonly", "");
+  area.style.position = "fixed";
+  area.style.left = "-999px";
+  document.body.appendChild(area);
+  area.select();
+  const ok = document.execCommand("copy");
+  area.remove();
+  if (!ok) throw new Error("copy failed");
+  return true;
+}
+
+function launchPostText() {
+  return t("launch_post", { url: referralUrl({ withStory: Boolean(state.lastOutcome) }) });
+}
+
+async function copyInviteLink() {
+  state.inviteCopies += 1;
+  persistState();
+  try {
+    await writeClipboardText(referralUrl({ withStory: Boolean(state.lastOutcome) }));
+    showEconomyToast(t("invite_copied"), "gain");
+    render();
+  } catch {
+    render();
+    showEscapeLikeResult(t("invite_copy_failed"), referralUrl({ withStory: Boolean(state.lastOutcome) }));
+  }
+}
+
+async function copyLaunchPost() {
+  state.launchPostCopies += 1;
+  persistState();
+  try {
+    await writeClipboardText(launchPostText());
+    showEconomyToast(t("invite_post_copied"), "gain");
+    render();
+  } catch {
+    render();
+    showEscapeLikeResult(t("invite_copy_failed"), launchPostText());
+  }
+}
+
 function setStoryTheme(rarity, isFail) {
   const cfg = rarities[rarity] || rarities.common;
   els.storyPreview.classList.toggle("is-fail", isFail);
@@ -2623,7 +2869,39 @@ function setStorySignal(kicker, title) {
   if (titleEl) titleEl.textContent = title;
 }
 
+function renderInvitePanel() {
+  if (els.storyInviteCode) {
+    els.storyInviteCode.textContent = t("invite_code_label", { code: state.referralCode });
+  }
+  if (els.inviteCodeText) els.inviteCodeText.textContent = state.referralCode;
+  if (els.inviteUrlText) els.inviteUrlText.textContent = referralUrl({ withStory: Boolean(state.lastOutcome) });
+  if (els.copyInviteButton) els.copyInviteButton.textContent = t("invite_copy_link");
+  if (els.copyLaunchPostButton) els.copyLaunchPostButton.textContent = t("invite_copy_post");
+  if (els.inviteProofText) els.inviteProofText.textContent = t("invite_proof");
+  if (els.landingStartButton) els.landingStartButton.textContent = t("invite_start");
+  if (els.landingCopyButton) els.landingCopyButton.textContent = t("invite_copy_link");
+
+  const hasInbound = Boolean(state.inboundReferralCode || state.inboundStory);
+  if (!els.inviteLanding) return;
+  els.inviteLanding.hidden = !hasInbound;
+  if (!hasInbound) return;
+  els.inviteLandingStep.textContent = t("invite_landing_step");
+  els.inviteLandingTitle.textContent = state.inboundReferralCode
+    ? `${t("invite_landing_title")} · ${state.inboundReferralCode}`
+    : t("invite_landing_title");
+  if (state.inboundStory) {
+    els.inviteLandingCopy.textContent = t("invite_landing_story", {
+      name: state.inboundStory.name,
+      rarity: rarities[state.inboundStory.rarity].label,
+      place: state.inboundStory.place,
+    });
+  } else {
+    els.inviteLandingCopy.textContent = t("invite_landing_copy");
+  }
+}
+
 function renderStory() {
+  renderInvitePanel();
   const outcome = state.lastOutcome;
   if (!outcome) {
     setStoryTheme("common", false);
@@ -2929,6 +3207,26 @@ function renderFounderStore() {
   els.storeHeroCopy.textContent = t("store_hero_copy");
   els.storeMath.textContent = t("founder_revenue_math");
   els.paymentNote.textContent = t("founder_note");
+  if (els.proPassTitle) els.proPassTitle.textContent = t("pro_pass_title");
+  if (els.proPassCopy) els.proPassCopy.textContent = t("pro_pass_copy");
+  if (els.proCheckoutButton) {
+    const proLinkReady = isSafePaymentLink(paymentLinkForPack("pro"));
+    els.proCheckoutButton.textContent = proLinkReady ? "$4.99/wk" : "配置链接";
+    els.proCheckoutButton.classList.toggle("disabled", !proLinkReady);
+  }
+  if (els.poolValueText) {
+    els.poolValueText.textContent = t("pool_value", { amount: WEEKLY_POOL_TARGET });
+  }
+  if (els.poolCopyText) els.poolCopyText.textContent = t("pool_copy");
+  if (els.poolShareSignal) {
+    els.poolShareSignal.textContent = t("pool_share_signal", { count: state.shareIntentCount });
+  }
+  if (els.poolInviteSignal) {
+    els.poolInviteSignal.textContent = t("pool_invite_signal", { count: state.inviteCopies });
+  }
+  if (els.poolCheckoutSignal) {
+    els.poolCheckoutSignal.textContent = t("pool_checkout_signal", { count: state.checkoutIntentCount });
+  }
   if (els.economyFoodStatus) els.economyFoodStatus.textContent = `${state.food}/${state.maxFood}`;
   if (els.economyShareStatus) els.economyShareStatus.textContent = `今日剩 ${shareLeft} 次`;
   if (els.economyResetStatus) {
@@ -3022,6 +3320,7 @@ function buyFounderPack(packId) {
     return;
   }
   state.checkoutStartedPack = pack.id;
+  state.checkoutIntentCount += 1;
   persistState();
   window.open(link, "_blank", "noopener");
   showEscapeLikeResult(t("founder_opened_title"), `${packName(pack)} · ${t("founder_opened_copy")}`);
@@ -3091,8 +3390,9 @@ async function saveStoryImage() {
 async function nativeShare() {
   const blob = await renderStoryBlob();
   const file = new File([blob], "pawdex.png", { type: "image/png" });
+  const url = referralUrl({ withStory: Boolean(state.lastOutcome) });
   if (navigator.canShare?.({ files: [file] }) && navigator.share) {
-    await navigator.share({ files: [file], text: t("share_text"), url: SHARE_URL });
+    await navigator.share({ files: [file], text: t("share_text"), url });
   } else {
     downloadBlob(blob, `pawdex-${Date.now()}.png`);
     showEscapeLikeResult(t("share_opened_title"), t("share_native_unavailable"));
@@ -3104,7 +3404,7 @@ async function shareToPlatform(platform) {
     showEscapeLikeResult(t("save_no_story_title"), t("save_no_story_copy"));
     return;
   }
-  const encodedUrl = encodeURIComponent(SHARE_URL);
+  const encodedUrl = encodeURIComponent(referralUrl({ withStory: true }));
   const encodedText = encodeURIComponent(t("share_text"));
   let link = "";
   if (platform === "x") {
@@ -3121,6 +3421,8 @@ async function shareToPlatform(platform) {
     } else {
       await nativeShare();
     }
+    state.shareIntentCount += 1;
+    persistState();
     grantShareRefund();
     render();
   } catch {
@@ -3394,12 +3696,19 @@ els.copyShareButton.addEventListener("click", async () => {
     render();
     return;
   }
+  state.shareIntentCount += 1;
+  persistState();
   grantShareRefund();
   render();
 });
 $$("[data-share]").forEach((button) => {
   button.addEventListener("click", () => shareToPlatform(button.dataset.share));
 });
+els.copyInviteButton.addEventListener("click", copyInviteLink);
+els.copyLaunchPostButton.addEventListener("click", copyLaunchPost);
+els.landingStartButton.addEventListener("click", () => switchTab("catch"));
+els.landingCopyButton.addEventListener("click", copyInviteLink);
+els.proCheckoutButton.addEventListener("click", () => buyFounderPack("pro"));
 els.founderList.addEventListener("click", (event) => {
   const button = event.target.closest("[data-buy]");
   if (!button) return;
@@ -3448,6 +3757,7 @@ setupPwaInstall();
 registerServiceWorker();
 initSupabaseClient();
 hydrateState();
+applyInboundReferral();
 applyDailyReset();
 drawCamera();
 simulate();

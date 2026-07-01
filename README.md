@@ -2,7 +2,7 @@
 
 Chinese development prototype for a cat-collection risk-capture game.
 
-Current published version: `v33 functional season loop prototype`
+Current published version: `v34 growth economy loop prototype`
 
 ## What is included
 
@@ -38,6 +38,7 @@ Current published version: `v33 functional season loop prototype`
 - v31 installable shell: the GitHub Pages build now includes a Web App Manifest, service worker cache, iOS/Android home-screen icons, and an in-app install prompt. This supports a phone home-screen app test without Apple signing or app-store distribution.
 - v32 functional daily loop: the supply page now has claimable daily missions tied to today's capture, Rare+ card, and share-save actions. Mission rewards persist locally, reset by local date, and feed back into the cat-food economy. The service worker cache was also bumped and JS/CSS now carry v32 cache-busting URLs so feature updates do not get stuck behind the old app shell. The install prompt is hidden by default for this function pass and can be shown with `?install=1`.
 - v33 functional season loop: the weekly rank page now has a local Monday-to-Monday season window, live player score, season countdown, and claimable weekly rewards for Rare+ and legendary collection targets. Reward claims persist locally by season and feed cat food back into the economy.
+- v34 growth economy loop: the share page now generates a stable invite code, copies referral/story URLs, opens referral landing state from `?ref=`, tracks local share/invite/checkout intent signals, and the supply page exposes Pro pass plus a capped week-one pool concept without faking payment confirmation or cross-device rewards.
 
 ## Installable phone test
 
@@ -66,6 +67,7 @@ The static GitHub Pages build can open checkout links without adding server cost
 ```html
 <script>
   window.PAWDEX_PAYMENT_LINKS = {
+    pro: "https://buy.stripe.com/YOUR_PRO_LINK",
     early: "https://buy.stripe.com/YOUR_EARLY_LINK",
     founder: "https://buy.stripe.com/YOUR_FOUNDER_LINK",
     sponsor: "https://buy.stripe.com/YOUR_SPONSOR_LINK"
